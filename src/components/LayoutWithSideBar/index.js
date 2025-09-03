@@ -13,7 +13,7 @@ const LayoutWithSidebar = ({ children }) => {
   return (
     <div className="flex min-h-screen w-full overflow-x-auto bg-[#0E0E0E]">
       <SidebarMenu onOpen={handleViewSidebar} />
-      <main className="flex-1 px-[24px] py-[32px]">{children}</main>
+      <main className="flex-1">{children}</main>
     </div>
   )
 }

@@ -1,6 +1,3 @@
-import Image from 'next/image'
-import { useState } from 'react'
-
 import {
   ArrowDown2,
   Data2,
@@ -13,6 +10,10 @@ import {
   User,
   UserSearch,
 } from 'iconsax-reactjs'
+import Image from 'next/image'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 import Divider from '../Divider'
 
 import { Outfit400, Outfit500 } from '@/fonts'
@@ -29,8 +30,9 @@ import Suport from './components/suport'
 import Tutos from './components/tutos'
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const [section, setSection] = useState('Atendimento')
+  const pathname = usePathname()
 
   const sections = {
     Atendimento: <Service />,
@@ -48,7 +50,7 @@ const Sidebar = () => {
         style={{ width: isOpen ? '369px' : '76px' }}
         className={`flex flex-col rounded-[8px] bg-[#171717] transition-all duration-300 ease-in-out`}
         onMouseEnter={() => setIsOpen(true)}
-        // onMouseLeave={() => setIsOpen(false)}
+        onMouseLeave={() => setIsOpen(false)}
       >
         <div className="flex h-[63px] items-center justify-center text-[#494949]">
           LOGO
@@ -236,22 +238,36 @@ const Sidebar = () => {
                     </p>
                   </div>
                 </div>
-                <div className="mx-3 flex gap-5">
-                  <User size="28" color="#A1A1A1" />
-                  <p
-                    className={`${Outfit400.className} text-[16px] text-[#A1A1A1]`}
+                <Link
+                  href="/atendimento/dashboard"
+                  className="w-full px-[12px]"
+                >
+                  <div
+                    className={`${pathname === '/atendimento/dashboard' ? 'bg-[#2B2B2B]' : ''} flex h-[44px] w-full items-center gap-5 rounded-[4px] px-2 hover:bg-[#2B2B2B]`}
                   >
-                    Perfil
-                  </p>
-                </div>
-                <div className="mx-3 flex gap-5">
-                  <Logout size="28" color="#A1A1A1" />
-                  <p
-                    className={`${Outfit400.className} text-[16px] text-[#A1A1A1]`}
+                    <User size="28" color="#A1A1A1" />
+                    <p
+                      className={`${Outfit400.className} text-[16px] text-[#A1A1A1]`}
+                    >
+                      Perfil
+                    </p>
+                  </div>
+                </Link>
+                <Link
+                  href="/atendimento/dashboard"
+                  className="w-full px-[12px]"
+                >
+                  <div
+                    className={`${pathname === '/atendimento/dashboard' ? 'bg-[#2B2B2B]' : ''} flex h-[44px] w-full items-center gap-5 rounded-[4px] px-2 hover:bg-[#2B2B2B]`}
                   >
-                    Sair da conta
-                  </p>
-                </div>
+                    <Logout size="28" color="#A1A1A1" />
+                    <p
+                      className={`${Outfit400.className} text-[16px] text-[#A1A1A1]`}
+                    >
+                      Sair da conta
+                    </p>
+                  </div>
+                </Link>
               </div>
             </div>
           </div>
