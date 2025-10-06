@@ -36,7 +36,7 @@ const RegisterExams = ({ onClose }) => {
   const [requirementsStandards, setRequirementsStandards] = useState('')
 
   // Formulários
-  const [serviceForm, setServiceForm] = useState('')
+  const [serviceForm] = useState('')
 
   // Preparo e coleta
   const [generalPreparation, setGeneralPreparation] = useState('')
