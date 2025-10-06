@@ -118,28 +118,34 @@ const RootLayout = () => {
         >
           <SelectRegister
             setModalRegisterUnits={() => {
+              setPage('unidades-de-saude')
               setOpenModalRegister(false)
               setModalRegisterUnits(true)
             }}
             setModalRegisterExams={() => {
+              setPage('exames')
               setOpenModalRegister(false)
               setModalRegisterExams(true)
             }}
             setModalRegisterUser={() => {
+              setPage('usuarios')
               setOpenModalRegister(false)
               setModalRegisterUser(true)
             }}
             setModalRegisterMethods={() => {
+              setPage('metodos')
               setOpenModalRegister(false)
               setModalRegisterMethods(true)
             }}
-            modalRegisterBanks={() => {
-              setOpenModalRegister(false)
-              setModalRegisterBanks(true)
-            }}
             setModalRegisterExamMatrix={(e) => {
+              setPage('matriz-de-exames')
               setOpenModalRegister(false)
               setModalRegisterExamMatrix(e)
+            }}
+            modalRegisterBanks={() => {
+              setPage('bancos')
+              setOpenModalRegister(false)
+              setModalRegisterBanks(true)
             }}
             setOpenModalRegister={() =>
               setOpenModalRegister(!openModalRegister)
