@@ -8,9 +8,9 @@ const Data = () => {
 
   return (
     <div className="flex w-full flex-col gap-5 px-[12px]">
-      <Link href="/atendimento/dashboard" className="w-ful">
+      <Link href="/dados/dashboard" className="w-ful">
         <div
-          className={`${pathname === '/atendimento/dashboard' ? 'bg-[#2B2B2B]' : ''} flex h-[44px] w-full items-center gap-5 rounded-[4px] px-2 hover:bg-[#2B2B2B]`}
+          className={`${pathname === '/dados/dashboard' ? 'bg-[#2B2B2B]' : ''} flex h-[44px] w-full items-center gap-5 rounded-[4px] px-2 hover:bg-[#2B2B2B]`}
         >
           <Chart1 size="28" color="#A1A1A1" />
           <p className={`${Outfit400.className} text-[16px] text-[#A1A1A1]`}>
@@ -18,9 +18,9 @@ const Data = () => {
           </p>
         </div>
       </Link>
-      <Link href="/atendimento/relatorio" className="w-ful">
+      <Link href="/dados/relatorio" className="w-ful">
         <div
-          className={`${pathname === '/atendimento/relatorio' ? 'bg-[#2B2B2B]' : ''} flex h-[44px] w-full items-center gap-5 rounded-[4px] px-2 hover:bg-[#2B2B2B]`}
+          className={`${pathname === '/dados/relatorio' ? 'bg-[#2B2B2B]' : ''} flex h-[44px] w-full items-center gap-5 rounded-[4px] px-2 hover:bg-[#2B2B2B]`}
         >
           <Book1 size="28" color="#A1A1A1" />
           <p className={`${Outfit400.className} text-[16px] text-[#A1A1A1]`}>
@@ -28,9 +28,9 @@ const Data = () => {
           </p>
         </div>
       </Link>
-      <Link href="/atendimento/auditorias" className="w-ful">
+      <Link href="/dados/auditorias" className="w-ful">
         <div
-          className={`${pathname === '/atendimento/auditorias' ? 'bg-[#2B2B2B]' : ''} flex h-[44px] w-full items-center gap-5 rounded-[4px] px-2 hover:bg-[#2B2B2B]`}
+          className={`${pathname === '/dados/auditorias' ? 'bg-[#2B2B2B]' : ''} flex h-[44px] w-full items-center gap-5 rounded-[4px] px-2 hover:bg-[#2B2B2B]`}
         >
           <SecuritySafe size="28" color="#A1A1A1" />
           <p className={`${Outfit400.className} text-[16px] text-[#A1A1A1]`}>

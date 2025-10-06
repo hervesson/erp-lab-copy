@@ -13,7 +13,7 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Divider from '../Divider'
 
 import { Outfit400, Outfit500 } from '@/fonts'
@@ -29,19 +29,39 @@ import Service from './components/service'
 import Suport from './components/suport'
 import Tutos from './components/tutos'
 
+import { Exit } from '@/helpers'
+
+import { useAuth } from '@/contexts/auth'
+
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const [section, setSection] = useState('Atendimento')
+  const [section, setSection] = useState('')
   const pathname = usePathname()
 
+  const { logout } = useAuth()
+
+  useEffect(() => {
+    const a = () => {
+      const firstPath = `${pathname.split('/')[1]}`
+      setSection(firstPath)
+    }
+
+    a()
+  }, [pathname, isOpen])
+
+  const handleLogout = () => {
+    Exit()
+    logout()
+  }
+
   const sections = {
-    Atendimento: <Service />,
-    Administrativo: <Administrative />,
-    Configurações: <Configs />,
-    Dados: <Data />,
-    Tutoriais: <Tutos />,
-    Notificações: <Notifications />,
-    Suporte: <Suport />,
+    atendimento: <Service />,
+    administrativo: <Administrative />,
+    configuracoes: <Configs />,
+    dados: <Data />,
+    tutoriais: <Tutos />,
+    notificações: <Notifications />,
+    suporte: <Suport />,
   }
 
   return (
@@ -84,67 +104,66 @@ const Sidebar = () => {
         <div className="flex flex-1">
           <div className="flex w-[76px] flex-col items-center">
             <div
-              onClick={() => setSection('Atendimento')}
               className={`mt-[24px] flex h-[36px] w-[36px] items-center justify-center rounded ${
-                section === 'Atendimento'
+                section === 'atendimento'
                   ? 'bg-[#0F9B7F]'
                   : 'hover:bg-[#0F9B7F]'
               }`}
+              onMouseEnter={() => setSection('atendimento')}
             >
               <UserSearch
                 size="28"
-                color={section === 'Atendimento' ? '#000' : '#A1A1A1'}
+                color={section === 'atendimento' ? '#000' : '#A1A1A1'}
                 className="self-center"
-                variant={section === 'Atendimento' ? 'Bulk' : 'Linear'}
+                variant={section === 'atendimento' ? 'Bulk' : 'Linear'}
               />
             </div>
             <div
-              onClick={() => setSection('Administrativo')}
               className={`mt-[24px] flex h-[36px] w-[36px] items-center justify-center rounded ${
-                section === 'Administrativo'
+                section === 'administrativo'
                   ? 'bg-[#0F9B7F]'
                   : 'hover:bg-[#0F9B7F]'
               }`}
+              onMouseEnter={() => setSection('administrativo')}
             >
               <Setting3
                 size="28"
-                color={section === 'Administrativo' ? '#000' : '#A1A1A1'}
+                color={section === 'administrativo' ? '#000' : '#A1A1A1'}
                 className="self-center"
-                variant={section === 'Administrativo' ? 'Bulk' : 'Linear'}
+                variant={section === 'administrativo' ? 'Bulk' : 'Linear'}
               />
             </div>
             <div
-              onClick={() => setSection('Configurações')}
               className={`mt-[24px] flex h-[36px] w-[36px] items-center justify-center rounded ${
-                section === 'Configurações'
+                section === 'configuracoes'
                   ? 'bg-[#0F9B7F]'
                   : 'hover:bg-[#0F9B7F]'
               }`}
+              onMouseEnter={() => setSection('configuracoes')}
             >
               <Setting2
                 size="28"
-                color={section === 'Configurações' ? '#000' : '#A1A1A1'}
+                color={section === 'configuracoes' ? '#000' : '#A1A1A1'}
                 className="self-center"
-                variant={section === 'Configurações' ? 'Bulk' : 'Linear'}
+                variant={section === 'configuracoes' ? 'Bulk' : 'Linear'}
               />
             </div>
             <div
-              onClick={() => setSection('Dados')}
               className={`mt-[24px] flex h-[36px] w-[36px] items-center justify-center rounded ${
-                section === 'Dados' ? 'bg-[#0F9B7F]' : 'hover:bg-[#0F9B7F]'
+                section === 'dados' ? 'bg-[#0F9B7F]' : 'hover:bg-[#0F9B7F]'
               }`}
+              onMouseEnter={() => setSection('dados')}
             >
               <Data2
                 size="28"
-                color={section === 'Dados' ? '#000' : '#A1A1A1'}
+                color={section === 'dados' ? '#000' : '#A1A1A1'}
                 className="self-center"
-                variant={section === 'Dados' ? 'Bulk' : 'Linear'}
+                variant={section === 'dados' ? 'Bulk' : 'Linear'}
               />
             </div>
 
             <p className="mt-[12px] self-center text-[#A1A1A1]">-</p>
             <div
-              onClick={() => setSection('Tutoriais')}
               className={`mt-[24px] flex h-[36px] w-[36px] items-center justify-center rounded ${
                 section === 'Tutoriais' ? 'bg-[#0F9B7F]' : 'hover:bg-[#0F9B7F]'
               }`}
@@ -157,7 +176,6 @@ const Sidebar = () => {
               />
             </div>
             <div
-              onClick={() => setSection('Notificações')}
               className={`mt-[24px] flex h-[36px] w-[36px] items-center justify-center rounded ${
                 section === 'Notificações'
                   ? 'bg-[#0F9B7F]'
@@ -175,7 +193,6 @@ const Sidebar = () => {
             <div className="flex flex-1 items-end justify-center">
               <div className="flex flex-col py-3">
                 <div
-                  onClick={() => setSection('Suporte')}
                   className={`mt-[24px] flex h-[36px] w-[36px] items-center justify-center rounded ${
                     section === 'Suporte'
                       ? 'bg-[#0F9B7F]'
@@ -253,12 +270,10 @@ const Sidebar = () => {
                     </p>
                   </div>
                 </Link>
-                <Link
-                  href="/atendimento/dashboard"
-                  className="w-full px-[12px]"
-                >
+                <div className="w-full px-[12px]">
                   <div
                     className={`${pathname === '/atendimento/dashboard' ? 'bg-[#2B2B2B]' : ''} flex h-[44px] w-full items-center gap-5 rounded-[4px] px-2 hover:bg-[#2B2B2B]`}
+                    onClick={() => handleLogout()}
                   >
                     <Logout size="28" color="#A1A1A1" />
                     <p
@@ -267,7 +282,7 @@ const Sidebar = () => {
                       Sair da conta
                     </p>
                   </div>
-                </Link>
+                </div>
               </div>
             </div>
           </div>
