@@ -9,17 +9,17 @@ import { listAllActiveBanks } from '@/helpers'
 
 const InformacoesGerais = () => {
   // Informações básicas
-  const [internalCode, setInternalCode] = useState('')
-  const [corporateReason, setCorporateReason] = useState('')
+  // const [internalCode, setInternalCode] = useState('')
+  // const [corporateReason, setCorporateReason] = useState('')
   const [CNES, setCNES] = useState('')
   const [activeBanks, setActiveBanks] = useState([])
 
   // itens payload
   const [banco_id, setBanco_Id] = useState('')
-  const [tipo_conta, setTipo_conta] = useState({
-    id: 'CORRRENTE',
-    label: 'CORRRENTE',
-  })
+  // const [tipo_conta, setTipo_conta] = useState({
+  //   id: 'CORRRENTE',
+  //   label: 'CORRRENTE',
+  // })
   const [status, setStatus] = useState({ id: 'ativa', label: 'Ativa' })
   const [description, setDescription] = useState('')
   const [agencia, setAgencia] = useState('')
@@ -46,39 +46,39 @@ const InformacoesGerais = () => {
     findAllBanks()
   }, [])
 
-  const payloadCorrente = {
-    banco_id: banco_id.id,
-    unidade_saude_id: '{{unidadeId}}',
-    codigo_interno: 'CC001',
-    nome_conta: 'Conta Corrente Principal',
-    tipo_conta,
-    agencia,
-    digito_agencia: '5',
-    numero_conta,
-    digito_conta,
-    titular: 'Clínica Saúde Total Ltda',
-    cpf_cnpj_titular: '12.345.678/0001-90',
-    pix_tipo: 'cnpj',
-    pix_chave,
-    status: status.id,
-    saldo_inicial: 1000.0,
-    observacoes: description,
-  }
+  // const payloadCorrente = {
+  //   banco_id: banco_id.id,
+  //   unidade_saude_id: '{{unidadeId}}',
+  //   codigo_interno: 'CC001',
+  //   nome_conta: 'Conta Corrente Principal',
+  //   tipo_conta,
+  //   agencia,
+  //   digito_agencia: '5',
+  //   numero_conta,
+  //   digito_conta,
+  //   titular: 'Clínica Saúde Total Ltda',
+  //   cpf_cnpj_titular: '12.345.678/0001-90',
+  //   pix_tipo: 'cnpj',
+  //   pix_chave,
+  //   status: status.id,
+  //   saldo_inicial: 1000.0,
+  //   observacoes: description,
+  // }
 
-  const payloadPoupança = {
-    banco_id: banco_id.id,
-    unidade_saude_id: '{{unidadeId}}',
-    codigo_interno: 'CP001',
-    nome_conta: 'Conta Poupança Reserva',
-    tipo_conta,
-    agencia,
-    numero_conta,
-    digito_conta,
-    titular: 'Clínica Saúde Total Ltda',
-    cpf_cnpj_titular: '12.345.678/0001-90',
-    status: status.id,
-    saldo_inicial: 5000.0,
-  }
+  // const payloadPoupança = {
+  //   banco_id: banco_id.id,
+  //   unidade_saude_id: '{{unidadeId}}',
+  //   codigo_interno: 'CP001',
+  //   nome_conta: 'Conta Poupança Reserva',
+  //   tipo_conta,
+  //   agencia,
+  //   numero_conta,
+  //   digito_conta,
+  //   titular: 'Clínica Saúde Total Ltda',
+  //   cpf_cnpj_titular: '12.345.678/0001-90',
+  //   status: status.id,
+  //   saldo_inicial: 5000.0,
+  // }
 
   return (
     <div className="flex w-full flex-col gap-[32px] rounded bg-[#FFF] p-[48px]">

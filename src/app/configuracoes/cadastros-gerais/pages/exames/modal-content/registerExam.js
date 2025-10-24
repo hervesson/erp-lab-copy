@@ -60,58 +60,58 @@ const RegisterExams = ({ onClose }) => {
   // const [normalValueReferences, setNormalValueReferences] = useState('')
   const [recipientType, setRecipientType] = useState('')
 
-  const handleSubmit = () => {
-    const payload = {
-      codigo_interno: internalCode,
-      nome: examName,
-      sinonimos: synonyms,
-      codigo_tuss: TUSSCode,
-      codigo_amb: AMBCode,
-      codigo_sus: SUSCode,
-      tipo_exame_id: examType,
-      categoria: 'laboratorio',
-      subgrupo_id: subGroup,
-      setor_id: sector,
-      metodologia: methodologyUsed,
-      especialidade_requerida: specialty,
-      grupo: group,
-      peso: 100,
-      volume_min: 2.5,
-      volume_ideal: 5.0,
-      unidade_medida: unitOfMeasure,
-      amostra_biologica: biologicalSampleRequired,
-      tipo_recipiente: recipientType,
-      necessita_preparo: 'sim',
-      requisitos: requirementsStandards,
-      tipo_realizacao: 'interno',
-      prazo_entrega_dias: deliveryTime,
-      formato_prazo: '1 dia útil',
-      tem_valores_referencia: 'sim',
-      valores_referencia: {
-        adulto_masculino: {
-          hemoglobina: { min: 13.5, max: 17.5, unidade: 'g/dL' },
-          hematocrito: { min: 39, max: 50, unidade: '%' },
-        },
-        adulto_feminino: {
-          hemoglobina: { min: 12.0, max: 15.5, unidade: 'g/dL' },
-          hematocrito: { min: 35, max: 45, unidade: '%' },
-        },
-      },
-      tecnica_coleta: collectionTechnique,
-      preparo_coleta: {
-        geral: 'Jejum de 4 horas',
-        feminino: 'Informar se está menstruada',
-        infantil: 'Jejum de 2 horas para crianças',
-      },
-      lembretes: {
-        coletores: 'Homogeneizar suavemente o tubo após coleta',
-        recepcionistas: 'Verificar jejum do paciente',
-        ordem_servico: 'Coletar em tubo EDTA (roxo)',
-      },
-      status: 'ativo',
-      empresa_id: '1',
-    }
-  }
+  // const handleSubmit = () => {
+  //   const payload = {
+  //     codigo_interno: internalCode,
+  //     nome: examName,
+  //     sinonimos: synonyms,
+  //     codigo_tuss: TUSSCode,
+  //     codigo_amb: AMBCode,
+  //     codigo_sus: SUSCode,
+  //     tipo_exame_id: examType,
+  //     categoria: 'laboratorio',
+  //     subgrupo_id: subGroup,
+  //     setor_id: sector,
+  //     metodologia: methodologyUsed,
+  //     especialidade_requerida: specialty,
+  //     grupo: group,
+  //     peso: 100,
+  //     volume_min: 2.5,
+  //     volume_ideal: 5.0,
+  //     unidade_medida: unitOfMeasure,
+  //     amostra_biologica: biologicalSampleRequired,
+  //     tipo_recipiente: recipientType,
+  //     necessita_preparo: 'sim',
+  //     requisitos: requirementsStandards,
+  //     tipo_realizacao: 'interno',
+  //     prazo_entrega_dias: deliveryTime,
+  //     formato_prazo: '1 dia útil',
+  //     tem_valores_referencia: 'sim',
+  //     valores_referencia: {
+  //       adulto_masculino: {
+  //         hemoglobina: { min: 13.5, max: 17.5, unidade: 'g/dL' },
+  //         hematocrito: { min: 39, max: 50, unidade: '%' },
+  //       },
+  //       adulto_feminino: {
+  //         hemoglobina: { min: 12.0, max: 15.5, unidade: 'g/dL' },
+  //         hematocrito: { min: 35, max: 45, unidade: '%' },
+  //       },
+  //     },
+  //     tecnica_coleta: collectionTechnique,
+  //     preparo_coleta: {
+  //       geral: 'Jejum de 4 horas',
+  //       feminino: 'Informar se está menstruada',
+  //       infantil: 'Jejum de 2 horas para crianças',
+  //     },
+  //     lembretes: {
+  //       coletores: 'Homogeneizar suavemente o tubo após coleta',
+  //       recepcionistas: 'Verificar jejum do paciente',
+  //       ordem_servico: 'Coletar em tubo EDTA (roxo)',
+  //     },
+  //     status: 'ativo',
+  //     empresa_id: '1',
+  //   }
+  // }
 
   return (
     <form className="flex h-screen flex-col bg-[#F9F9F9]" onSubmit={() => null}>

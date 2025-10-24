@@ -92,7 +92,7 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
             >
               Excluir
             </th>
-             <th
+            <th
               className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
             >
               Editar
