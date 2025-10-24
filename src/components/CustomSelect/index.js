@@ -41,7 +41,7 @@ const CustomSelect = ({
         onClick={readOnly ? null : () => setMostrarBandeja(true)}
         ref={inputRef}
       >
-        {select ? (
+        {select?.label ? (
           <p className={`${Outfit400.className} text-[#565656]`}>
             {select?.label}
           </p>

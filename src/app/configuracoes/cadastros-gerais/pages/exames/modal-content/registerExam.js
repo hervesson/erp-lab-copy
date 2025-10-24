@@ -36,7 +36,7 @@ const RegisterExams = ({ onClose }) => {
   const [requirementsStandards, setRequirementsStandards] = useState('')
 
   // Formulários
-  const [serviceForm] = useState('')
+  // const [serviceForm, setServiceForm] = useState('')
 
   // Preparo e coleta
   const [generalPreparation, setGeneralPreparation] = useState('')
@@ -57,11 +57,64 @@ const RegisterExams = ({ onClose }) => {
   // Processamento e Entrega de Laudos
   const [deliveryTime, setDeliveryTime] = useState('')
   const [reportFormat, setReportFormat] = useState('')
-  const [normalValueReferences, setNormalValueReferences] = useState('')
+  // const [normalValueReferences, setNormalValueReferences] = useState('')
   const [recipientType, setRecipientType] = useState('')
 
+  const handleSubmit = () => {
+    const payload = {
+      codigo_interno: internalCode,
+      nome: examName,
+      sinonimos: synonyms,
+      codigo_tuss: TUSSCode,
+      codigo_amb: AMBCode,
+      codigo_sus: SUSCode,
+      tipo_exame_id: examType,
+      categoria: 'laboratorio',
+      subgrupo_id: subGroup,
+      setor_id: sector,
+      metodologia: methodologyUsed,
+      especialidade_requerida: specialty,
+      grupo: group,
+      peso: 100,
+      volume_min: 2.5,
+      volume_ideal: 5.0,
+      unidade_medida: unitOfMeasure,
+      amostra_biologica: biologicalSampleRequired,
+      tipo_recipiente: recipientType,
+      necessita_preparo: 'sim',
+      requisitos: requirementsStandards,
+      tipo_realizacao: 'interno',
+      prazo_entrega_dias: deliveryTime,
+      formato_prazo: '1 dia útil',
+      tem_valores_referencia: 'sim',
+      valores_referencia: {
+        adulto_masculino: {
+          hemoglobina: { min: 13.5, max: 17.5, unidade: 'g/dL' },
+          hematocrito: { min: 39, max: 50, unidade: '%' },
+        },
+        adulto_feminino: {
+          hemoglobina: { min: 12.0, max: 15.5, unidade: 'g/dL' },
+          hematocrito: { min: 35, max: 45, unidade: '%' },
+        },
+      },
+      tecnica_coleta: collectionTechnique,
+      preparo_coleta: {
+        geral: 'Jejum de 4 horas',
+        feminino: 'Informar se está menstruada',
+        infantil: 'Jejum de 2 horas para crianças',
+      },
+      lembretes: {
+        coletores: 'Homogeneizar suavemente o tubo após coleta',
+        recepcionistas: 'Verificar jejum do paciente',
+        ordem_servico: 'Coletar em tubo EDTA (roxo)',
+      },
+      status: 'ativo',
+      empresa_id: '1',
+    }
+  }
+
   return (
-    <div className="flex h-screen flex-col bg-[#F9F9F9]">
+    <form className="flex h-screen flex-col bg-[#F9F9F9]" onSubmit={() => null}>
       <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-[#fff] px-[48px]">
         <div className="flex flex-col">
           <span
@@ -131,7 +184,7 @@ const RegisterExams = ({ onClose }) => {
                     value={examName}
                     onChange={(e) => setExamName(e.target.value)}
                     className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
-                    placeholder="Digite o nome da unidade"
+                    placeholder="Digite o nome do exame"
                   />
                 </div>
                 <div className="flex flex-1 flex-col gap-[4px]">
@@ -153,7 +206,6 @@ const RegisterExams = ({ onClose }) => {
                     className={`${Outfit400.className} text-[14px] text-[##222222]`}
                   >
                     Sinônimos para o exame
-                    <strong className="text-[#F23434]">*</strong>
                   </label>
                   <input
                     value={synonyms}
@@ -246,7 +298,8 @@ const RegisterExams = ({ onClose }) => {
                   <label
                     className={`${Outfit400.className} text-[14px] text-[##222222]`}
                   >
-                    Especialidade<strong className="text-[#F23434]">*</strong>
+                    Especialidade do exame
+                    <strong className="text-[#F23434]">*</strong>
                   </label>
                   <CustomSelect
                     select={specialty}
@@ -468,7 +521,7 @@ const RegisterExams = ({ onClose }) => {
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
-                  Região decoleta<strong className="text-[#F23434]">*</strong>
+                  Região de coleta<strong className="text-[#F23434]">*</strong>
                 </label>
                 <CustomSelect
                   select={collectionRegion}
@@ -688,12 +741,6 @@ const RegisterExams = ({ onClose }) => {
                   Anexar formulários de atendimento
                 </span>
               </div>
-              <div className="flex h-[52px] w-[557px] items-center justify-center gap-3 rounded-[8px] border-[#A9A9A9] bg-[#F9F9F9]">
-                <DocumentDownload size="28" color="#737373" />
-                <span className={`${Outfit300.className} uppercase`}>
-                  {serviceForm}
-                </span>
-              </div>
             </div>
           </div>
 
@@ -876,7 +923,7 @@ const RegisterExams = ({ onClose }) => {
             <span
               className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
             >
-              Informações básicas
+              Processamento e entrega de Laudos
             </span>
 
             <div className="flex flex-col gap-[16px]">
@@ -917,25 +964,12 @@ const RegisterExams = ({ onClose }) => {
                     className={'border border-[#BBBBBB]'}
                   />
                 </div>
-                <div className="flex flex-1 flex-col gap-[4px]">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[##222222]`}
-                  >
-                    Referências de valores normais
-                  </label>
-                  <input
-                    value={normalValueReferences}
-                    onChange={(e) => setNormalValueReferences(e.target.value)}
-                    className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
-                    placeholder="Digite a referência de valores normais"
-                  />
-                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   )
 }
 

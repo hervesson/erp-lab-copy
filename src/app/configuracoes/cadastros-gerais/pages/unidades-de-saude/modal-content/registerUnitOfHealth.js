@@ -2,12 +2,22 @@ import CustomSearch from '@/components/CustomSearch'
 import CustomSelect from '@/components/CustomSelect'
 import useDebounce from '@/components/useDebounce'
 import { Outfit300, Outfit400, Outfit500 } from '@/fonts'
-import { CreateUnit, SearchCep, SearchCNAE } from '@/helpers'
+import {
+  CreateUnit,
+  listAllActiveBanks,
+  SearchCep,
+  SearchCNAE,
+} from '@/helpers'
+import { formatCep, formatCnpj, formatPhoneNumber } from '@/utils'
 import { Clock, CloseCircle, InfoCircle, Link, Trash } from 'iconsax-reactjs'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { toast, ToastContainer } from 'react-toastify'
 
 const RegisterUnityOfHealth = ({ onClose, findData }) => {
   const fileInputRef = useRef(null)
+
+  // Loading
+  const [loading, setLoading] = useState(false)
 
   // Informações básicas
   const [name, setName] = useState('')
@@ -74,6 +84,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
   const [retainIBS, setRetainIBS] = useState(false)
   const [retainCBS, setRetainCBS] = useState(false)
   const [nationalSimpleOptant, setNationalSimpleOptant] = useState(false)
+  const [activeBanks, setActiveBanks] = useState([])
 
   // Certificado digital
   const [cert, setCert] = useState(false)
@@ -81,11 +92,37 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
   // Financeiro
   const [financial, setFinancial] = useState([
     {
-      bankName: '',
-      agency: '',
-      cc: '',
+      banco: '',
+      codigoBanco: '',
+      bancoId: '',
+      agencia: '',
+      digitoAgencia: '',
+      contaCorrente: '',
+      digitoConta: '',
+      tipoConta: '',
+      principal: false,
+      observacoes: '',
     },
   ])
+
+  useEffect(() => {
+    const findAllBanks = async () => {
+      try {
+        const response = await listAllActiveBanks()
+        const banks = response.data.map((item) => {
+          return {
+            id: item.id,
+            label: `${item.codigo} - ${item.nome}`,
+          }
+        })
+        setActiveBanks(banks)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    findAllBanks()
+  }, [])
 
   const handleClick = () => {
     fileInputRef.current.click() // abre o seletor de arquivos
@@ -138,6 +175,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
   }
 
   const handleSubmit = async () => {
+    setLoading(true)
     const payload = {
       nomeUnidade: name,
       codigoInterno: internalCode,
@@ -154,13 +192,13 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
         return e.id
       }),
       cnaePrincipalId: mainCNAE?.id,
-      cep,
+      cep: cep.replace('-', ''),
       rua: street,
       numero: number,
       bairro: district,
       complemento: complement,
-      estado: state.id,
-      cidade: city.id,
+      estado: state,
+      cidade: city,
       nomeResponsavel: responsibleName,
       contatoResponsavel: responsibleContact,
       emailResponsavel: responsibleEmail,
@@ -184,19 +222,18 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
           diaSemana: dia,
           horarioInicio: item.of || '',
           horarioFim: item.until || '',
-          intervaloInicio: item.interval || '',
-          intervaloFim: item.returnInterval || '',
+          intervaloInicio: item.interval || '00:00',
+          intervaloFim: item.returnInterval || '00:00',
           semIntervalo: item.enabled,
         })),
       ),
       dadosBancarios: financial.map((e) => {
         return {
-          banco: e.bankName,
-          codigoBanco: '0',
-          agencia: e.agency,
-          digitoAgencia: '0',
-          contaCorrente: e.cc,
-          digitoConta: '0',
+          bancoId: e.bancoId,
+          agencia: e.agencia,
+          digitoAgencia: e.digitoAgencia,
+          contaCorrente: e.contaCorrente,
+          digitoConta: e.digitoConta,
           tipoConta: 'CORRENTE',
           principal: true,
           observacoes: '0',
@@ -213,19 +250,27 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
       if (responseCreateUnity.success) {
         onClose()
         findData()
+      } else {
+        responseCreateUnity.error.message.forEach((element) => {
+          toast.error(element, {
+            position: 'top-right',
+          })
+        })
       }
     } catch (error) {
       console.log('erro', error)
+    } finally {
+      setLoading(false)
     }
   }
 
   const searchCEP = async () => {
-    if (cep.length === 8) {
+    if (cep.length === 9) {
       const result = await SearchCep(cep)
-      setStreet(result.data.rua)
-      setDistrict(result.data.bairro)
-      setCity(result.data.cidade)
-      setState(result.data.estado)
+      setStreet(result?.data?.rua)
+      setDistrict(result?.data?.bairro)
+      setCity(result?.data?.cidade)
+      setState(result?.data?.estado)
     }
   }
 
@@ -295,16 +340,16 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
           <button
             type="button"
             onClick={() => handleSubmit()}
-            className="flex h-[44px] w-[108px] items-center justify-evenly rounded-[8px] bg-[#A9A9A9] hover:bg-[#E0FFF9]"
+            className="flex h-[44px] items-center justify-evenly rounded-[8px] bg-[#A9A9A9] px-4 hover:bg-[#E0FFF9]"
           >
             <span className={`${Outfit400.className} text-[#494949] uppercase`}>
-              Finalizar
+              {loading ? 'Finalizando' : 'Finalizar'}
             </span>
           </button>
         </div>
       </div>
-      <div className="flex h-full w-screen gap-x-3 overflow-x-auto">
-        <div className="mx-[48px] my-[28px] flex min-h-[1790px] flex-col gap-[32px] rounded bg-[#FFFFFF] p-[48px]">
+      <div className="flex h-full w-full gap-x-3 overflow-x-auto">
+        <div className="mx-[48px] my-[28px] flex min-h-[1790px] w-full flex-col gap-[32px] rounded bg-[#FFFFFF] p-[48px]">
           {/* informacoes */}
           <div className="flex flex-col gap-[16px]">
             <span
@@ -352,10 +397,11 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                       CNPJ<strong className="text-[#F23434]">*</strong>
                     </label>
                     <input
-                      value={cnpj}
+                      value={formatCnpj(cnpj)}
                       onChange={(e) => setCnpj(e.target.value)}
                       className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                       placeholder="Digite o CNPJ"
+                      maxLength={18}
                     />
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
@@ -429,6 +475,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                         { id: 2, label: '2' },
                       ]}
                       placeholder={'Selecione o CNES'}
+                      className={'border border-[#BBBBBB]'}
                     />
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
@@ -439,7 +486,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                       <strong className="text-[#F23434]">*</strong>
                     </label>
                     <input
-                      value={contacts}
+                      value={formatPhoneNumber(contacts)}
                       onChange={(e) => setContacts(e.target.value)}
                       className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                       placeholder="Digite o contato da unidade"
@@ -481,6 +528,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   },
                 ]}
                 placeholder={'Selecione o código do serviço principal'}
+                className={'border border-[#BBBBBB]'}
               />
             </div>
             <div className="flex flex-1 flex-col gap-[4px]">
@@ -503,6 +551,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                     { id: '4.04', label: '4.04 - Instrumentação cirúrgica' },
                   ]}
                   placeholder={'Selecione o código do serviço secundário'}
+                  className={'border border-[#BBBBBB]'}
                 />
                 <button
                   type="button"
@@ -662,11 +711,12 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                       CEP<strong className="text-[#F23434]">*</strong>
                     </label>
                     <input
-                      value={cep}
+                      value={formatCep(cep)}
                       onChange={(e) => setCep(e.target.value)}
                       className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                       placeholder="Digite o cep"
                       onBlur={() => searchCEP()}
+                      autoComplete="off"
                     />
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
@@ -728,7 +778,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                     <label
                       className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
-                      Estado
+                      Estado<strong className="text-[#F23434]">*</strong>
                     </label>
                     <input
                       value={state}
@@ -1062,11 +1112,11 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}
                   >
-                    Contato
+                    Contato do responsável
                     <strong className="text-[#F23434]">*</strong>
                   </label>
                   <input
-                    value={responsibleContact}
+                    value={formatPhoneNumber(responsibleContact)}
                     onChange={(e) => setResponsibleContact(e.target.value)}
                     className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                     placeholder="Digite o contato do responsável"
@@ -1100,7 +1150,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
             </span>
 
             <div className="flex gap-[16px]">
-              <div className="flex flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-[4px]">
                 <label
                   className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
                 >
@@ -1114,7 +1164,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   placeholder="Digite percentual"
                 />
               </div>
-              <div className="flex flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-[4px]">
                 <label
                   className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
                 >
@@ -1128,7 +1178,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   placeholder="Digite percentual"
                 />
               </div>
-              <div className="flex flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-[4px]">
                 <label
                   className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
                 >
@@ -1142,7 +1192,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   placeholder="Digite percentual"
                 />
               </div>
-              <div className="flex flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-[4px]">
                 <label
                   className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
                 >
@@ -1156,7 +1206,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   placeholder="Digite percentual"
                 />
               </div>
-              <div className="flex flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-[4px]">
                 <label
                   className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
                 >
@@ -1170,7 +1220,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   placeholder="Digite percentual"
                 />
               </div>
-              <div className="flex flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-[4px]">
                 <label
                   className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
                 >
@@ -1184,7 +1234,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   placeholder="Digite percentual"
                 />
               </div>
-              <div className="flex flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-[4px]">
                 <label
                   className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
                 >
@@ -1272,7 +1322,6 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   </button>
                 </div>
               </div>
-
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
                   className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
@@ -1369,13 +1418,16 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                       Selecione um banco
                       <strong className="text-[#F23434]">*</strong>
                     </label>
-                    <input
-                      value={item.bankName}
-                      onChange={(e) =>
-                        handleChangeFinancial(index, 'bankName', e.target.value)
-                      }
-                      className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
-                      placeholder="Digite o nome do banco"
+                    <CustomSelect
+                      select={{ id: item.codigoBanco, label: item.banco }}
+                      setSelect={(e) => {
+                        handleChangeFinancial(index, 'banco', e.label)
+                        handleChangeFinancial(index, 'codigoBanco', e.id)
+                        handleChangeFinancial(index, 'bancoId', e.id)
+                      }}
+                      options={activeBanks}
+                      placeholder={'Selecione o banco'}
+                      className={'border border-[#BBBBBB]'}
                     />
                   </div>
 
@@ -1389,10 +1441,31 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                     <input
                       value={item.agency}
                       onChange={(e) =>
-                        handleChangeFinancial(index, 'agency', e.target.value)
+                        handleChangeFinancial(index, 'agencia', e.target.value)
                       }
                       className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                       placeholder="Digite a agência"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-[4px]">
+                    <label
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                    >
+                      Dígito agência
+                      <strong className="text-[#F23434]">*</strong>
+                    </label>
+                    <input
+                      value={item.agency}
+                      onChange={(e) =>
+                        handleChangeFinancial(
+                          index,
+                          'digitoAgencia',
+                          e.target.value,
+                        )
+                      }
+                      className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                      placeholder="Digite o dígito da agência"
                     />
                   </div>
 
@@ -1406,12 +1479,38 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                     <input
                       value={item.cc}
                       onChange={(e) =>
-                        handleChangeFinancial(index, 'cc', e.target.value)
+                        handleChangeFinancial(
+                          index,
+                          'contaCorrente',
+                          e.target.value,
+                        )
                       }
                       className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                       placeholder="Digite a conta corrente"
                     />
                   </div>
+
+                  <div className="flex flex-col gap-[4px]">
+                    <label
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                    >
+                      Dígito Conta
+                      <strong className="text-[#F23434]">*</strong>
+                    </label>
+                    <input
+                      value={item.agency}
+                      onChange={(e) =>
+                        handleChangeFinancial(
+                          index,
+                          'digitoConta',
+                          e.target.value,
+                        )
+                      }
+                      className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                      placeholder="Digite o dígito da agência"
+                    />
+                  </div>
+
                   <div
                     className="flex flex-col justify-end py-[8px]"
                     onClick={() =>
@@ -1431,9 +1530,16 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                 setFinancial([
                   ...financial,
                   {
-                    bankName: '',
-                    agency: '',
-                    cc: '',
+                    banco: '',
+                    codigoBanco: '0',
+                    bancoId: '',
+                    agencia: '',
+                    digitoAgencia: '',
+                    contaCorrente: '',
+                    digitoConta: '',
+                    tipoConta: '',
+                    principal: false,
+                    observacoes: '',
                   },
                 ])
               }
@@ -1494,6 +1600,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
         className="hidden"
         accept=".pem,.crt,.cer,.pdf" // opcional: tipos permitidos
       />
+      <ToastContainer />
     </div>
   )
 }

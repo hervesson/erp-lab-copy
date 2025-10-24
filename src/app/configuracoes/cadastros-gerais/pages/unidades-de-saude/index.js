@@ -7,21 +7,26 @@ import {
   ArrowLeft2,
   ArrowRight2,
   Book,
+  Buildings,
+  CloseCircle,
   Edit2,
   More,
-  Profile2User,
   SearchStatus,
   TickCircle,
 } from 'iconsax-reactjs'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { IsActive } from '../../../../../components/IsActive'
 import ProfileUnitHealth from './modal-content/profileUnitOfHealth'
 import RegisterUnitOfHealth from './modal-content/registerUnitOfHealth'
 
+import checkGreen from '../../../../../../public/assets/images/directions.png'
+
 const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
   const [units, setUnits] = useState([])
   const [openModalProfileuUnit, setOpenModalProfileuUnit] = useState(false)
   const [selectedUnit, setSelectedUnit] = useState({})
+  const [total, setTotal] = useState(0)
 
   useEffect(() => {
     const findData = async () => {
@@ -30,7 +35,7 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
 
         if (unts.success) {
           setUnits(unts.data.data)
-          console.log(unts.data.data)
+          setTotal(unts.data.total)
         }
       } catch (error) {
         console.log('erro', error)
@@ -46,7 +51,6 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
 
       if (unts.success) {
         setUnits(unts.data.data)
-        console.log(unts.data.data)
       }
     } catch (error) {
       console.log('erro', error)
@@ -59,16 +63,16 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
         <div className="mx-[10px] flex h-[64px] w-full items-center rounded-[8px] bg-white">
           <div className="flex gap-3 rounded-[8px] px-[8px]">
             <div className="flex h-[48px] w-[48px] items-center justify-center rounded-[8px] bg-[#F9F9F9]">
-              <Profile2User size="28" color="#A1A1A1" />
+              <Buildings size="28" color="#A1A1A1" />
             </div>
             <div className="flex flex-col justify-around">
               <span
                 className={`${Outfit700.className} text-[16px] text-[#0F9B7F]`}
               >
-                500
+                {total}
               </span>
               <span className={`${Outfit300.className} text-[#737373]`}>
-                Pacientes
+                Unidades
               </span>
             </div>
           </div>
@@ -87,52 +91,55 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
         <thead className="sticky top-0">
           <tr className="h-[48px] bg-[#D4D4D4]">
             <th
-              className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
+              className={`text-[14px] ${Outfit400.className} text-center text-[#3E3E3E]`}
             >
               Codigo interno
             </th>
             <th
-              className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
+              className={`text-[14px] ${Outfit400.className} text-start text-[#3E3E3E]`}
             >
-              Nome da unidade
+              <div className="flex gap-2">
+                <Image src={checkGreen} alt="bgfooter" />
+                Nome da unidade
+              </div>
             </th>
             <th
-              className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
+              className={`text-[14px] ${Outfit400.className} text-start text-[#3E3E3E]`}
             >
               CNPJ
             </th>
             <th
-              className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
+              className={`text-[14px] ${Outfit400.className} text-start text-[#3E3E3E]`}
             >
               Responsável
             </th>
             <th
-              className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
+              className={`text-[14px] ${Outfit400.className} text-start text-[#3E3E3E]`}
             >
               Cidade
             </th>
             <th
-              className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
+              className={`text-[14px] ${Outfit400.className} text-center text-[#3E3E3E]`}
             >
               Ativo
             </th>
             <th
-              className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
+              className={`text-[14px] ${Outfit400.className} text-center text-[#3E3E3E]`}
             >
               Certificado
             </th>
             <th
-              className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
+              className={`text-[14px] ${Outfit400.className} text-center text-[#3E3E3E]`}
             >
               Editar
             </th>
             <th
-              className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
+              className={`text-[14px] ${Outfit400.className} text-center text-[#3E3E3E]`}
             >
               Visualizar
             </th>
             <th
-              className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
+              className={`text-[14px] ${Outfit400.className} text-center text-[#3E3E3E]`}
             >
               Opçoes
             </th>
@@ -148,38 +155,47 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
                 <td
                   className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                 >
-                  {item.codigoInterno}
+                  {item?.codigoInterno}
                 </td>
-                <td
-                  className={`text-[14px] ${Outfit300.className} text-start text-[#383838]`}
-                >
-                  {item.nomeUnidade}
-                </td>
-                <td
-                  className={`text-[14px] ${Outfit300.className} text-[#383838]`}
-                >
-                  {item.cnpj}
-                </td>
-                <td
-                  className={`text-[14px] ${Outfit300.className} text-[#383838]`}
-                >
-                  {item.nomeResponsavel}
+                <td>
+                  <div className="flex items-center gap-3">
+                    <div className="h-[40px] w-[40px] rounded-[8px] bg-[#F7F7F2]" />
+                    <span
+                      className={`text-[14px] ${Outfit300.className} text-[#383838]`}
+                    >
+                      {item?.nomeUnidade}
+                    </span>
+                  </div>
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
-                  {item.cidade}
+                  {item?.cnpj}
+                </td>
+                <td
+                  className={`text-[14px] ${Outfit300.className} text-[#383838]`}
+                >
+                  {item?.nomeResponsavel}
+                </td>
+                <td
+                  className={`text-[14px] ${Outfit300.className} text-[#383838]`}
+                >
+                  {item?.cidade}
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
                   <div className="flex h-full items-center justify-center">
-                    <IsActive active={item.ativo} />
+                    <IsActive active={item?.ativo} />
                   </div>
                 </td>
                 <td>
                   <div className="flex h-full items-center justify-center">
-                    <TickCircle size="28" color="#2CB04B" variant="Bulk" />
+                    {item?.certificadoDigitalVinculado ? (
+                      <TickCircle size="28" color="#2CB04B" variant="Bulk" />
+                    ) : (
+                      <CloseCircle size="28" color="#F23434" variant="Bulk" />
+                    )}
                   </div>
                 </td>
                 <td

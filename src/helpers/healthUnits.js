@@ -10,7 +10,7 @@ export async function CreateUnit(payload) {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
 
-    const response = await api.post('/unidades-saude', payload, {
+    const response = await api.post('/cadastros/unidades-saude/', payload, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token.value,
@@ -42,7 +42,7 @@ export async function listAllUnits() {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
 
-    const response = await api.get('/unidades-saude', {
+    const response = await api.get('/cadastros/unidades-saude', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: token ? 'Bearer ' + token.value : undefined,

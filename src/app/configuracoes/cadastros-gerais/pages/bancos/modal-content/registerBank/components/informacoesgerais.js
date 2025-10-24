@@ -1,14 +1,84 @@
+/* eslint-disable camelcase */
 import CustomSelect from '@/components/CustomSelect'
 import Divider from '@/components/Divider'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { InfoCircle } from 'iconsax-reactjs'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+
+import { listAllActiveBanks } from '@/helpers'
 
 const InformacoesGerais = () => {
   // Informações básicas
   const [internalCode, setInternalCode] = useState('')
   const [corporateReason, setCorporateReason] = useState('')
   const [CNES, setCNES] = useState('')
+  const [activeBanks, setActiveBanks] = useState([])
+
+  // itens payload
+  const [banco_id, setBanco_Id] = useState('')
+  const [tipo_conta, setTipo_conta] = useState({
+    id: 'CORRRENTE',
+    label: 'CORRRENTE',
+  })
+  const [status, setStatus] = useState({ id: 'ativa', label: 'Ativa' })
+  const [description, setDescription] = useState('')
+  const [agencia, setAgencia] = useState('')
+  const [numero_conta, setNumero_conta] = useState('')
+  const [digito_conta, setDigito_conta] = useState('')
+  const [pix_chave, setPix_chave] = useState('')
+
+  useEffect(() => {
+    const findAllBanks = async () => {
+      try {
+        const response = await listAllActiveBanks()
+        const banks = response.data.map((item) => {
+          return {
+            id: item.id,
+            label: `${item.codigo} - ${item.nome}`,
+          }
+        })
+        setActiveBanks(banks)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    findAllBanks()
+  }, [])
+
+  const payloadCorrente = {
+    banco_id: banco_id.id,
+    unidade_saude_id: '{{unidadeId}}',
+    codigo_interno: 'CC001',
+    nome_conta: 'Conta Corrente Principal',
+    tipo_conta,
+    agencia,
+    digito_agencia: '5',
+    numero_conta,
+    digito_conta,
+    titular: 'Clínica Saúde Total Ltda',
+    cpf_cnpj_titular: '12.345.678/0001-90',
+    pix_tipo: 'cnpj',
+    pix_chave,
+    status: status.id,
+    saldo_inicial: 1000.0,
+    observacoes: description,
+  }
+
+  const payloadPoupança = {
+    banco_id: banco_id.id,
+    unidade_saude_id: '{{unidadeId}}',
+    codigo_interno: 'CP001',
+    nome_conta: 'Conta Poupança Reserva',
+    tipo_conta,
+    agencia,
+    numero_conta,
+    digito_conta,
+    titular: 'Clínica Saúde Total Ltda',
+    cpf_cnpj_titular: '12.345.678/0001-90',
+    status: status.id,
+    saldo_inicial: 5000.0,
+  }
 
   return (
     <div className="flex w-full flex-col gap-[32px] rounded bg-[#FFF] p-[48px]">
@@ -42,11 +112,12 @@ const InformacoesGerais = () => {
                   Banco
                   <strong className="text-[#F23434]">*</strong>
                 </label>
-                <input
-                  value={internalCode}
-                  onChange={(e) => setInternalCode(e.target.value)}
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
-                  placeholder="Digite o nome completo"
+                <CustomSelect
+                  select={banco_id}
+                  setSelect={(e) => setBanco_Id(e)}
+                  options={activeBanks}
+                  placeholder={'Selecione o banco'}
+                  className={'border border-[#BBBBBB]'}
                 />
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
@@ -57,8 +128,8 @@ const InformacoesGerais = () => {
                   <strong className="text-[#F23434]">*</strong>
                 </label>
                 <input
-                  value={corporateReason}
-                  onChange={(e) => setCorporateReason(e.target.value)}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Digite uma descrição para a conta"
                 />
@@ -70,11 +141,11 @@ const InformacoesGerais = () => {
                   Status do banco
                 </label>
                 <CustomSelect
-                  select={CNES}
-                  setSelect={(e) => setCNES(e)}
+                  select={status}
+                  setSelect={(e) => setStatus(e)}
                   options={[
-                    { id: 1, label: '1' },
-                    { id: 2, label: '2' },
+                    { id: 'ativa', label: 'Ativa' },
+                    { id: 'inativo', label: 'Inativa' },
                   ]}
                   placeholder={'Selecione uma opção'}
                   className={'border border-[#BBBBBB]'}
@@ -99,8 +170,8 @@ const InformacoesGerais = () => {
               <strong className="text-red-700">*</strong>
             </label>
             <input
-              value={internalCode}
-              onChange={(e) => setInternalCode(e.target.value)}
+              value={agencia}
+              onChange={(e) => setAgencia(e.target.value)}
               className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
               placeholder="Número da agência"
             />
@@ -109,14 +180,14 @@ const InformacoesGerais = () => {
             <label
               className={`${Outfit400.className} flex text-[14px] text-[##222222]`}
             >
-              Conta corrente
+              Conta
               <strong className="text-red-700">*</strong>
             </label>
             <input
-              value={internalCode}
-              onChange={(e) => setInternalCode(e.target.value)}
+              value={numero_conta}
+              onChange={(e) => setNumero_conta(e.target.value)}
               className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
-              placeholder="Número da conta corrente"
+              placeholder="Número da conta"
             />
           </div>
           <div className="flex flex-col gap-[4px]">
@@ -127,8 +198,8 @@ const InformacoesGerais = () => {
               <strong className="text-red-700">*</strong>
             </label>
             <input
-              value={internalCode}
-              onChange={(e) => setInternalCode(e.target.value)}
+              value={digito_conta}
+              onChange={(e) => setDigito_conta(e.target.value)}
               className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
               placeholder="Informe o dígito"
             />
@@ -144,8 +215,8 @@ const InformacoesGerais = () => {
               select={CNES}
               setSelect={(e) => setCNES(e)}
               options={[
-                { id: 1, label: '1' },
-                { id: 2, label: '2' },
+                { id: 'CORRRENTE', label: 'CORRRENTE' },
+                { id: 'POUPANÇA', label: 'POUPANÇA' },
               ]}
               placeholder={'Selecione uma opção'}
               className={'border border-[#BBBBBB]'}
@@ -159,8 +230,8 @@ const InformacoesGerais = () => {
               <strong className="text-red-700">*</strong>
             </label>
             <input
-              value={internalCode}
-              onChange={(e) => setInternalCode(e.target.value)}
+              value={pix_chave}
+              onChange={(e) => setPix_chave(e.target.value)}
               className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
               placeholder="Digite uma chave PIX"
             />
