@@ -5,6 +5,7 @@ import { useState } from 'react'
 
 const SideMenu = ({ page, setPage }) => {
   const [openMenuPrincipais, setOpenMenuPrincipais] = useState(true)
+  const [openMenuEmpresas, setOpenMenuEmpresas] = useState(true)
   const [openMenuEstrutura, setOpenMenuEstrutura] = useState(true)
   const [openMenuDocumentacao, setOpenMenuDocumentacao] = useState(true)
   const [openMenuFiananceiro, setOpenMenuFiananceiro] = useState(true)
@@ -124,6 +125,54 @@ const SideMenu = ({ page, setPage }) => {
           >
             <span className={`${Outfit400.className} `}>Kits</span>
           </button>
+        </div>
+      )}
+
+      <div className="mt-[16px] flex h-[24px] items-center justify-between">
+        <span className={`${Outfit400.className} text-[#222222]`}>
+          Empresas
+        </span>
+        {openMenuEmpresas ? (
+          <ArrowUp2
+            size="28"
+            color="#A1A1A1"
+            onClick={() => setOpenMenuEmpresas(!openMenuEmpresas)}
+          />
+        ) : (
+          <ArrowDown2
+            size="28"
+            color="#A1A1A1"
+            onClick={() => setOpenMenuEmpresas(!openMenuEmpresas)}
+          />
+        )}
+      </div>
+      {openMenuEmpresas && (
+        <div className="mt-[8px] flex flex-col gap-[4px]">
+          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+            <span className={`${Outfit400.className} `}>Salas / Setores</span>
+          </div>
+          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+            <span className={`${Outfit400.className} `}>Convênios</span>
+          </div>
+          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+            <span className={`${Outfit400.className} `}>
+              Laboratório de apoio
+            </span>
+          </div>
+          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+            <span className={`${Outfit400.className} `}>Telemedicina</span>
+          </div>
+          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+            <span className={`${Outfit400.className} `}>Fornecedores</span>
+          </div>
+          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+            <span className={`${Outfit400.className} `}>
+              Prestadores de serviço
+            </span>
+          </div>
+          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+            <span className={`${Outfit400.className} `}>Tabela de preços</span>
+          </div>
         </div>
       )}
 
