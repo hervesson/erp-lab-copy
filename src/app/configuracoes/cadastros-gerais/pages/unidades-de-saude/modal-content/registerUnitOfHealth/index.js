@@ -1,6 +1,6 @@
 import CustomSearch from '@/components/CustomSearch'
 import CustomSelect from '@/components/CustomSelect'
-import useDebounce from '@/components/useDebounce'
+import ModalFramer from '@/components/ModalFramer'
 import { Outfit300, Outfit400, Outfit500 } from '@/fonts'
 import {
   CreateUnit,
@@ -8,10 +8,13 @@ import {
   SearchCep,
   SearchCNAE,
 } from '@/helpers'
+import useDebounce from '@/hooks/useDebounce'
 import { formatCep, formatCnpj, formatPhoneNumber } from '@/utils'
 import { Clock, CloseCircle, InfoCircle, Link, Trash } from 'iconsax-reactjs'
 import { useEffect, useRef, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
+import CancelRegister from './components/CancelRegister'
+import SuccessRegister from './components/SuccessRegister'
 
 const RegisterUnityOfHealth = ({ onClose, findData }) => {
   const fileInputRef = useRef(null)
@@ -37,9 +40,11 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
     [],
   )
 
+  const [searchTermCNAEPrincipal, setSearchTermCNAEPrincipal] = useState('')
   const [mainCNAE, setMainCNAE] = useState({})
   const [mainCNAEs, setMainCNAES] = useState([])
 
+  const [searchTermCNAESecondary, setSearchTermCNAESecondary] = useState('')
   const [secondaryCNAE, setSecondaryCNAE] = useState({})
   const [secondaryCNAEs, setSecondaryCNAEs] = useState('')
   const [selectSecondaryCNAE, setSelectSecondaryCNAE] = useState([])
@@ -61,7 +66,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
       until: '',
       interval: '',
       returnInterval: '',
-      enabled: false,
+      enabled: true,
     },
   ])
 
@@ -104,6 +109,9 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
       observacoes: '',
     },
   ])
+
+  const [step, setStep] = useState('')
+  const [openModalAlerts, setOpenModalAlerts] = useState(false)
 
   useEffect(() => {
     const findAllBanks = async () => {
@@ -179,12 +187,12 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
     const payload = {
       nomeUnidade: name,
       codigoInterno: internalCode,
-      cnpj,
+      cnpj: cnpj.replace(/\D/g, '').slice(0, 14),
       razaoSocial: corporateReason,
       nomeFantasia: fantasyName,
       inscricaoMunicipal: municipalRegistration,
       inscricaoEstadual: stateRegistration,
-      cnes: CNES?.label,
+      cnes: CNES,
       contatosUnidade: contacts,
       email,
       codigoServicoPrincipal: mainServiceCode.id,
@@ -248,7 +256,8 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
       const responseCreateUnity = await CreateUnit(payload)
 
       if (responseCreateUnity.success) {
-        onClose()
+        setStep('sucess')
+        setOpenModalAlerts(true)
         findData()
       } else {
         responseCreateUnity.error.message.forEach((element) => {
@@ -275,11 +284,11 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
   }
 
   const handleChangeMainPrincipalService = (e) => {
+    setSearchTermCNAEPrincipal(e)
     debounceChangMainCnae(e)
   }
 
   const debounceChangMainCnae = useDebounce(handlerMainCnae, 800)
-
   // Filtra por termo de busca
   async function handlerMainCnae(props) {
     try {
@@ -294,6 +303,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
   }
 
   const handleChangeSecondaryPrincipalService = (e) => {
+    setSearchTermCNAESecondary(e)
     debounceChangeSecondaryCnae(e)
   }
 
@@ -312,8 +322,99 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
     }
   }
 
+  const resetFields = () => {
+    setName('')
+    setInternalCode('')
+    setCnpj('')
+    setCorporateReason('')
+    setFantasyName('')
+    setMunicipalRegistration('')
+    setStateRegistration('')
+    setCNES('')
+    setContacts('')
+    setEmail('')
+    setMainServiceCode('')
+    setSecondaryServiceCode('')
+    setSelectSecondaryServiceCode([])
+    setSearchTermCNAEPrincipal('')
+    setMainCNAE({})
+    setMainCNAES([])
+    setSearchTermCNAESecondary('')
+    setSecondaryCNAE({})
+    setSecondaryCNAEs('')
+    setSelectSecondaryCNAE([])
+    setCep('')
+    setStreet('')
+    setNumber('')
+    setDistrict('')
+    setComplement('')
+    setCity('')
+    setState('')
+    setOpeningHours([
+      {
+        days: [],
+        of: '',
+        until: '',
+        interval: '',
+        returnInterval: '',
+        enabled: true,
+      },
+    ])
+    setResponsibleName('')
+    setResponsibleContact('')
+    setResponsibleEmail('')
+    setIRRF('')
+    setPIS('')
+    setCOFINS('')
+    setCSLL('')
+    setISS('')
+    setIBS('')
+    setCBS('')
+    setRetainISS(false)
+    setRetainIR(false)
+    setRetainPCC(false)
+    setRetainIBS(false)
+    setRetainCBS(false)
+    setNationalSimpleOptant(false)
+    setActiveBanks([])
+    setCert(false)
+    setFinancial([
+      {
+        banco: '',
+        codigoBanco: '',
+        bancoId: '',
+        agencia: '',
+        digitoAgencia: '',
+        contaCorrente: '',
+        digitoConta: '',
+        tipoConta: '',
+        principal: false,
+        observacoes: '',
+      },
+    ])
+    setStep('sucess')
+  }
+
+  const steps = {
+    cancel: (
+      <CancelRegister
+        onClose={() => setOpenModalAlerts(false)}
+        onCloseRegister={() => onClose()}
+      />
+    ),
+    sucess: (
+      <SuccessRegister
+        onClose={() => {
+          setOpenModalAlerts(false)
+          resetFields()
+        }}
+        onCloseRegister={() => onClose()}
+      />
+    ),
+  }
+
   return (
-    <div className="flex h-screen w-full flex-col bg-[#F9F9F9]">
+    <form className="flex w-full flex-col bg-[#F9F9F9]">
       <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-[#fff] px-[48px]">
         <div className="flex flex-col">
           <span
@@ -330,7 +431,10 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
         <div className="flex gap-[16px]">
           <button
             type="button"
-            onClick={() => onClose()}
+            onClick={() => {
+              setStep('cancel')
+              setOpenModalAlerts(true)
+            }}
             className="flex h-[44px] w-[108px] items-center justify-evenly rounded-[8px] border border-[#F23434]"
           >
             <span className={`${Outfit400.className} text-[#F23434] uppercase`}>
@@ -348,8 +452,10 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
           </button>
         </div>
       </div>
-      <div className="flex h-full w-full gap-x-3 overflow-x-auto">
-        <div className="mx-[48px] my-[28px] flex min-h-[1790px] w-full flex-col gap-[32px] rounded bg-[#FFFFFF] p-[48px]">
+
+      {/* <div className="flex h-full w-full gap-x-3 overflow-x-auto"> */}
+      <div className="flex w-screen gap-x-3 overflow-x-auto px-[24px]">
+        <div className="mx-[48px] my-[28px] flex w-full flex-col gap-[32px] rounded bg-[#FFFFFF] p-[48px]">
           {/* informacoes */}
           <div className="flex flex-col gap-[16px]">
             <span
@@ -467,15 +573,11 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                     >
                       CNES<strong className="text-[#F23434]">*</strong>
                     </label>
-                    <CustomSelect
-                      select={CNES}
-                      setSelect={(e) => setCNES(e)}
-                      options={[
-                        { id: 1, label: '1' },
-                        { id: 2, label: '2' },
-                      ]}
-                      placeholder={'Selecione o CNES'}
-                      className={'border border-[#BBBBBB]'}
+                    <input
+                      value={CNES}
+                      onChange={(e) => setCNES(e.target.value)}
+                      className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                      placeholder="Digite o CNES"
                     />
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
@@ -617,10 +719,14 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                 <strong className="text-[#F23434]">*</strong>
               </label>
               <CustomSearch
+                inputValue={searchTermCNAEPrincipal}
                 onChange={handleChangeMainPrincipalService}
                 placeholder={`Digite o CNAE`}
                 options={mainCNAEs}
-                setSelect={(e) => setMainCNAE(e)}
+                setSelect={(e) => {
+                  setMainCNAE(e)
+                  setSearchTermCNAEPrincipal(`${e.codigo} - ${e.descricao}`)
+                }}
               />
             </div>
             <div className="flex flex-1 flex-col gap-[4px]">
@@ -632,10 +738,14 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
               </label>
               <div className="flex flex-1 gap-3">
                 <CustomSearch
+                  inputValue={searchTermCNAESecondary}
                   onChange={handleChangeSecondaryPrincipalService}
                   placeholder={`Digite o CNAE`}
                   options={secondaryCNAEs}
-                  setSelect={(e) => setSecondaryCNAE(e)}
+                  setSelect={(e) => {
+                    setSecondaryCNAE(e)
+                    setSearchTermCNAESecondary(`${e.codigo} - ${e.descricao}`)
+                  }}
                 />
                 <button
                   type="button"
@@ -970,7 +1080,9 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                         <strong className="text-[#F23434]">*</strong>
                       </label>
                       <div className="flex items-center gap-[16px]">
-                        <div className="flex h-[40px] w-[100px] items-center gap-2 rounded-[8px] border border-[#A1A1A1] px-2">
+                        <div
+                          className={`flex h-[40px] w-[100px] items-center gap-2 rounded-[8px] ${openingHours[index].enabled ? 'border border-dashed' : 'border'} border-[#A1A1A1] px-2`}
+                        >
                           <input
                             value={openingHours[index].interval}
                             onChange={(e) =>
@@ -983,7 +1095,9 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                           <Clock size="28" color="#A1A1A1" />
                         </div>
                         <span className={`${Outfit400.className}`}>às</span>
-                        <div className="flex h-[40px] w-[100px] items-center gap-2 rounded-[8px] border border-[#A1A1A1] px-2">
+                        <div
+                          className={`flex h-[40px] w-[100px] items-center gap-2 rounded-[8px] ${openingHours[index].enabled ? 'border border-dashed' : 'border'} border-[#A1A1A1] px-2`}
+                        >
                           <input
                             value={openingHours[index].returnInterval}
                             onChange={(e) =>
@@ -1048,16 +1162,18 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                         </div>
                       )}
                     </div>
-                    <div
-                      className="flex flex-col justify-end py-[8px]"
-                      onClick={() =>
-                        setOpeningHours((prev) =>
-                          prev.filter((_, i) => i !== index),
-                        )
-                      }
-                    >
-                      <Trash size="28" color="#737373" />
-                    </div>
+                    {openingHours.length === 1 ? null : (
+                      <div
+                        className="flex flex-col justify-end py-[8px]"
+                        onClick={() =>
+                          setOpeningHours((prev) =>
+                            prev.filter((_, i) => i !== index),
+                          )
+                        }
+                      >
+                        <Trash size="28" color="#737373" />
+                      </div>
+                    )}
                   </div>
                 </div>
               )
@@ -1074,6 +1190,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                     until: '',
                     interval: '',
                     returnInterval: '',
+                    enabled: true,
                   },
                 ])
               }
@@ -1600,8 +1717,16 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
         className="hidden"
         accept=".pem,.crt,.cer,.pdf" // opcional: tipos permitidos
       />
+      {openModalAlerts && (
+        <ModalFramer
+          open={openModalAlerts}
+          setOpen={() => setOpenModalAlerts(false)}
+        >
+          {steps[step]}
+        </ModalFramer>
+      )}
       <ToastContainer />
-    </div>
+    </form>
   )
 }
 

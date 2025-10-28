@@ -17,7 +17,7 @@ const ModalLeft = ({ isOpen, onClose, children }) => {
 
   const overlayVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.3 } }, // Ajustei a duração para ser mais rápida
+    visible: { opacity: 0.8, transition: { duration: 0.3 } }, // Ajustei a duração para ser mais rápida
   }
 
   const modalVariants = {
@@ -53,7 +53,7 @@ const ModalLeft = ({ isOpen, onClose, children }) => {
         >
           {/* Overlay */}
           <motion.div
-            className="bg-opacity-50 absolute inset-0"
+            className="absolute inset-0 bg-black/70"
             variants={overlayVariants}
             initial="hidden"
             animate="visible"
@@ -63,7 +63,7 @@ const ModalLeft = ({ isOpen, onClose, children }) => {
 
           {/* Conteúdo da Modal */}
           <motion.div
-            className="relative min-h-screen w-full bg-white shadow-lg" // Ajustado width para dispositivos maiores
+            className="relative min-h-screen w-[70%] bg-white shadow-lg" // Ajustado width para dispositivos maiores
             variants={modalVariants}
             initial="hidden"
             animate="visible"

@@ -2,8 +2,13 @@
 import { Outfit400, Outfit500 } from '@/fonts'
 import { useEffect, useRef, useState } from 'react'
 
-const CustomSearch = ({ onChange, placeholder, options = [], setSelect }) => {
-  const [inputValue, setInputValue] = useState('')
+const CustomSearch = ({
+  inputValue,
+  onChange,
+  placeholder,
+  options = [],
+  setSelect,
+}) => {
   const [mostrarBandeja, setMostrarBandeja] = useState(false)
   const inputRef = useRef(null)
   const bandejaRef = useRef(null)
@@ -33,12 +38,10 @@ const CustomSearch = ({ onChange, placeholder, options = [], setSelect }) => {
   }, [options.length])
 
   const handleInputChange = (e) => {
-    setInputValue(e.target.value)
     onChange(e.target.value)
   }
 
   const handleOptionClick = (option) => {
-    setInputValue(`${option.codigo} - ${option.descricao}`)
     setMostrarBandeja(false) // Esconde a bandeja após selecionar
     setSelect(option)
   }

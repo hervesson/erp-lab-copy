@@ -37,12 +37,30 @@ export async function CreateUnit(payload) {
   }
 }
 
-export async function listAllUnits() {
+export async function listAllUnits(page = '', term = '', limit = '') {
   try {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
 
-    const response = await api.get('/cadastros/unidades-saude', {
+    // 1. Crie uma nova instância de URLSearchParams
+    const params = new URLSearchParams()
+
+    if (page !== '') {
+      params.append('page', page)
+    }
+    if (term !== '') {
+      params.append('search', term)
+    }
+
+    if (limit !== '') {
+      params.append('limit', limit)
+    }
+
+    // 3. Concatene a query string à base da URL
+    const queryString = params.toString() // Gera 'param1=value1&param2=value2'
+    const url = `/cadastros/unidades-saude${queryString ? '?' + queryString : ''}` // Adiciona '?' apenas se houver query string
+
+    const response = await api.get(url, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: token ? 'Bearer ' + token.value : undefined,

@@ -1,11 +1,11 @@
 'use client'
 import ModalLeft from '@/components/ModalLeft'
 import ModalUp from '@/components/ModalUp'
+import Pagination from '@/components/Pagination'
 import { Outfit300, Outfit400, Outfit700 } from '@/fonts'
 import { listAllUnits } from '@/helpers'
+import useDebounce from '@/hooks/useDebounce'
 import {
-  ArrowLeft2,
-  ArrowRight2,
   Book,
   Buildings,
   CloseCircle,
@@ -27,6 +27,13 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
   const [openModalProfileuUnit, setOpenModalProfileuUnit] = useState(false)
   const [selectedUnit, setSelectedUnit] = useState({})
   const [total, setTotal] = useState(0)
+
+  // focus
+  const [isFocusedSearch, setIsFocusedSearch] = useState(false)
+
+  // filters
+  const [currentPage, setCurrentPage] = useState(1)
+  const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
     const findData = async () => {
@@ -51,6 +58,46 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
 
       if (unts.success) {
         setUnits(unts.data.data)
+        setTotal(unts.data.total)
+      }
+    } catch (error) {
+      console.log('erro', error)
+    }
+  }
+
+  // Filtrar por paginação
+  const findDataPerPage = async (props) => {
+    setCurrentPage(props)
+
+    try {
+      const unts = await listAllUnits(props, searchTerm, 10)
+
+      if (unts.success) {
+        setUnits(unts.data.data)
+        setTotal(unts.data.total)
+      }
+    } catch (error) {
+      console.log('erro', error)
+    }
+  }
+
+  // Filtrar por termo pesquisado
+  const handleChangeUnit = (e) => {
+    setSearchTerm(e.target.value)
+    debounceChange(e.target.value)
+  }
+
+  const debounceChange = useDebounce(handler, 800)
+
+  async function handler(props) {
+    setCurrentPage(1)
+
+    try {
+      const unts = await listAllUnits(1, props, 10)
+
+      if (unts.success) {
+        setUnits(unts.data.data)
+        setTotal(unts.data.total)
       }
     } catch (error) {
       console.log('erro', error)
@@ -79,10 +126,19 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
         </div>
       </div>
 
-      <div className="flex h-[40px] items-center rounded-[8px] border border-[#BBBBBB] px-2">
+      <div
+        className={`flex h-[40px] items-center rounded-[8px] px-2 ${
+          isFocusedSearch
+            ? 'border-[1px] border-[#0F9B7F]'
+            : 'border border-[#BBBBBB]'
+        }`}
+      >
         <input
           placeholder="Pesquisar"
+          onChange={handleChangeUnit}
           className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] outline-0`}
+          onFocus={() => setIsFocusedSearch(true)}
+          onBlur={() => setIsFocusedSearch(false)}
         />
         <SearchStatus size="24" color="#A1A1A1" variant="Bulk" />
       </div>
@@ -234,23 +290,20 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
         <div className="flex items-center gap-3">
           <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
             <span className={`${Outfit400.className} pl-2 text-[16px]`}>
-              01
+              {units.length > 10 ? 10 : units.length}
             </span>
           </div>
           <span className={`${Outfit300.className} text-[16px]`}>
-            de 01 registros
+            de {total} registros
           </span>
         </div>
 
-        <div className="flex items-center">
-          <ArrowLeft2 size="28" color="#D9D9D9" />
-          <div className="flex h-[40px] items-center justify-center rounded-[8px] bg-[#E0FFF9]">
-            <span className={`${Outfit400.className} flex px-4 text-[#0F9B7F]`}>
-              01
-            </span>
-          </div>
-          <ArrowRight2 size="28" color="#D9D9D9" />
-        </div>
+        <Pagination
+          totalRecords={total}
+          recordsPerPage={10}
+          onPageChange={(value) => findDataPerPage(value)}
+          currentPage={currentPage} // Pass the current page state
+        />
       </div>
       <ModalUp
         isOpen={openModalRegisteUnits}

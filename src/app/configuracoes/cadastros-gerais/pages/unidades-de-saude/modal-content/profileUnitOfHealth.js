@@ -1,15 +1,19 @@
 import { Outfit300, Outfit400, Outfit500 } from '@/fonts'
+import { formatCep, formatCnpj, formatPhoneNumber } from '@/utils'
 import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { InfoCircle } from 'iconsax-reactjs'
 
-const ProfileUnitHealth = ({ unit }) => {
+dayjs.extend(customParseFormat)
+
+const ProfileUnitHealth = ({ unit = {} }) => {
   return (
-    <div className="flex flex-col gap-[24px] p-[24px]">
+    <div className="flex flex-col gap-[24px] bg-[#FFF] p-[24px]">
       <div className="flex h-[62px] items-center justify-between rounded-[12px] bg-[#F9F9F9] px-[16px]">
         <p
           className={`${Outfit500.className} text-[20px] text-[#057B64] uppercase`}
         >
-          {unit.nomeUnidade}
+          {unit?.nomeUnidade}
         </p>
         <div className="flex gap-[24px]">
           <div className="">
@@ -17,8 +21,8 @@ const ProfileUnitHealth = ({ unit }) => {
               Cadastrado em
             </p>
             <p className={`${Outfit400.className} text-[16px] text-[#057B64]`}>
-              {dayjs(unit.createdAt).format('DD/MM/YYYY - hh:mm')} /{' '}
-              {unit.nomeResponsavel}
+              {dayjs(unit?.createdAt).format('DD/MM/YYYY - hh:mm')} /{' '}
+              {unit?.nomeResponsavel}
             </p>
           </div>
           <div className="">
@@ -26,8 +30,8 @@ const ProfileUnitHealth = ({ unit }) => {
               Última edição
             </p>
             <p className={`${Outfit400.className} text-[16px] text-[#057B64]`}>
-              {dayjs(unit.updatedAt).format('DD/MM/YYYY - hh:mm')} /{' '}
-              {unit.nomeResponsavel}
+              {dayjs(unit?.updatedAt).format('DD/MM/YYYY - hh:mm')} /{' '}
+              {unit?.nomeResponsavel}
             </p>
           </div>
         </div>
@@ -48,7 +52,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.cnpj}
+                {formatCnpj(unit?.cnpj)}
               </label>
             </div>
             <div className="flex flex-col">
@@ -60,7 +64,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.codigoInterno}
+                {unit?.codigoInterno}
               </label>
             </div>
             <div className="flex flex-col">
@@ -72,7 +76,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.razaoSocial}
+                {unit?.razaoSocial}
               </label>
             </div>
             <div className="flex flex-col">
@@ -84,7 +88,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.nomeFantasia}
+                {unit?.nomeFantasia}
               </label>
             </div>
             <div className="flex flex-col">
@@ -96,7 +100,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.inscricaoMunicipal}
+                {unit?.inscricaoMunicipal}
               </label>
             </div>
           </div>
@@ -111,7 +115,7 @@ const ProfileUnitHealth = ({ unit }) => {
             <label
               className={`${Outfit400.className} text-[16px] text-[#222222]`}
             >
-              {unit.inscricaoEstadual}
+              {unit?.inscricaoEstadual}
             </label>
           </div>
           <div className="flex flex-col">
@@ -123,7 +127,7 @@ const ProfileUnitHealth = ({ unit }) => {
             <label
               className={`${Outfit400.className} text-[16px] text-[#222222]`}
             >
-              {unit.cnes}
+              {unit?.cnes}
             </label>
           </div>
           <div className="flex flex-col">
@@ -135,7 +139,7 @@ const ProfileUnitHealth = ({ unit }) => {
             <label
               className={`${Outfit400.className} text-[16px] text-[#222222]`}
             >
-              {unit.contatosUnidade}
+              {formatPhoneNumber(unit?.contatosUnidade)}
             </label>
           </div>
           <div className="flex flex-col">
@@ -147,7 +151,7 @@ const ProfileUnitHealth = ({ unit }) => {
             <label
               className={`${Outfit400.className} text-[16px] text-[#222222]`}
             >
-              {unit.email}
+              {unit?.email}
             </label>
           </div>
         </div>
@@ -162,38 +166,75 @@ const ProfileUnitHealth = ({ unit }) => {
             <label
               className={`${Outfit400.className} text-[14px] text-[#494949]`}
             >
-              Responsável
+              Cep
             </label>
             <label
               className={`${Outfit400.className} text-[16px] text-[#222222]`}
             >
-              {unit.nomeResponsavel}
+              {formatCep(unit?.cep)}
             </label>
           </div>
           <div className="flex flex-col">
             <label
               className={`${Outfit400.className} text-[14px] text-[#494949]`}
             >
-              Contato
+              Rua/Número/Bairro
             </label>
             <label
               className={`${Outfit400.className} text-[16px] text-[#222222]`}
             >
-              {unit.contatoResponsavel}
+              {unit?.rua}/{unit?.numero}/{unit?.bairro}
             </label>
           </div>
           <div className="flex flex-col">
             <label
               className={`${Outfit400.className} text-[14px] text-[#494949]`}
             >
-              Email
+              Complemento
             </label>
             <label
               className={`${Outfit400.className} text-[16px] text-[#222222]`}
             >
-              {unit.emailResponsavel}
+              {unit?.complemento}
             </label>
           </div>
+          <div className="flex flex-col">
+            <label
+              className={`${Outfit400.className} text-[14px] text-[#494949]`}
+            >
+              Cidade/Estado
+            </label>
+            <label
+              className={`${Outfit400.className} text-[16px] text-[#222222]`}
+            >
+              {unit?.cidade}/{unit?.estado}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-[12px]">
+        <p className={`text-[16px] text-[#0F9B7F] ${Outfit400.className}`}>
+          Horário de atendimento
+        </p>
+        <div className="flex flex-1 items-center gap-3">
+          {unit?.horariosAtendimento?.map((item, index) => {
+            return (
+              <div
+                className="flex h-[38px] flex-col items-center justify-center rounded-[50px] bg-[#E0FFF9] px-3"
+                key={index.toString()}
+              >
+                <span
+                  className={` ${Outfit300.className} text-[14px] text-[#057B64]`}
+                >
+                  {' '}
+                  {item?.semIntervalo
+                    ? `${item?.diaSemana}: ${dayjs(item?.horarioInicio, 'HH:mm:ss').format('HH:mm')} - ${dayjs(item?.horarioFim, 'HH:mm:ss').format('HH:mm')}`
+                    : `${item?.diaSemana} - das ${dayjs(item?.horarioInicio, 'HH:mm:ss').format('HH:mm')} às ${dayjs(item?.intervaloInicio, 'HH:mm:ss').format('HH:mm')} e das ${dayjs(item?.intervaloFim, 'HH:mm:ss').format('HH:mm')} às ${dayjs(item?.horarioFim, 'HH:mm:ss').format('HH:mm')}`}
+                </span>
+              </div>
+            )
+          })}
         </div>
       </div>
 
@@ -211,7 +252,7 @@ const ProfileUnitHealth = ({ unit }) => {
             <label
               className={`${Outfit400.className} text-[16px] text-[#222222]`}
             >
-              {unit.nomeResponsavel}
+              {unit?.nomeResponsavel}
             </label>
           </div>
           <div className="flex flex-col">
@@ -223,7 +264,7 @@ const ProfileUnitHealth = ({ unit }) => {
             <label
               className={`${Outfit400.className} text-[16px] text-[#222222]`}
             >
-              {unit.contatoResponsavel}
+              {unit?.contatoResponsavel}
             </label>
           </div>
           <div className="flex flex-col">
@@ -235,7 +276,7 @@ const ProfileUnitHealth = ({ unit }) => {
             <label
               className={`${Outfit400.className} text-[16px] text-[#222222]`}
             >
-              {unit.emailResponsavel}
+              {unit?.emailResponsavel}
             </label>
           </div>
         </div>
@@ -256,7 +297,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.irrfPercentual}
+                {unit?.irrfPercentual}
               </label>
             </div>
             <div className="flex flex-col">
@@ -268,7 +309,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.pisPercentual}
+                {unit?.pisPercentual}
               </label>
             </div>
             <div className="flex flex-col">
@@ -280,7 +321,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.cofinsPercentual}
+                {unit?.cofinsPercentual}
               </label>
             </div>
             <div className="flex flex-col">
@@ -292,7 +333,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.csllPercentual}
+                {unit?.csllPercentual}
               </label>
             </div>
             <div className="flex flex-col">
@@ -304,7 +345,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.issPercentual}
+                {unit?.issPercentual}
               </label>
             </div>
             <div className="flex flex-col">
@@ -316,7 +357,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.ibsPercentual}
+                {unit?.ibsPercentual}
               </label>
             </div>
             <div className="flex flex-col">
@@ -328,7 +369,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.cbsPercentual}
+                {unit?.cbsPercentual}
               </label>
             </div>
           </div>
@@ -342,7 +383,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.reterIss ? 'SIM' : 'NÃO'}
+                {unit?.reterIss ? 'SIM' : 'NÃO'}
               </label>
             </div>
             <div className="flex flex-col">
@@ -354,7 +395,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.reterIr ? 'SIM' : 'NÃO'}
+                {unit?.reterIr ? 'SIM' : 'NÃO'}
               </label>
             </div>
             <div className="flex flex-col">
@@ -366,7 +407,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.reterPcc ? 'SIM' : 'NÃO'}
+                {unit?.reterPcc ? 'SIM' : 'NÃO'}
               </label>
             </div>
             <div className="flex flex-col">
@@ -378,7 +419,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.reterIbs ? 'SIM' : 'NÃO'}
+                {unit?.reterIbs ? 'SIM' : 'NÃO'}
               </label>
             </div>
             <div className="flex flex-col">
@@ -390,7 +431,7 @@ const ProfileUnitHealth = ({ unit }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {unit.reterCbs ? 'SIM' : 'NÃO'}
+                {unit?.reterCbs ? 'SIM' : 'NÃO'}
               </label>
             </div>
             <div className="flex flex-col">
@@ -429,7 +470,7 @@ const ProfileUnitHealth = ({ unit }) => {
                   <label
                     className={`${Outfit400.className} text-[16px] text-[#222222]`}
                   >
-                    {item.banco}
+                    {item?.banco?.codigo} - {item?.banco?.nome}
                   </label>
                 </div>
                 <div className="flex flex-col">
@@ -441,7 +482,8 @@ const ProfileUnitHealth = ({ unit }) => {
                   <label
                     className={`${Outfit400.className} text-[16px] text-[#222222]`}
                   >
-                    {unit.contatoResponsavel}
+                    {item?.agencia}-{item?.digitoAgencia} /{' '}
+                    {item?.contaCorrente}-{item?.digitoConta}
                   </label>
                 </div>
                 {index !== unit.dadosBancarios.length - 1 && (
