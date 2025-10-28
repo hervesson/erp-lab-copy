@@ -26,7 +26,7 @@ const CancelRegister = ({ onClose, onCloseRegister }) => {
         <div className="flex justify-end gap-[16px] pt-[32px]">
           <button
             type="button"
-            className={`${Outfit400.className} h-[44px] w-[84px] rounded-[8px] bg-[#E7E7E7]`}
+            className={`${Outfit400.className} h-[44px] w-[84px] rounded-[8px] bg-[#E7E7E7] text-[#222222]`}
             onClick={() => onClose()}
           >
             VOLTAR

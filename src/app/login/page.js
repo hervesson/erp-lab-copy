@@ -155,7 +155,7 @@ export default function Page() {
                   type="email"
                   id="emailLogin"
                   name="emailLogin"
-                  className={`${Outfit400.className} ml-3 w-auto text-[16px] outline-none`}
+                  className={`${Outfit400.className} ml-3 w-auto text-[16px] text-[#222222] outline-none`}
                   placeholder="Digite..."
                   onFocus={() => setIsFocusedEmail(true)}
                   onBlur={() => setIsFocusedEmail(false)}
@@ -184,7 +184,7 @@ export default function Page() {
                     type={showPassword ? 'text' : 'password'}
                     id="passwordLogin"
                     name="passwordLogin"
-                    className={`${Outfit400.className} ml-3 w-[200px] text-[16px] outline-none`}
+                    className={`${Outfit400.className} ml-3 w-[200px] text-[16px] text-[#222222] outline-none`}
                     placeholder="Digite..."
                     onFocus={() => setIsFocusedPassword(true)}
                     onBlur={() => setIsFocusedPassword(false)}

@@ -470,7 +470,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                 <div className="flex gap-[16px]">
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       Nome da unidade
                       <strong className="text-[#F23434]">*</strong>
@@ -484,7 +484,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       Código interno
                       <strong className="text-[#F23434]">*</strong>
@@ -498,7 +498,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       CNPJ<strong className="text-[#F23434]">*</strong>
                     </label>
@@ -512,7 +512,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       Razão social
                       <strong className="text-[#F23434]">*</strong>
@@ -526,7 +526,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       Nome fantasia
                       <strong className="text-[#F23434]">*</strong>
@@ -542,7 +542,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                 <div className="flex gap-[16px]">
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       Inscrição municipal
                       <strong className="text-[#F23434]">*</strong>
@@ -556,7 +556,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       Inscrição estadual
                     </label>
@@ -569,7 +569,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       CNES<strong className="text-[#F23434]">*</strong>
                     </label>
@@ -582,7 +582,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       Contatos da unidade
                       <strong className="text-[#F23434]">*</strong>
@@ -596,7 +596,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       Email
                       <strong className="text-[#F23434]">*</strong>
@@ -614,7 +614,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
 
             <div className="flex flex-1 flex-col gap-[4px]">
               <label
-                className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
                 Código do serviço principal
                 <strong className="text-[#F23434]">*</strong>
@@ -635,7 +635,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
             </div>
             <div className="flex flex-1 flex-col gap-[4px]">
               <label
-                className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
                 Código do serviço secundário
                 <strong className="text-[#F23434]">*</strong>
@@ -713,7 +713,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
 
             <div className="flex flex-1 flex-col gap-[4px]">
               <label
-                className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
                 CNAE pricipal
                 <strong className="text-[#F23434]">*</strong>
@@ -731,7 +731,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
             </div>
             <div className="flex flex-1 flex-col gap-[4px]">
               <label
-                className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
                 CNAE(s) secundários
                 <strong className="text-[#F23434]">*</strong>
@@ -816,7 +816,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                 <div className="flex gap-[16px]">
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       CEP<strong className="text-[#F23434]">*</strong>
                     </label>
@@ -831,7 +831,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       Rua
                     </label>
@@ -844,7 +844,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       Número<strong className="text-[#F23434]">*</strong>
                     </label>
@@ -857,7 +857,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                   </div>
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       Bairro
                       <strong className="text-[#F23434]">*</strong>
@@ -873,7 +873,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
                 <div className="flex gap-[16px]">
                   <div className="flex flex-1 flex-col gap-[4px]">
                     <label
-                      className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
                       Complemento<strong className="text-[#F23434]">*</strong>
                     </label>
@@ -1269,7 +1269,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
             <div className="flex gap-[16px]">
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
                 >
                   IRRF (% ou R$)
                   <InfoCircle size="20" color="#A1A1A1" />
@@ -1283,7 +1283,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
                 >
                   PIS (% ou R$)
                   <InfoCircle size="20" color="#A1A1A1" />
@@ -1297,7 +1297,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
                 >
                   COFINS (% ou R$)
                   <InfoCircle size="20" color="#A1A1A1" />
@@ -1311,7 +1311,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
                 >
                   CSLL (% ou R$)
                   <InfoCircle size="20" color="#A1A1A1" />
@@ -1325,7 +1325,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
                 >
                   ISS (% ou R$)
                   <InfoCircle size="20" color="#A1A1A1" />
@@ -1339,7 +1339,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
                 >
                   IBS (% ou R$)
                   <InfoCircle size="20" color="#A1A1A1" />
@@ -1353,7 +1353,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
                 >
                   CBS (% ou R$)
                   <InfoCircle size="20" color="#A1A1A1" />
@@ -1369,7 +1369,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
             <div className="flex gap-[16px]">
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
                 >
                   Reter ISS
                   <InfoCircle size="20" color="#A1A1A1" />
@@ -1393,7 +1393,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
                 >
                   Reter IR
                   <InfoCircle size="20" color="#A1A1A1" />
@@ -1417,7 +1417,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
                 >
                   Reter PCC
                   <InfoCircle size="20" color="#A1A1A1" />
@@ -1441,7 +1441,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
                 >
                   Reter IBS
                   <InfoCircle size="20" color="#A1A1A1" />
@@ -1465,7 +1465,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
                 >
                   Reter CBS
                   <InfoCircle size="20" color="#A1A1A1" />
@@ -1489,7 +1489,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
                 >
                   Optante pelo simples nacional
                   <InfoCircle size="20" color="#A1A1A1" />
