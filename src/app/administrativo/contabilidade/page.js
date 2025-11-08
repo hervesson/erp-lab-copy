@@ -79,7 +79,7 @@ export default function Fila() {
         <div className="flex h-[40px] flex-1 items-center rounded-[8px] border border-[#BBBBBB] px-2">
           <input
             placeholder="Pesquisar"
-            className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] outline-0`}
+            className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
           />
           <SearchStatus size="24" color="#A1A1A1" variant="Bulk" />
         </div>
@@ -125,26 +125,34 @@ export default function Fila() {
       <div className="mt-[16px] flex w-full gap-3 px-[32px]">
         <div className="flex w-full items-center gap-[16px]">
           <div className="flex h-[40px] flex-1 items-center justify-between rounded bg-[#F9F9F9] px-2">
-            <span className={`${Outfit400.className}`}>Status: todas</span>
+            <span className={`${Outfit400.className} text-[#222]`}>
+              Status: todas
+            </span>
             <ArrowDown2 size="28" color="#A1A1A1" />
           </div>
           <div className="flex h-[40px] flex-1 items-center justify-between rounded bg-[#F9F9F9] px-2">
-            <span className={`${Outfit400.className}`}>Unidades: todas</span>
+            <span className={`${Outfit400.className} text-[#222]`}>
+              Unidades: todas
+            </span>
             <ArrowDown2 size="28" color="#A1A1A1" />
           </div>
           <div className="flex h-[40px] items-center justify-between gap-2 rounded bg-[#F9F9F9] px-2">
-            <span className={`${Outfit400.className}`}>06/05/2025</span>
+            <span className={`${Outfit400.className} text-[#222]`}>
+              06/05/2025
+            </span>
             <Calendar size="28" color="#A1A1A1" />
           </div>
           <span className={`${Outfit400.className} text-[16px] text-[#494949]`}>
             A
           </span>
           <div className="flex h-[40px] items-center justify-between gap-2 rounded bg-[#F9F9F9] px-2">
-            <span className={`${Outfit400.className}`}>06/05/2025</span>
+            <span className={`${Outfit400.className} text-[#222]`}>
+              06/05/2025
+            </span>
             <Calendar size="28" color="#A1A1A1" />
           </div>
           <div className="flex h-[40px] flex-1 items-center justify-between rounded bg-[#F9F9F9] px-2">
-            <span className={`${Outfit400.className}`}>
+            <span className={`${Outfit400.className} text-[#222]`}>
               Agrupar: por código interno
             </span>
             <ArrowDown2 size="28" color="#A1A1A1" />
@@ -292,6 +300,7 @@ export default function Fila() {
                     dismissOnClick={false}
                     renderTrigger={() => <More size="28" color="#737373" />}
                     placement="left-start"
+                    className="bg-white"
                   >
                     <DropdownItem
                       className={`${Outfit300.className} text-[16px] text-[#8A8A8A]`}

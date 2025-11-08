@@ -34,7 +34,7 @@ const InformacoesGerais = () => {
             <div className="flex gap-[16px]">
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
                   Código interno
                   <strong className="text-[#F23434]">*</strong>
@@ -42,13 +42,13 @@ const InformacoesGerais = () => {
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o código interno"
                 />
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
                   Nome completo
                   <strong className="text-[#F23434]">*</strong>
@@ -56,26 +56,26 @@ const InformacoesGerais = () => {
                 <input
                   value={internalCode}
                   onChange={(e) => setInternalCode(e.target.value)}
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o nome completo"
                 />
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
                   CPF<strong className="text-[#F23434]">*</strong>
                 </label>
                 <input
                   value={cnpj}
                   onChange={(e) => setCnpj(e.target.value)}
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o CPF"
                 />
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
                   Email
                   <strong className="text-[#F23434]">*</strong>
@@ -83,13 +83,13 @@ const InformacoesGerais = () => {
                 <input
                   value={corporateReason}
                   onChange={(e) => setCorporateReason(e.target.value)}
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o e-mail"
                 />
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
                   Telefone
                   <strong className="text-[#F23434]">*</strong>
@@ -97,7 +97,7 @@ const InformacoesGerais = () => {
                 <input
                   value={fantasyName}
                   onChange={(e) => setFantasyName(e.target.value)}
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite um telefone"
                 />
               </div>
@@ -105,7 +105,7 @@ const InformacoesGerais = () => {
             <div className="flex gap-[16px]">
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
                   Celular/WhatsApp
                   <strong className="text-[#F23434]">*</strong>
@@ -113,13 +113,13 @@ const InformacoesGerais = () => {
                 <input
                   value={municipalRegistration}
                   onChange={(e) => setMunicipalRegistration(e.target.value)}
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite um número de celular/WhatsApp"
                 />
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
                   Cargo/função
                   <strong className="text-[#F23434]">*</strong>
@@ -132,11 +132,12 @@ const InformacoesGerais = () => {
                     { id: 2, label: '2' },
                   ]}
                   placeholder={'Selecione uma função'}
+                  className="border border-[#BBBBBB]"
                 />
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
                   CNPJ associado
                   <strong className="text-[#F23434]">*</strong>
@@ -149,11 +150,12 @@ const InformacoesGerais = () => {
                     { id: 2, label: '2' },
                   ]}
                   placeholder={'Selecione uma opção'}
+                  className="border border-[#BBBBBB]"
                 />
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
                 <label
-                  className={`${Outfit400.className} text-[14px] text-[##222222]`}
+                  className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
                   Data de admissão
                   <strong className="text-[#F23434]">*</strong>
@@ -161,7 +163,7 @@ const InformacoesGerais = () => {
                 <input
                   value={contacts}
                   onChange={(e) => setContacts(e.target.value)}
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite a data de admissão"
                 />
               </div>
@@ -171,7 +173,7 @@ const InformacoesGerais = () => {
 
         <div className="flex flex-1 flex-col gap-[4px]">
           <label
-            className={`${Outfit400.className} text-[14px] text-[##222222]`}
+            className={`${Outfit400.className} text-[14px] text-[#222222]`}
           >
             Unidades associadas
             <strong className="text-[#F23434]">*</strong>
@@ -189,6 +191,7 @@ const InformacoesGerais = () => {
                 { id: '4.04', label: '4.04 - Instrumentação cirúrgica' },
               ]}
               placeholder={'Selecione o código do serviço secundário'}
+              className="border border-[#BBBBBB]"
             />
             <button
               type="button"
@@ -230,7 +233,7 @@ const InformacoesGerais = () => {
         <div className="flex gap-[16px]">
           <div className="flex flex-col gap-[4px]">
             <label
-              className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+              className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
               Notificar via e-mail
             </label>
@@ -253,7 +256,7 @@ const InformacoesGerais = () => {
           </div>
           <div className="flex flex-col gap-[4px]">
             <label
-              className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+              className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
               Notificar via WhatsApp
             </label>

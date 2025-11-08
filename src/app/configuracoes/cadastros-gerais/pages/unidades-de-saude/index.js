@@ -3,8 +3,9 @@ import ModalLeft from '@/components/ModalLeft'
 import ModalUp from '@/components/ModalUp'
 import Pagination from '@/components/Pagination'
 import { Outfit300, Outfit400, Outfit700 } from '@/fonts'
-import { listAllUnits } from '@/helpers'
+import { ActiveUnit, DeleteUnit, InactiveUnit, listAllUnits } from '@/helpers'
 import useDebounce from '@/hooks/useDebounce'
+import { Dropdown, DropdownItem } from 'flowbite-react'
 import {
   Book,
   Buildings,
@@ -16,7 +17,9 @@ import {
 } from 'iconsax-reactjs'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { toast, ToastContainer } from 'react-toastify'
 import { IsActive } from '../../../../../components/IsActive'
+import EditUnityOfHealth from './modal-content/editUnitOfHealth'
 import ProfileUnitHealth from './modal-content/profileUnitOfHealth'
 import RegisterUnitOfHealth from './modal-content/registerUnitOfHealth'
 
@@ -24,7 +27,8 @@ import checkGreen from '../../../../../../public/assets/images/directions.png'
 
 const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
   const [units, setUnits] = useState([])
-  const [openModalProfileuUnit, setOpenModalProfileuUnit] = useState(false)
+  const [openModalProfileUnit, setOpenModalProfileUnit] = useState(false)
+  const [openModalEditUnit, setModalEditUnit] = useState(false)
   const [selectedUnit, setSelectedUnit] = useState({})
   const [total, setTotal] = useState(0)
 
@@ -104,8 +108,41 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
     }
   }
 
+  const toggleActiveUnit = async (unit) => {
+    if (unit?.ativo) {
+      const result = await InactiveUnit(unit.id)
+      if (result.success) {
+        findData()
+      } else {
+        toast.error('Erro ao inativar unidade', {
+          position: 'top-right',
+        })
+      }
+    } else {
+      const result = await ActiveUnit(unit.id)
+      if (result.success) {
+        findData()
+      } else {
+        toast.error('Erro ao inativar unidade', {
+          position: 'top-right',
+        })
+      }
+    }
+  }
+
+  const deleteUnit = async (unit) => {
+    const result = await DeleteUnit(unit.id)
+    if (result.success) {
+      findData()
+    } else {
+      toast.error('Erro ao tentar deletar unidade', {
+        position: 'top-right',
+      })
+    }
+  }
+
   return (
-    <div className="flex w-full flex-col gap-[32px]">
+    <div className="flex flex-1 flex-col gap-[32px]">
       <div className="flex h-[84px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
         <div className="mx-[10px] flex h-[64px] w-full items-center rounded-[8px] bg-white">
           <div className="flex gap-3 rounded-[8px] px-[8px]">
@@ -136,7 +173,7 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
         <input
           placeholder="Pesquisar"
           onChange={handleChangeUnit}
-          className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] outline-0`}
+          className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
           onFocus={() => setIsFocusedSearch(true)}
           onBlur={() => setIsFocusedSearch(false)}
         />
@@ -257,7 +294,13 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
                 <td
                   className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                 >
-                  <div className="flex h-full items-center justify-center">
+                  <div
+                    className="flex h-full items-center justify-center"
+                    onClick={() => {
+                      setModalEditUnit(true)
+                      setSelectedUnit(item)
+                    }}
+                  >
                     <Edit2 size="28" color="#737373" />
                   </div>
                 </td>
@@ -267,7 +310,7 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
                   <div
                     className="flex h-full items-center justify-center"
                     onClick={() => {
-                      setOpenModalProfileuUnit(true)
+                      setOpenModalProfileUnit(true)
                       setSelectedUnit(item)
                     }}
                   >
@@ -278,7 +321,26 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
                   className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                 >
                   <div className="flex h-full items-center justify-center">
-                    <More size="28" color="#737373" />
+                    <Dropdown
+                      label=""
+                      dismissOnClick={true}
+                      renderTrigger={() => <More size="28" color="#737373" />}
+                      placement="left-start"
+                      className="bg-white"
+                    >
+                      <DropdownItem
+                        className={`${Outfit300.className} text-[16px] text-[#8A8A8A]`}
+                        onClick={() => toggleActiveUnit(item)}
+                      >
+                        Ativar/Desativar
+                      </DropdownItem>
+                      <DropdownItem
+                        className={`${Outfit300.className} text-[16px] text-[#8A8A8A]`}
+                        onClick={() => deleteUnit(item)}
+                      >
+                        Excluir
+                      </DropdownItem>
+                    </Dropdown>
                   </div>
                 </td>
               </tr>
@@ -289,11 +351,13 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
       <div className="flex h-[40px] items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
-            <span className={`${Outfit400.className} pl-2 text-[16px]`}>
+            <span
+              className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
+            >
               {units.length > 10 ? 10 : units.length}
             </span>
           </div>
-          <span className={`${Outfit300.className} text-[16px]`}>
+          <span className={`${Outfit300.className} text-[16px] text-[#222]`}>
             de {total} registros
           </span>
         </div>
@@ -314,12 +378,23 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
           findData={() => findData()}
         />
       </ModalUp>
+      <ModalUp
+        isOpen={openModalEditUnit}
+        onClose={() => setModalEditUnit(false)}
+      >
+        <EditUnityOfHealth
+          onClose={() => setModalEditUnit(false)}
+          findData={() => findData()}
+          unit={selectedUnit}
+        />
+      </ModalUp>
       <ModalLeft
-        isOpen={openModalProfileuUnit}
-        onClose={() => setOpenModalProfileuUnit(false)}
+        isOpen={openModalProfileUnit}
+        onClose={() => setOpenModalProfileUnit(false)}
       >
         <ProfileUnitHealth unit={selectedUnit} />
       </ModalLeft>
+      <ToastContainer />
     </div>
   )
 }

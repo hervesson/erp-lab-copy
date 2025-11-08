@@ -8,15 +8,41 @@ import SelectCategory from './components/SelectCategory'
 import SelectRegister from './components/SelectRegister'
 import SideMenu from './components/SideMenu'
 
-// components de cadastro
+// principais
+import Agendas from './pages/agendas'
+import Amostras from './pages/amostras'
 import Exams from './pages/exames'
+import Kits from './pages/kits'
 import ExamMatrix from './pages/matrizes-de-exames'
 import Methods from './pages/metodos'
+import Profissionais from './pages/profissionais/page'
 import UnitOfHealth from './pages/unidades-de-saude'
 import Users from './pages/usuarios'
 
+// Empresas
+import Convenios from './pages/convenios'
+import Fornecedores from './pages/fornecedores'
+import LaboratorioDeApoio from './pages/laboratorioDeApoio'
+import PrestadoresDeServico from './pages/prestadoresDeServico'
+import TabelaDePrecos from './pages/tabelaDePrecos'
+import Telemedicina from './pages/telemedicina'
+
+// Estrutura
+import EquipamentosImobilizados from './pages/equipamentosImobilizados'
+import EtiquetaParaAmostra from './pages/etiquetasParaAmostra'
+import SalasSetores from './pages/salasSetores'
+
 // Financeiro
 import Banks from './pages/bancos'
+
+// Outros
+import Adquirentes from './pages/adquirentes'
+import CabecalhoRodapes from './pages/cabecalhoRodapes'
+import CamposDeFormulario from './pages/campos-de-formulario'
+import FormularioDeAtendimento from './pages/formularioDeAtendimento'
+import HierarquiaCFO from './pages/hierarquiaCFO'
+import ImportacaoDeTabelas from './pages/importacaoDeTabelas'
+import Integracoes from './pages/integracoes'
 
 const RootLayout = () => {
   const [openModalCategorie, setOpenModalCategorie] = useState(false)
@@ -31,8 +57,15 @@ const RootLayout = () => {
   const [modalRegisterUser, setModalRegisterUser] = useState(false)
   const [modalRegisterMethods, setModalRegisterMethods] = useState(false)
 
+  // Modal Emporesas
+  const [openModalRegisterCompanies, setModalRegisterCompanies] =
+    useState(false)
+
   // Modal Financeiro
   const [modalRegisterBanks, setModalRegisterBanks] = useState(false)
+
+  // Modal outros
+  const [openModalFormFiels, setOpenModalFormFiels] = useState(false)
 
   const pages = {
     'unidades-de-saude': (
@@ -47,28 +80,59 @@ const RootLayout = () => {
         setModalRegisterExams={(e) => setModalRegisterExams(e)}
       />
     ),
-    usuarios: (
-      <Users
-        modalRegisterUser={modalRegisterUser}
-        setModalRegisterUser={(e) => setModalRegisterUser(e)}
-      />
-    ),
-    metodos: (
-      <Methods
-        modalRegisterMethods={modalRegisterMethods}
-        setModalRegisterMethods={(e) => setModalRegisterMethods(e)}
-      />
-    ),
     'matriz-de-exames': (
       <ExamMatrix
         modalRegisterExamMatrix={modalRegisterExamMatrix}
         setModalRegisterExamMatrix={(e) => setModalRegisterExamMatrix(e)}
       />
     ),
+    profissionais: <Profissionais />,
+    usuarios: (
+      <Users
+        modalRegisterUser={modalRegisterUser}
+        setModalRegisterUser={(e) => setModalRegisterUser(e)}
+      />
+    ),
+    agendas: <Agendas />,
+    metodos: (
+      <Methods
+        modalRegisterMethods={modalRegisterMethods}
+        setModalRegisterMethods={(e) => setModalRegisterMethods(e)}
+      />
+    ),
+    amostras: <Amostras />,
+    kits: <Kits />,
+    convenios: (
+      <Convenios
+        openModalRegisterCompanies={openModalRegisterCompanies}
+        setModalRegisterMethods={(e) => setModalRegisterCompanies(e)}
+        setPage={(e) => setPage(e)}
+      />
+    ),
+    laboratorioDeApoio: <LaboratorioDeApoio setPage={(e) => setPage(e)} />,
+    telemedicina: <Telemedicina setPage={(e) => setPage(e)} />,
+    fornecedores: <Fornecedores setPage={(e) => setPage(e)} />,
+    prestadoresDeServico: <PrestadoresDeServico setPage={(e) => setPage(e)} />,
+    tabelaDePrecos: <TabelaDePrecos />,
+    salasSetores: <SalasSetores />,
+    equipamentosImobilizados: <EquipamentosImobilizados />,
+    etiquetasParaAmostras: <EtiquetaParaAmostra />,
+    cabecalhoRodapes: <CabecalhoRodapes />,
+    formulariosDeAtendimento: <FormularioDeAtendimento />,
     bancos: (
       <Banks
         modalRegisterBanks={modalRegisterBanks}
         setModalRegisterBanks={(e) => setModalRegisterBanks(e)}
+      />
+    ),
+    adquirentes: <Adquirentes />,
+    hieraquiaCFO: <HierarquiaCFO />,
+    importacaoDeTabelas: <ImportacaoDeTabelas />,
+    integracoes: <Integracoes />,
+    'campos-de-fomulario': (
+      <CamposDeFormulario
+        modalRegisterFormField={openModalFormFiels}
+        setModalRegisterFormField={(e) => setOpenModalFormFiels(e)}
       />
     ),
   }
@@ -92,7 +156,7 @@ const RootLayout = () => {
           </span>
         </button>
       </div>
-      <div className="mx-[32px] my-[16px] flex gap-3">
+      <div className="flex w-full flex-1 gap-3 px-[32px] py-[16px]">
         <SideMenu page={page} setPage={(a) => setPage(a)} />
         {pages[page]}
       </div>
@@ -142,10 +206,20 @@ const RootLayout = () => {
               setOpenModalRegister(false)
               setModalRegisterExamMatrix(e)
             }}
-            modalRegisterBanks={() => {
+            setModalRegisterCompanies={(open) => {
+              if (page !== 'convenios') setPage('convenios')
+              setOpenModalRegister(false)
+              setModalRegisterCompanies(open)
+            }}
+            setModalRegisterBanks={() => {
               setPage('bancos')
               setOpenModalRegister(false)
               setModalRegisterBanks(true)
+            }}
+            setModalFormFiels={() => {
+              setPage('campos-de-fomulario')
+              setOpenModalRegister(false)
+              setOpenModalFormFiels(true)
             }}
             setOpenModalRegister={() =>
               setOpenModalRegister(!openModalRegister)

@@ -1,5 +1,6 @@
-import { ModalsProvider } from '@/contexts/modals'
 import { AuthProvider } from '@/contexts/auth'
+import { ModalsProvider } from '@/contexts/modals'
+import { ThemeInit } from '../../.flowbite-react/init'
 import './globals.css'
 
 export const metadata = {
@@ -12,7 +13,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <AuthProvider>
         <ModalsProvider>
-          <body>{children}</body>
+          <body>
+            <ThemeInit />
+            {children}
+          </body>
         </ModalsProvider>
       </AuthProvider>
     </html>

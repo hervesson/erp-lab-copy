@@ -15,7 +15,7 @@ const SelectCategory = ({ setOpenModalCategorie, setSelectCategorie }) => {
     <div className="flex w-[791px] flex-col gap-[24px] rounded-[12px] bg-[white] p-[32px]">
       <div className="flex items-center justify-between">
         <span className={`${Outfit400.className} text-[#222222] uppercase`}>
-          Selecione uma categoria
+          Selecione uma categor
         </span>
         <CloseSquare
           size="28"

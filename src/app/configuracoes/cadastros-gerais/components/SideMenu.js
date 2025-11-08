@@ -148,31 +148,70 @@ const SideMenu = ({ page, setPage }) => {
       </div>
       {openMenuEmpresas && (
         <div className="mt-[8px] flex flex-col gap-[4px]">
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
-            <span className={`${Outfit400.className} `}>Salas / Setores</span>
-          </div>
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          <button
+            onClick={() => setPage('convenios')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'convenios'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>Convênios</span>
-          </div>
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          </button>
+          <button
+            onClick={() => setPage('laboratorioDeApoio')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'laboratorioDeApoio'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>
               Laboratório de apoio
             </span>
-          </div>
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          </button>
+          <button
+            onClick={() => setPage('telemedicina')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'telemedicina'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>Telemedicina</span>
-          </div>
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          </button>
+          <button
+            onClick={() => setPage('fornecedores')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'fornecedores'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>Fornecedores</span>
-          </div>
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          </button>
+          <button
+            onClick={() => setPage('prestadoresDeServico')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'prestadoresDeServico'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>
               Prestadores de serviço
             </span>
-          </div>
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          </button>
+          <button
+            onClick={() => setPage('tabelaDePrecos')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'tabelaDePrecos'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>Tabela de preços</span>
-          </div>
+          </button>
         </div>
       )}
 
@@ -196,19 +235,40 @@ const SideMenu = ({ page, setPage }) => {
       </div>
       {openMenuEstrutura && (
         <div className="mt-[8px] flex flex-col gap-[4px]">
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          <button
+            onClick={() => setPage('salasSetores')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'salasSetores'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>Salas / Setores</span>
-          </div>
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          </button>
+          <button
+            onClick={() => setPage('equipamentosImobilizados')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'equipamentosImobilizados'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>
               Equipamentos / Imobilizados
             </span>
-          </div>
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          </button>
+          <button
+            onClick={() => setPage('etiquetasParaAmostras')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'etiquetasParaAmostras'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>
               Etiquetas para amostra
             </span>
-          </div>
+          </button>
         </div>
       )}
 
@@ -232,16 +292,30 @@ const SideMenu = ({ page, setPage }) => {
       </div>
       {openMenuDocumentacao && (
         <div className="mt-[8px] flex flex-col gap-[4px]">
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          <button
+            onClick={() => setPage('cabecalhoRodapes')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'cabecalhoRodapes'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>
-              Cabeçalhos / Ropdapés
+              Cabeçalhos / Rodapés
             </span>
-          </div>
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          </button>
+          <button
+            onClick={() => setPage('formulariosDeAtendimento')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'formulariosDeAtendimento'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>
               Formulários de atendimento
             </span>
-          </div>
+          </button>
         </div>
       )}
 
@@ -275,12 +349,26 @@ const SideMenu = ({ page, setPage }) => {
           >
             <span className={`${Outfit400.className} `}>Bancos</span>
           </button>
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          <button
+            onClick={() => setPage('adquirentes')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'adquirentes'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>Adquirentes</span>
-          </div>
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          </button>
+          <button
+            onClick={() => setPage('hierarquiaCFO')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'hierarquiaCFO'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>Hierarquia CFO</span>
-          </div>
+          </button>
         </div>
       )}
 
@@ -302,19 +390,40 @@ const SideMenu = ({ page, setPage }) => {
       </div>
       {openMenuOutros && (
         <div className="mt-[8px] flex flex-col gap-[4px]">
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          <button
+            onClick={() => setPage('importacaoDeTabelas')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'importacaoDeTabelas'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>
               Importação de tabelas
             </span>
-          </div>
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          </button>
+          <button
+            onClick={() => setPage('integracoes')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'integracoes'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>Integrações</span>
-          </div>
-          <div className="flex h-[40px] items-center rounded-[4px] px-[8px] text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white">
+          </button>
+          <button
+            onClick={() => setPage('campos-de-fomulario')}
+            className={`flex h-[40px] items-center rounded-[4px] px-[8px] ${
+              page === 'campos-de-fomulario'
+                ? 'bg-[#0F9B7F] text-white'
+                : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
+            }`}
+          >
             <span className={`${Outfit400.className} `}>
-              Campos do formulário
+              Campos de formulário
             </span>
-          </div>
+          </button>
         </div>
       )}
     </div>

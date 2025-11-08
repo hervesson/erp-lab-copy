@@ -28,7 +28,7 @@ const RegisterUser = ({ onClose }) => {
           <span
             className={` ${Outfit500.className} text-[16px] text-[#222222]`}
           >
-            Unidades de saúde
+            Usuários
           </span>
         </div>
         <div className="flex gap-[16px]">
@@ -59,28 +59,28 @@ const RegisterUser = ({ onClose }) => {
             <button
               type="button"
               onClick={() => setTab('informacoesGerais')}
-              className={`${Outfit400.className} ${tab === 'informacoesGerais' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px]`}
+              className={`${Outfit400.className} ${tab === 'informacoesGerais' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
             >
               INFORMAÇÕES GERAIS
             </button>
             <button
               type="button"
               onClick={() => setTab('perfisepermissoes')}
-              className={`${Outfit400.className} ${tab === 'perfisepermissoes' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px]`}
+              className={`${Outfit400.className} ${tab === 'perfisepermissoes' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
             >
               PERFIS E PERMISSÕES
             </button>
             <button
               type="button"
               onClick={() => setTab('seguranca')}
-              className={`${Outfit400.className} ${tab === 'seguranca' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px]`}
+              className={`${Outfit400.className} ${tab === 'seguranca' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
             >
               SEGURANÇA
             </button>
             <button
               type="button"
               onClick={() => setTab('historico')}
-              className={`${Outfit400.className} ${tab === 'historico' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px]`}
+              className={`${Outfit400.className} ${tab === 'historico' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
             >
               HISTÓRICO
             </button>

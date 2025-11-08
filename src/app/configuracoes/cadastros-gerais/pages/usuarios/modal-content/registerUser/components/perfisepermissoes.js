@@ -19,7 +19,7 @@ const PerfisePermissoes = () => {
         <div className="flex gap-[16px]">
           <div className="flex flex-1 flex-col gap-[4px]">
             <label
-              className={`${Outfit400.className} flex text-[14px] text-[##222222]`}
+              className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
             >
               Perfil<strong className="text-red-700">*</strong>
             </label>
@@ -89,6 +89,7 @@ const PerfisePermissoes = () => {
                   setSelect={(e) => setCNES(e)}
                   options={[{ id: 1, label: 'FINANCEIRO' }]}
                   placeholder={'Selecione uma opção'}
+                  className="border border-[#BBBBBB]"
                 />
               </td>
               <td
@@ -99,6 +100,7 @@ const PerfisePermissoes = () => {
                   setSelect={(e) => setCNES(e)}
                   options={[{ id: 1, label: 'FINANCEIRO' }]}
                   placeholder={'Selecione uma opção'}
+                  className="border border-[#BBBBBB]"
                 />
               </td>
               <td
@@ -137,6 +139,7 @@ const PerfisePermissoes = () => {
                   setSelect={(e) => setCNES(e)}
                   options={[{ id: 1, label: 'FINANCEIRO' }]}
                   placeholder={'Selecione uma opção'}
+                  className="border border-[#BBBBBB]"
                 />
               </td>
               <td>
@@ -149,11 +152,13 @@ const PerfisePermissoes = () => {
       <div className="flex h-[40px] items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
-            <span className={`${Outfit400.className} pl-2 text-[16px]`}>
+            <span
+              className={`${Outfit400.className} pl-2 text-[16px] text-[#222222]`}
+            >
               01
             </span>
           </div>
-          <span className={`${Outfit300.className} text-[16px]`}>
+          <span className={`${Outfit300.className} text-[16px] text-[#222222]`}>
             de 01 registros
           </span>
         </div>

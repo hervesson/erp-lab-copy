@@ -69,7 +69,7 @@ const ModalUp = ({ isOpen, onClose, children }) => {
             animate="visible"
             exit="exit"
             // Se precisar de altura fixa para o conteúdo, adicione aqui
-            style={{ overflowY: 'auto' }} // Exemplo
+            //style={{ overflowY: 'auto' }} // Exemplo
           >
             {children}
           </motion.div>

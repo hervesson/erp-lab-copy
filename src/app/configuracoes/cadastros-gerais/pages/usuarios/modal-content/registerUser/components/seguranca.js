@@ -21,40 +21,40 @@ const Seguranca = () => {
         <div className="flex gap-[16px]">
           <div className="flex flex-1 flex-col gap-[4px]">
             <label
-              className={`${Outfit400.className} flex text-[14px] text-[##222222]`}
+              className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
             >
               Email para login<strong className="text-red-700">*</strong>
             </label>
             <input
               value={internalCode}
               onChange={(e) => setInternalCode(e.target.value)}
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite o nome completo"
             />
           </div>
           <div className="flex flex-1 flex-col gap-[4px]">
             <label
-              className={`${Outfit400.className} flex text-[14px] text-[##222222]`}
+              className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
             >
               Senha<strong className="text-red-700">*</strong>
             </label>
             <input
               value={internalCode}
               onChange={(e) => setInternalCode(e.target.value)}
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite o nome completo"
             />
           </div>
           <div className="flex flex-1 flex-col gap-[4px]">
             <label
-              className={`${Outfit400.className} flex text-[14px] text-[##222222]`}
+              className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
             >
               Confirmar senha<strong className="text-red-700">*</strong>
             </label>
             <input
               value={internalCode}
               onChange={(e) => setInternalCode(e.target.value)}
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite o nome completo"
             />
           </div>
@@ -120,7 +120,7 @@ const Seguranca = () => {
         <div className="flex gap-[16px]">
           <div className="flex flex-col gap-[4px]">
             <label
-              className={`${Outfit400.className} flex justify-between text-[14px] text-[##222222]`}
+              className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
               Validação em duas etapas
               <strong className="text-red-700">*</strong>
@@ -144,7 +144,7 @@ const Seguranca = () => {
           </div>
           <div className="flex flex-1 flex-col gap-[4px]">
             <label
-              className={`${Outfit400.className} flex text-[14px] text-[##222222]`}
+              className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
             >
               Método de validação em duas etapas
             </label>
@@ -153,11 +153,12 @@ const Seguranca = () => {
               setSelect={(e) => setCNES(e)}
               options={[{ id: 1, label: 'FINANCEIRO' }]}
               placeholder={'Selecione uma opção'}
+              className="border border-[#BBBBBB]"
             />
           </div>
           <div className="flex flex-1 flex-col gap-[4px]">
             <label
-              className={`${Outfit400.className} flex text-[14px] text-[##222222]`}
+              className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
             >
               Pergunta de recuperação de senha
             </label>
@@ -166,11 +167,12 @@ const Seguranca = () => {
               setSelect={(e) => setCNES(e)}
               options={[{ id: 1, label: 'FINANCEIRO' }]}
               placeholder={'Selecione uma opção'}
+              className="border border-[#BBBBBB]"
             />
           </div>
           <div className="flex flex-1 flex-col gap-[4px]">
             <label
-              className={`${Outfit400.className} flex text-[14px] text-[##222222]`}
+              className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
             >
               Resposta para recuperação de senha
             </label>
@@ -179,6 +181,7 @@ const Seguranca = () => {
               setSelect={(e) => setCNES(e)}
               options={[{ id: 1, label: 'FINANCEIRO' }]}
               placeholder={'Selecione uma opção'}
+              className="border border-[#BBBBBB]"
             />
           </div>
         </div>
