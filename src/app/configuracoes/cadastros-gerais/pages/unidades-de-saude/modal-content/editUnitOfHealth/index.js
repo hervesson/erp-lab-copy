@@ -5,9 +5,9 @@ import {
   listAllActiveBanks,
   ListAllCNAEs,
   listAllServicesOfHealth,
-  SearchCep
+  SearchCep,
+  UpdateUnit,
 } from '@/helpers'
-import useDebounce from '@/hooks/useDebounce'
 import { formatCep, formatCnpj, formatPhoneNumber } from '@/utils'
 import { Clock, CloseCircle, InfoCircle, Link, Trash } from 'iconsax-reactjs'
 import { useEffect, useRef, useState } from 'react'
@@ -66,16 +66,10 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
     ),
   )
 
-  const [searchTermCNAEPrincipal, setSearchTermCNAEPrincipal] = useState(
-    `${unit.cnaePrincipal.codigo} - ${unit.cnaePrincipal.descricao}`,
-  )
-
-  const [mainCNAEs, setMainCNAES] = useState([])
   const [mainCNAE, setMainCNAE] = useState(unit.cnaePrincipal)
 
-  const [searchTermCNAESecondary, setSearchTermCNAESecondary] = useState('')
   const [secondaryCNAE, setSecondaryCNAE] = useState({})
-  const [secondaryCNAEs, setSecondaryCNAEs] = useState('')
+
   const [selectSecondaryCNAE, setSelectSecondaryCNAE] = useState(
     unit?.cnaeSecundarios?.map((c) => c.cnae) || [],
   )
@@ -382,45 +376,6 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
       setDistrict(result?.data?.bairro)
       setCity(result?.data?.cidade)
       setState(result?.data?.estado)
-    }
-  }
-
-  const handleChangeMainPrincipalService = (e) => {
-    setSearchTermCNAEPrincipal(e)
-    debounceChangMainCnae(e)
-  }
-
-  const debounceChangMainCnae = useDebounce(handlerMainCnae, 800)
-  // Filtra por termo de busca
-  async function handlerMainCnae(props) {
-    try {
-      const result = await SearchCNAE(props)
-
-      if (result.success) {
-        setMainCNAES(result.data)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const handleChangeSecondaryPrincipalService = (e) => {
-    setSearchTermCNAESecondary(e)
-    debounceChangeSecondaryCnae(e)
-  }
-
-  const debounceChangeSecondaryCnae = useDebounce(handlerSecondaryCnae, 800)
-
-  // Filtra por termo de busca
-  async function handlerSecondaryCnae(props) {
-    try {
-      const result = await SearchCNAE(props)
-
-      if (result.success) {
-        setSecondaryCNAEs(result.data)
-      }
-    } catch (error) {
-      console.log(error)
     }
   }
 

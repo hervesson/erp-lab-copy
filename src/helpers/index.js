@@ -5,4 +5,3 @@ export * from './formFields'
 export * from './healthUnits'
 export * from './serviceOfHealth'
 export * from './users'
-
