@@ -20,12 +20,8 @@ import UnitOfHealth from './pages/unidades-de-saude'
 import Users from './pages/usuarios'
 
 // Empresas
-import Convenios from './pages/convenios'
-import Fornecedores from './pages/fornecedores'
-import LaboratorioDeApoio from './pages/laboratorioDeApoio'
-import PrestadoresDeServico from './pages/prestadoresDeServico'
+import Empresas from './pages/empresas'
 import TabelaDePrecos from './pages/tabelaDePrecos'
-import Telemedicina from './pages/telemedicina'
 
 // Estrutura
 import EquipamentosImobilizados from './pages/equipamentosImobilizados'
@@ -67,6 +63,14 @@ const RootLayout = () => {
   // Modal outros
   const [openModalFormFiels, setOpenModalFormFiels] = useState(false)
 
+  const ALLOWED_PAGES = [
+    'convenios',
+    'laboratorioDeApoio',
+    'telemedicina',
+    'fornecedores',
+    'prestadoresDeServico',
+  ]
+
   const pages = {
     'unidades-de-saude': (
       <UnitOfHealth
@@ -102,17 +106,6 @@ const RootLayout = () => {
     ),
     amostras: <Amostras />,
     kits: <Kits />,
-    convenios: (
-      <Convenios
-        openModalRegisterCompanies={openModalRegisterCompanies}
-        setModalRegisterMethods={(e) => setModalRegisterCompanies(e)}
-        setPage={(e) => setPage(e)}
-      />
-    ),
-    laboratorioDeApoio: <LaboratorioDeApoio setPage={(e) => setPage(e)} />,
-    telemedicina: <Telemedicina setPage={(e) => setPage(e)} />,
-    fornecedores: <Fornecedores setPage={(e) => setPage(e)} />,
-    prestadoresDeServico: <PrestadoresDeServico setPage={(e) => setPage(e)} />,
     tabelaDePrecos: <TabelaDePrecos />,
     salasSetores: <SalasSetores />,
     equipamentosImobilizados: <EquipamentosImobilizados />,
@@ -159,6 +152,14 @@ const RootLayout = () => {
       <div className="flex w-full flex-1 gap-3 px-[32px] py-[16px]">
         <SideMenu page={page} setPage={(a) => setPage(a)} />
         {pages[page]}
+        {ALLOWED_PAGES.includes(page) && (
+          <Empresas
+            openModalRegisterCompanies={openModalRegisterCompanies}
+            setModalRegisterCompanies={(e) => setModalRegisterCompanies(e)}
+            page={page}
+            setPage={(e) => setPage(e)}
+          />
+        )}
       </div>
       {openModalCategorie && (
         <ModalFramer
@@ -207,9 +208,13 @@ const RootLayout = () => {
               setModalRegisterExamMatrix(e)
             }}
             setModalRegisterCompanies={(open) => {
-              if (page !== 'convenios') setPage('convenios')
+              // Se a página atual NÃO está entre as permitidas, força para 'convenios'
+              setPage((prev) =>
+                ALLOWED_PAGES.includes(prev) ? prev : 'convenios',
+              )
+
               setOpenModalRegister(false)
-              setModalRegisterCompanies(open)
+              setModalRegisterCompanies(Boolean(open))
             }}
             setModalRegisterBanks={() => {
               setPage('bancos')

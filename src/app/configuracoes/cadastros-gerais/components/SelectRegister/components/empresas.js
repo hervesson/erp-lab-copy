@@ -1,11 +1,14 @@
 import { Outfit400 } from '@/fonts'
 import { Briefcase, Note } from 'iconsax-reactjs'
 
-const Empresas = () => {
+const Empresas = ({ setModalRegisterCompanies }) => {
   return (
     <div className="flex flex-col gap-[8px]">
       <div className="flex gap-[8px]">
-        <div className="flex h-[84px] flex-1 flex-col justify-between rounded-[8px] bg-[#F9F9F9] p-[12px]">
+        <div
+          className="flex h-[84px] flex-1 flex-col justify-between rounded-[8px] bg-[#F9F9F9] p-[12px] hover:bg-[#E0FFF9]"
+          onClick={() => setModalRegisterCompanies()}
+        >
           <Briefcase size="28" color="#737373" variant="TwoTone" />
           <span className={`${Outfit400.className} text-[16px] text-[#494949]`}>
             Empresas

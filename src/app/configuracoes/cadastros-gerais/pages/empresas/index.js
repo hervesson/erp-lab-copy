@@ -1,131 +1,142 @@
 'use client'
 import CustomSelect from '@/components/CustomSelect'
-import ModalLeft from '@/components/ModalLeft'
 import ModalUp from '@/components/ModalUp'
 import Pagination from '@/components/Pagination'
 import { Outfit300, Outfit400, Outfit700 } from '@/fonts'
-import { DeleteAccountBank, listBankAccount } from '@/helpers'
+import {
+  ActiveStatusEnterprise,
+  DeleteEnterprise,
+  InactiveStatusEnterprise,
+  ListAllEnterprises,
+  ListEnterprises,
+} from '@/helpers'
 import useDebounce from '@/hooks/useDebounce'
-import { Bank, Book, Edit2, SearchStatus, Trash } from 'iconsax-reactjs'
-import { useEffect, useState } from 'react'
+import { Dropdown, DropdownItem } from 'flowbite-react'
+import {
+  Book,
+  Briefcase,
+  More,
+  SearchStatus,
+  TickCircle,
+} from 'iconsax-reactjs'
+import { useEffect, useMemo, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
-import { Status } from './components/status'
+import { IsActive } from '../../../../../components/IsActive'
 
-// Components
-import EditBank from './modal-content/editBank'
-import ProfileBankAccount from './modal-content/profileBankAccount'
-import RegisterBank from './modal-content/registerBank'
+import RegisterEnterprise from './modal-content/registerEnterprise'
 
-const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
-  const [selectedAccount, setSelectedAccount] = useState({})
-
-  const [banks, setBanks] = useState([])
-  const [total, setTotal] = useState(0)
+const Convenios = ({
+  openModalRegisterCompanies,
+  setModalRegisterCompanies,
+  page,
+  setPage,
+}) => {
+  const [setSelectedUnit] = useState({})
 
   // focus
   const [isFocusedSearch, setIsFocusedSearch] = useState(false)
 
-  // filters
-  const [currentPage, setCurrentPage] = useState(1)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [status, setStatus] = useState({ id: '', label: 'Status: Todos' })
-  const [type, setType] = useState({ id: '', label: 'Tipos: Todas' })
+  const [listEnterprises, setListEnterprises] = useState([])
+  const [total, setTotal] = useState([])
 
-  // modal
-  const [modalEditBank, setModalEditBank] = useState(false)
-  const [openModalProfileBankAccount, setOpenModalProfileBankAccount] =
-    useState(false)
+  const [allTotal, setAllTotal] = useState({
+    PRESTADORES_SERVICOS: 0,
+    FORNECEDORES: 0,
+    TELEMEDICINA: 0,
+    LABORATORIO_APOIO: 0,
+    CONVENIOS: 0,
+  })
+
+  // filters
+  const [status, setStatus] = useState({ id: '', label: 'Tipos: Todas' })
+  const [searchTerm, setSearchTerm] = useState()
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const enterprises = useMemo(
+    () => ({
+      convenios: 'CONVENIOS',
+      laboratorioDeApoio: 'LABORATORIO_APOIO',
+      telemedicina: 'TELEMEDICINA',
+      fornecedores: 'FORNECEDORES',
+      prestadoresDeServico: 'PRESTADORES_SERVICOS',
+    }),
+    [],
+  )
 
   useEffect(() => {
-    const fetchBanks = async () => {
+    const fetchListEnterprises = async () => {
       try {
-        const response = await listBankAccount()
-        setBanks(response.data.data)
+        const response = await ListAllEnterprises()
+        const CONVENIOS = response?.data?.filter(
+          (word) => word.tipoEmpresa === 'CONVENIOS',
+        )
+        const PRESTADORES_SERVICOS = response?.data?.filter(
+          (word) => word.tipoEmpresa === 'PRESTADORES_SERVICOS',
+        )
+        const FORNECEDORES = response?.data?.filter(
+          (word) => word.tipoEmpresa === 'FORNECEDORES',
+        )
+        const TELEMEDICINA = response?.data?.filter(
+          (word) => word.tipoEmpresa === 'TELEMEDICINA',
+        )
+        const LABORATORIO_APOIO = response?.data?.filter(
+          (word) => word.tipoEmpresa === 'LABORATORIO_APOIO',
+        )
+        setAllTotal({
+          PRESTADORES_SERVICOS: PRESTADORES_SERVICOS.length,
+          FORNECEDORES: FORNECEDORES.length,
+          TELEMEDICINA: TELEMEDICINA.length,
+          LABORATORIO_APOIO: LABORATORIO_APOIO.length,
+          CONVENIOS: CONVENIOS.length,
+        })
+      } catch (error) {
+        console.error('Error fetching banks:', error)
+      }
+    }
+
+    fetchListEnterprises()
+  }, [])
+
+  useEffect(() => {
+    const fetchEnterprises = async () => {
+      try {
+        const response = await ListEnterprises('', enterprises[page], '', 1, 10)
+        setListEnterprises(response.data.data)
         setTotal(response.data.meta.total)
       } catch (error) {
         console.error('Error fetching banks:', error)
       }
     }
 
-    fetchBanks()
-  }, [])
+    fetchEnterprises()
+  }, [enterprises, page])
 
-  const fetchBanks = async () => {
+  const fetchEnterprises = async (
+    search = '',
+    enterprise = enterprises[page],
+    sts = '',
+    pg,
+  ) => {
     try {
-      const response = await listBankAccount()
-      setBanks(response.data.data)
+      const response = await ListEnterprises(search, enterprise, sts, pg, 10)
+      setListEnterprises(response.data.data)
       setTotal(response.data.meta.total)
     } catch (error) {
       console.error('Error fetching banks:', error)
     }
   }
 
-  // Filtrar por paginação
-  const findDataPerPage = async (props) => {
-    setCurrentPage(props)
-
+  const findDataPerPage = async () => {
+    setCurrentPage()
     try {
-      const response = await listBankAccount(
+      const response = await ListEnterprises(
         searchTerm,
-        type,
-        status,
-        props,
-        10,
-      )
-      setBanks(response.data.data)
-      setTotal(response.data.meta.total)
-    } catch (error) {
-      console.error('Error fetching banks:', error)
-    }
-  }
-
-  // Filtrar por status
-  const findDataPerStatus = async (props) => {
-    setCurrentPage(1)
-    const sts = {
-      Todos: { id: '', label: 'Status: Todos' },
-      Ativas: { id: 'ativa', label: 'Status: Ativas' },
-      Inativas: { id: 'inativa', label: 'Status: Inativas' },
-    }
-
-    setStatus(sts[props.label])
-
-    try {
-      const response = await listBankAccount(
-        searchTerm,
-        type.id,
-        props.id,
-        currentPage,
-        10,
-      )
-      setBanks(response.data.data)
-      setTotal(response.data.meta.total)
-    } catch (error) {
-      console.error('Error fetching banks:', error)
-    }
-  }
-
-  // filtrar por tipo
-  const findDataPerType = async (props) => {
-    setCurrentPage(1)
-
-    const typ = {
-      Todas: { id: '', label: 'Tipo: Todas' },
-      Corrente: { id: 'corrente', label: 'Tipo: Corrente' },
-      Poupança: { id: 'poupanca', label: 'Tipo: Poupança' },
-    }
-
-    setType(typ[props.label])
-
-    try {
-      const response = await listBankAccount(
-        searchTerm,
-        props.id,
+        enterprises[page],
         status.id,
         currentPage,
         10,
       )
-      setBanks(response.data.data)
+      setListEnterprises(response.data.data)
       setTotal(response.data.meta.total)
     } catch (error) {
       console.error('Error fetching banks:', error)
@@ -133,7 +144,7 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
   }
 
   // Filtrar por termo pesquisado
-  const handleChangeUnit = (e) => {
+  const handleChangeEnterprise = (e) => {
     setSearchTerm(e.target.value)
     debounceChange(e.target.value)
   }
@@ -144,47 +155,142 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
     setCurrentPage(1)
 
     try {
-      const response = await listBankAccount(
+      const response = await ListEnterprises(
         props,
-        type.id,
+        enterprises[page],
         status.id,
         currentPage,
         10,
       )
-      setBanks(response.data.data)
+      setListEnterprises(response.data.data)
       setTotal(response.data.meta.total)
     } catch (error) {
       console.error('Error fetching banks:', error)
     }
   }
 
-  const deleteAccountBank = async (bank) => {
-    const response = await DeleteAccountBank(bank.id)
-    if (response.success) {
-      fetchBanks()
+  // filtrar por tipo
+  const findDataPerStatus = async (props) => {
+    setCurrentPage(1)
+
+    const typ = {
+      Todas: { id: '', label: 'Tipo: Todas' },
+      Ativas: { id: true, label: 'Tipo: Inativas' },
+      Inativas: { id: false, label: 'Tipo: Ativas' },
+    }
+
+    setStatus(typ[props.label])
+
+    try {
+      const response = await ListEnterprises(
+        searchTerm,
+        enterprises[page],
+        typ[props.label].id,
+        currentPage,
+        10,
+      )
+      setListEnterprises(response.data.data)
+      setTotal(response.data.meta.total)
+    } catch (error) {
+      console.error('Error fetching banks:', error)
+    }
+  }
+
+  const toggleEnterprise = async (unit) => {
+    if (unit.ativo) {
+      const result = await InactiveStatusEnterprise(unit.id)
+      if (!result.success) {
+        toast.error('Erro ao inativar unidade', {
+          position: 'top-right',
+        })
+      }
     } else {
-      toast.error('Erro ao tentar deletar unidade', {
+      const result = await ActiveStatusEnterprise(unit.id)
+      if (!result.success) {
+        toast.error('Erro ao ativar unidade', {
+          position: 'top-right',
+        })
+      }
+    }
+
+    fetchEnterprises(searchTerm, enterprises[page], status.id, currentPage)
+  }
+
+  const deleteEnterprise = async (unit) => {
+    const result = await DeleteEnterprise(unit.id)
+    if (!result.success) {
+      toast.error('Erro ao inativar unidade', {
         position: 'top-right',
       })
     }
+
+    fetchEnterprises(searchTerm, enterprises[page], status.id, currentPage)
   }
 
   return (
     <div className="flex flex-1 flex-col gap-[32px]">
       <div className="flex h-[84px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
         <div className="mx-[10px] flex h-[64px] w-full items-center rounded-[8px] bg-white">
-          <div className="flex gap-3 rounded-[8px] px-[8px]">
+          <div className="flex flex-1 gap-3 rounded-[8px] px-[8px]">
             <div className="flex h-[48px] w-[48px] items-center justify-center rounded-[8px] bg-[#F9F9F9]">
-              <Bank size="28" color="#A1A1A1" />
+              <Briefcase size="28" color="#A1A1A1" />
             </div>
             <div className="flex flex-col justify-around">
               <span
                 className={`${Outfit700.className} text-[16px] text-[#0F9B7F]`}
               >
-                {total}
+                {allTotal.CONVENIOS}
               </span>
               <span className={`${Outfit300.className} text-[#737373]`}>
-                Bancos
+                Convênios
+              </span>
+            </div>
+          </div>
+          <div className="flex flex-1 gap-3 rounded-[8px] px-[8px]">
+            <div className="flex flex-col justify-around">
+              <span
+                className={`${Outfit700.className} text-[16px] text-[#0F9B7F]`}
+              >
+                {allTotal.LABORATORIO_APOIO}
+              </span>
+              <span className={`${Outfit300.className} text-[#737373]`}>
+                Laboratórios de apoio
+              </span>
+            </div>
+          </div>
+          <div className="flex flex-1 gap-3 rounded-[8px] px-[8px]">
+            <div className="flex flex-col justify-around">
+              <span
+                className={`${Outfit700.className} text-[16px] text-[#0F9B7F]`}
+              >
+                {allTotal.TELEMEDICINA}
+              </span>
+              <span className={`${Outfit300.className} text-[#737373]`}>
+                Telemedicina
+              </span>
+            </div>
+          </div>
+          <div className="flex flex-1 gap-3 rounded-[8px] px-[8px]">
+            <div className="flex flex-col justify-around">
+              <span
+                className={`${Outfit700.className} text-[16px] text-[#0F9B7F]`}
+              >
+                {allTotal.FORNECEDORES}
+              </span>
+              <span className={`${Outfit300.className} text-[#737373]`}>
+                Fornecedores
+              </span>
+            </div>
+          </div>
+          <div className="flex flex-1 gap-3 rounded-[8px] px-[8px]">
+            <div className="flex flex-col justify-around">
+              <span
+                className={`${Outfit700.className} text-[16px] text-[#0F9B7F]`}
+              >
+                {allTotal.PRESTADORES_SERVICOS}
+              </span>
+              <span className={`${Outfit300.className} text-[#737373]`}>
+                Prestadores de seviços
               </span>
             </div>
           </div>
@@ -196,26 +302,15 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
           select={status}
           setSelect={(e) => findDataPerStatus(e)}
           options={[
-            { id: '', label: 'Todos' },
-            { id: 'ativa', label: 'Ativas' },
-            { id: 'inativa', label: 'Inativas' },
-          ]}
-          placeholder={'Status'}
-          className={'bg-[#F9F9F9]'}
-        />
-        <CustomSelect
-          select={type}
-          setSelect={(e) => findDataPerType(e)}
-          options={[
             { id: '', label: 'Todas' },
-            { id: 'corrente', label: 'Corrente' },
-            { id: 'poupanca', label: 'Poupança' },
+            { id: 'ativas', label: 'Ativas' },
+            { id: 'inativas', label: 'Inativas' },
           ]}
           placeholder={'Tipos de exames: todos'}
           className={'bg-[#F9F9F9]'}
         />
         <div
-          className={`flex h-[40px] flex-3 items-center rounded-[8px] px-2 ${
+          className={`flex h-[40px] flex-2 items-center rounded-[8px] px-2 ${
             isFocusedSearch
               ? 'border-[1px] border-[#0F9B7F]'
               : 'border border-[#BBBBBB]'
@@ -223,7 +318,7 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
         >
           <input
             placeholder="Pesquisar"
-            onChange={handleChangeUnit}
+            onChange={handleChangeEnterprise}
             className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
             onFocus={() => setIsFocusedSearch(true)}
             onBlur={() => setIsFocusedSearch(false)}
@@ -232,178 +327,223 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
         </div>
       </div>
 
-      <table className="w-full">
-        <thead className="sticky top-0">
-          <tr className="h-[48px] bg-[#D4D4D4]">
-            <th
-              className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
-            >
-              Codigo interno
-            </th>
-            <th
-              className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
-            >
-              Banco
-            </th>
-            <th
-              className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
-            >
-              Descrição
-            </th>
-            <th
-              className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
-            >
-              Unidade associada
-            </th>
-            <th
-              className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
-            >
-              Status
-            </th>
-            <th
-              className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
-            >
-              Excluir
-            </th>
-            <th
-              className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
-            >
-              Editar
-            </th>
-            <th
-              className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
-            >
-              Visualizar
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-100 overflow-y-hidden">
-          {banks?.map((item, index) => {
-            return (
-              <tr
-                className="h-[64px] border-b border-[#D9D9D9] bg-white py-[5px]"
-                key={index.toString()}
+      <div>
+        <div className="flex h-[64px] items-end gap-8 bg-[#F9F9F9] px-[48px]">
+          <button
+            type="button"
+            onClick={() => setPage('convenios')}
+            className={`${Outfit400.className} ${page === 'convenios' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222] uppercase`}
+          >
+            convênios
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setPage('laboratorioDeApoio')
+            }}
+            className={`${Outfit400.className} ${page === 'laboratorioDeApoio' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222] uppercase`}
+          >
+            Laboratórios de apoio
+          </button>
+          <button
+            type="button"
+            onClick={() => setPage('telemedicina')}
+            className={`${Outfit400.className} ${page === 'telemedicina' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222] uppercase`}
+          >
+            Telemedicina
+          </button>
+          <button
+            type="button"
+            onClick={() => setPage('fornecedores')}
+            className={`${Outfit400.className} ${page === 'fornecedores' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222] uppercase`}
+          >
+            Fornecedores
+          </button>
+          <button
+            type="button"
+            onClick={() => setPage('prestadoresDeServico')}
+            className={`${Outfit400.className} ${page === 'prestadoresDeServico' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222] uppercase`}
+          >
+            Prestadores de serviço
+          </button>
+        </div>
+        <table className="w-full">
+          <thead className="sticky top-0">
+            <tr className="h-[48px] bg-[#D4D4D4]">
+              <th
+                className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
               >
-                <td
-                  className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
+                Codigo interno
+              </th>
+              <th
+                className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
+              >
+                Nome fantasia
+              </th>
+              <th
+                className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
+              >
+                CNPJ
+              </th>
+              <th
+                className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
+              >
+                E-mail comercial
+              </th>
+              <th
+                className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
+              >
+                Cidade/Estado
+              </th>
+              <th
+                className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
+              >
+                Ativo
+              </th>
+              <th
+                className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
+              >
+                Editar
+              </th>
+              <th
+                className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
+              >
+                Visualizar
+              </th>
+              <th
+                className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
+              >
+                Opçoes
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100 overflow-y-hidden">
+            {listEnterprises?.map((item, index) => {
+              return (
+                <tr
+                  className="h-[64px] border-b border-[#D9D9D9] bg-white py-[5px]"
+                  key={index.toString()}
                 >
-                  {item?.codigo_interno}
-                </td>
-                <td
-                  className={`text-[14px] ${Outfit300.className} text-start text-[#383838]`}
-                >
-                  {item?.banco?.nome}
-                </td>
-                <td
-                  className={`text-[14px] ${Outfit300.className} text-[#383838]`}
-                >
-                  {item.observacoes}
-                </td>
-                <td
-                  className={`text-[14px] ${Outfit300.className} text-[#383838]`}
-                >
-                  {item.unidades_vinculadas
-                    ?.map((u) => u?.unidade_saude?.nomeUnidade)
-                    .filter(Boolean)
-                    .join(', ') || '—'}
-                </td>
-
-                <td
-                  className={`text-[14px] ${Outfit300.className} text-[#383838]`}
-                >
-                  <div className="flex h-full items-center justify-center">
-                    <Status active={item?.status} />
-                  </div>
-                </td>
-                <td
-                  className={`text-[14px] ${Outfit300.className} text-[#383838]`}
-                >
-                  <div
-                    className="flex h-full items-center justify-center"
-                    onClick={() => {
-                      deleteAccountBank(item)
-                    }}
+                  <td
+                    className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                   >
-                    <Trash size="28" color="#737373" />
-                  </div>
-                </td>
-                <td
-                  className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
-                >
-                  <div
-                    className="flex h-full items-center justify-center"
-                    onClick={() => {
-                      setModalEditBank(true)
-                      setSelectedAccount(item)
-                    }}
+                    {item?.codigoInterno}
+                  </td>
+                  <td
+                    className={`text-[14px] ${Outfit300.className} text-start text-[#383838]`}
                   >
-                    <Edit2 size="28" color="#737373" />
-                  </div>
-                </td>
-                <td
-                  className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
-                >
-                  <div
-                    className="flex h-full items-center justify-center"
-                    onClick={() => {
-                      setOpenModalProfileBankAccount(true)
-                      setSelectedAccount(item)
-                    }}
+                    {item?.nomeFantasia}
+                  </td>
+                  <td
+                    className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                   >
-                    <Book size="28" color="#737373" />
-                  </div>
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-      <div className="flex h-[40px] items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
-            <span
-              className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
-            >
-              {banks.length > 10 ? 10 : banks.length}
-            </span>
-          </div>
-          <span className={`${Outfit300.className} text-[16px] text-[#222]`}>
-            de {total} registros
+                    {item?.cnpj}
+                  </td>
+                  <td
+                    className={`text-[14px] ${Outfit300.className} text-[#383838]`}
+                  >
+                    {item?.emailComercial}
+                  </td>
+                  <td
+                    className={`text-[14px] ${Outfit300.className} text-[#383838]`}
+                  >
+                    {item?.cidade}/{item?.estado}
+                  </td>
+                  <td
+                    className={`text-[14px] ${Outfit300.className} text-[#383838]`}
+                  >
+                    <div className="flex h-full items-center justify-center">
+                      <IsActive active={item?.ativo} />
+                    </div>
+                  </td>
+                  <td>
+                    <div className="flex h-full items-center justify-center">
+                      <TickCircle size="28" color="#2CB04B" variant="Bulk" />
+                    </div>
+                  </td>
+                  <td
+                    className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
+                  >
+                    <div
+                      className="flex h-full items-center justify-center"
+                      onClick={() => {
+                        // setOpenModalProfileuUnit(true)
+                        setSelectedUnit(item)
+                      }}
+                    >
+                      <Book size="28" color="#737373" />
+                    </div>
+                  </td>
+                  <td
+                    className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
+                  >
+                    <div className="flex h-full items-center justify-center">
+                      <Dropdown
+                        label=""
+                        dismissOnClick={true}
+                        renderTrigger={() => <More size="28" color="#737373" />}
+                        placement="left-start"
+                        className="bg-white"
+                      >
+                        <DropdownItem
+                          className={`${Outfit300.className} text-[16px] text-[#8A8A8A]`}
+                          onClick={() => toggleEnterprise(item)}
+                        >
+                          Ativar/Desativar
+                        </DropdownItem>
+                        <DropdownItem
+                          className={`${Outfit300.className} text-[16px] text-[#8A8A8A]`}
+                          onClick={() => deleteEnterprise(item)}
+                        >
+                          Excluir
+                        </DropdownItem>
+                      </Dropdown>
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex items-center gap-3">
+        <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
+          <span
+            className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
+          >
+            {listEnterprises.length > 10 ? 10 : listEnterprises.length}
           </span>
         </div>
-
-        <Pagination
-          totalRecords={total}
-          recordsPerPage={10}
-          onPageChange={(value) => findDataPerPage(value)}
-          currentPage={currentPage} // Pass the current page state
-        />
+        <span className={`${Outfit300.className} text-[16px] text-[#222]`}>
+          de {total} registros
+        </span>
       </div>
+
+      <Pagination
+        totalRecords={total}
+        recordsPerPage={10}
+        onPageChange={(value) => findDataPerPage(value)}
+        currentPage={currentPage} // Pass the current page state
+      />
       <ModalUp
-        isOpen={modalRegisterBanks}
-        onClose={() => setModalRegisterBanks(false)}
+        isOpen={openModalRegisterCompanies}
+        onClose={() => setModalRegisterCompanies(false)}
       >
-        <RegisterBank
-          onClose={() => setModalRegisterBanks(false)}
-          findData={() => fetchBanks()}
+        <RegisterEnterprise
+          onClose={() => setModalRegisterCompanies(false)}
+          setPage={(e) => setPage(e)}
+          findData={() => fetchEnterprises()}
         />
       </ModalUp>
-      <ModalUp isOpen={modalEditBank} onClose={() => setModalEditBank(false)}>
-        <EditBank
-          onClose={() => setModalEditBank(false)}
-          account={selectedAccount}
-          findData={() => fetchBanks()}
-        />
-      </ModalUp>
-      <ModalLeft
-        isOpen={openModalProfileBankAccount}
-        onClose={() => setOpenModalProfileBankAccount(false)}
+      {/* <ModalLeft
+        isOpen={openModalProfileuUnit}
+        onClose={() => setOpenModalProfileuUnit(false)}
       >
-        <ProfileBankAccount account={selectedAccount} />
-      </ModalLeft>
+        <ProfileUnitHealth unit={selectedUnit} />
+      </ModalLeft> */}
       <ToastContainer />
     </div>
   )
 }
 
-export default Bancos
+export default Convenios
