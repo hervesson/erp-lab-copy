@@ -1,7 +1,7 @@
 import CustomSelect from '@/components/CustomSelect'
 import { Outfit400 } from '@/fonts'
 import { SearchCep } from '@/helpers'
-import { formatCep } from '@/utils'
+import { formatCep, formatCnpj, formatPhoneNumber } from '@/utils'
 import { InfoCircle, Trash } from 'iconsax-reactjs'
 
 const InformacoesGerais = ({ formik, activeBanks }) => {
@@ -42,7 +42,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   type="text"
                   id="codigoInterno"
                   name="codigoInterno"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o codigo interno"
                 />
               </div>
@@ -55,10 +55,11 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                 </label>
                 <input
                   {...formik.getFieldProps('cnpj')}
+                  value={formatCnpj(formik.values.cnpj)}
                   type="text"
                   id="cnpj"
                   name="cnpj"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o CNPJ"
                 />
               </div>
@@ -73,7 +74,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   type="text"
                   id="razaoSocial"
                   name="razaoSocial"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite a Razão Social"
                   maxLength={18}
                 />
@@ -89,7 +90,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   type="text"
                   id="nomeFantasia"
                   name="nomeFantasia"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o nome fantasia"
                 />
               </div>
@@ -104,7 +105,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   type="text"
                   id="inscricaoMunicipal"
                   name="inscricaoMunicipal"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite a inscrição Municipal"
                 />
               </div>
@@ -121,7 +122,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   type="text"
                   id="inscricaoEstadual"
                   name="inscricaoEstadual"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite a inscrição Estadual"
                 />
               </div>
@@ -133,11 +134,13 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                 </label>
                 <input
                   {...formik.getFieldProps('telefoneFixo')}
+                  value={formatPhoneNumber(formik.values.telefoneFixo)}
                   type="text"
                   id="telefoneFixo"
                   name="telefoneFixo"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o telefone fixo"
+                  maxLength={15}
                 />
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
@@ -148,11 +151,13 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                 </label>
                 <input
                   {...formik.getFieldProps('celular')}
+                  value={formatPhoneNumber(formik.values.celular)}
                   type="text"
                   id="celular"
                   name="celular"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o celular"
+                  maxLength={15}
                 />
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
@@ -167,7 +172,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   type="text"
                   id="emailComercial"
                   name="emailComercial"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o email comercial"
                 />
               </div>
@@ -182,7 +187,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   type="text"
                   id="siteDaEmpresa"
                   name="siteDaEmpresa"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o site da empresa"
                 />
               </div>
@@ -212,7 +217,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   type="text"
                   id="cep"
                   name="cep"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o cep"
                   onBlur={() => searchCEP()}
                   autoComplete="off"
@@ -229,7 +234,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   type="text"
                   id="rua"
                   name="rua"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite a rua"
                 />
               </div>
@@ -244,7 +249,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   type="text"
                   id="numero"
                   name="numero"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o número"
                 />
               </div>
@@ -260,7 +265,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   type="text"
                   id="bairro"
                   name="bairro"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o bairro"
                 />
               </div>
@@ -277,7 +282,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   type="text"
                   id="complemento"
                   name="complemento"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite um complemento"
                 />
               </div>
@@ -292,7 +297,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   type="text"
                   id="estado"
                   name="estado"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o estado"
                 />
               </div>
@@ -307,7 +312,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   type="text"
                   id="cidade"
                   name="cidade"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o estado"
                 />
               </div>
@@ -335,7 +340,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                 type="text"
                 id="nomeDoResponsavel"
                 name="nomeDoResponsavel"
-                className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                 placeholder="Digite o nome do responsável"
               />
             </div>
@@ -353,7 +358,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                 type="text"
                 id="cargoResponsavel"
                 name="cargoResponsavel"
-                className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                 placeholder="Digite o cargo do responsável"
               />
             </div>
@@ -368,11 +373,13 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
               </label>
               <input
                 {...formik.getFieldProps('contatoResponsavel')}
+                value={formatPhoneNumber(formik.values.contatoResponsavel)}
                 type="text"
                 id="contatoResponsavel"
                 name="contatoResponsavel"
-                className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                 placeholder="Digite o contato do responsável"
+                maxLength={15}
               />
             </div>
           </div>
@@ -389,7 +396,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                 type="text"
                 id="email"
                 name="email"
-                className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                 placeholder="Digite o email de contato do responsável"
               />
             </div>
@@ -415,7 +422,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
               type="text"
               id="irrf"
               name="irrf"
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
           </div>
@@ -431,7 +438,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
               type="text"
               id="pis"
               name="pis"
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
           </div>
@@ -447,7 +454,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
               type="text"
               id="cofins"
               name="cofins"
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
           </div>
@@ -463,7 +470,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
               type="text"
               id="csll"
               name="csll"
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
           </div>
@@ -479,7 +486,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
               type="text"
               id="iss"
               name="iss"
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
           </div>
@@ -495,7 +502,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
               type="text"
               id="ibs"
               name="ibs"
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
           </div>
@@ -511,7 +518,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
               type="text"
               id="cbs"
               name="cbs"
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
           </div>
@@ -733,7 +740,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                 <input
                   value={item.agencia}
                   onChange={(e) => setFin(index, 'agencia', e.target.value)}
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite a agência"
                 />
               </div>
@@ -750,7 +757,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   onChange={(e) =>
                     setFin(index, 'digitoAgencia', e.target.value)
                   }
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o dígito da agência"
                 />
               </div>
@@ -782,7 +789,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                 <input
                   value={item.conta}
                   onChange={(e) => setFin(index, 'conta', e.target.value)}
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite a conta"
                 />
               </div>
@@ -797,7 +804,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                 <input
                   value={item.digitoConta}
                   onChange={(e) => setFin(index, 'digitoConta', e.target.value)}
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o dígito da agência"
                 />
               </div>

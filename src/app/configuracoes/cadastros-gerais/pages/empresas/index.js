@@ -12,17 +12,12 @@ import {
 } from '@/helpers'
 import useDebounce from '@/hooks/useDebounce'
 import { Dropdown, DropdownItem } from 'flowbite-react'
-import {
-  Book,
-  Briefcase,
-  More,
-  SearchStatus,
-  TickCircle,
-} from 'iconsax-reactjs'
+import { Book, Briefcase, Edit2, More, SearchStatus } from 'iconsax-reactjs'
 import { useEffect, useMemo, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import { IsActive } from '../../../../../components/IsActive'
 
+import EditEnterprise from './modal-content/editEnterprise'
 import RegisterEnterprise from './modal-content/registerEnterprise'
 
 const Convenios = ({
@@ -31,10 +26,13 @@ const Convenios = ({
   page,
   setPage,
 }) => {
-  const [setSelectedUnit] = useState({})
+  const [selectedEnterprise, setSelectedEnterprise] = useState({})
 
   // focus
   const [isFocusedSearch, setIsFocusedSearch] = useState(false)
+
+  // modal
+  const [modalEditCompanies, setModalEditCompanies] = useState(false)
 
   const [listEnterprises, setListEnterprises] = useState([])
   const [total, setTotal] = useState([])
@@ -396,7 +394,7 @@ const Convenios = ({
                 Cidade/Estado
               </th>
               <th
-                className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
+                className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
               >
                 Ativo
               </th>
@@ -457,8 +455,14 @@ const Convenios = ({
                     </div>
                   </td>
                   <td>
-                    <div className="flex h-full items-center justify-center">
-                      <TickCircle size="28" color="#2CB04B" variant="Bulk" />
+                    <div
+                      className="flex h-full items-center justify-center"
+                      onClick={() => {
+                        setSelectedEnterprise(item)
+                        setModalEditCompanies(true)
+                      }}
+                    >
+                      <Edit2 size="28" color="#737373" />
                     </div>
                   </td>
                   <td
@@ -467,8 +471,7 @@ const Convenios = ({
                     <div
                       className="flex h-full items-center justify-center"
                       onClick={() => {
-                        // setOpenModalProfileuUnit(true)
-                        setSelectedUnit(item)
+                        setSelectedEnterprise(item)
                       }}
                     >
                       <Book size="28" color="#737373" />
@@ -532,6 +535,16 @@ const Convenios = ({
         <RegisterEnterprise
           onClose={() => setModalRegisterCompanies(false)}
           setPage={(e) => setPage(e)}
+          findData={() => fetchEnterprises()}
+        />
+      </ModalUp>
+      <ModalUp
+        isOpen={modalEditCompanies}
+        onClose={() => setModalEditCompanies(false)}
+      >
+        <EditEnterprise
+          onClose={() => setModalEditCompanies(false)}
+          selectedEnterprise={selectedEnterprise}
           findData={() => fetchEnterprises()}
         />
       </ModalUp>
