@@ -12,7 +12,7 @@ const LaboratorioDeApoio = forwardRef(
   (
     {
       formRegister,
-      activeBanks,
+
       onClose,
       onValidationChange,
       setLoading,
@@ -29,7 +29,7 @@ const LaboratorioDeApoio = forwardRef(
       validateOnChange: true,
       initialValues: {
         codigoInterno: formRegister.values.codigoInterno,
-        cnpj: formRegister.values.CNPJ,
+        cnpj: formRegister.values.cnpj,
         razaoSocial: formRegister.values.razaoSocial,
         nomeFantasia: formRegister.values.nomeFantasia,
         inscricaoMunicipal: formRegister.values.inscricaoMunicipal,
@@ -47,7 +47,7 @@ const LaboratorioDeApoio = forwardRef(
         cidade: formRegister.values.cidade,
         nomeDoResponsavel: formRegister.values.nomeDoResponsavel,
         cargoResponsavel: formRegister.values.cargoResponsavel,
-        contatoResponsavel: formRegister.contatoResponsavel,
+        contatoResponsavel: formRegister.values.contatoResponsavel,
         email: formRegister.values.email,
         irrf: formRegister.values.irrf,
         pis: formRegister.values.pis,
@@ -198,9 +198,7 @@ const LaboratorioDeApoio = forwardRef(
     }, [formik.isValid, onValidationChange])
 
     const steps = {
-      informacoesGerais: (
-        <InformacoesGerais formik={formik} activeBanks={activeBanks} />
-      ),
+      informacoesGerais: <InformacoesGerais formik={formik} />,
     }
 
     return (

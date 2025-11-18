@@ -1,5 +1,5 @@
 import { Outfit400, Outfit500 } from '@/fonts'
-import { CreateBankAccount, listAllActiveBanks, listAllUnits } from '@/helpers'
+import { CreateBankAccount, listAllUnits } from '@/helpers'
 import { FormikProvider, useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
@@ -10,23 +10,12 @@ import Integracao from './components/integracao'
 
 const RegisterUser = ({ onClose, findData }) => {
   const [tab, setTab] = useState('informacoesGerais')
-  const [activeBanks, setActiveBanks] = useState([])
   const [units, setUnits] = useState([])
 
   useEffect(() => {
     const findUsersByFilters = async () => {
       try {
-        const [allBanks, unts] = await Promise.all([
-          listAllActiveBanks(),
-          listAllUnits(),
-        ])
-
-        const banks = allBanks.data.map((item) => {
-          return {
-            id: item.id,
-            label: `${item.codigo} - ${item.nome}`,
-          }
-        })
+        const [unts] = await Promise.all([listAllUnits()])
 
         const unt = unts.data.data.map((item) => {
           return {
@@ -35,8 +24,6 @@ const RegisterUser = ({ onClose, findData }) => {
             item,
           }
         })
-
-        setActiveBanks(banks)
         setUnits(unt)
       } catch (error) {
         console.error(error)
@@ -199,13 +186,7 @@ const RegisterUser = ({ onClose, findData }) => {
   }
 
   const steps = {
-    informacoesGerais: (
-      <InformacoesGerais
-        formik={formik}
-        activeBanks={activeBanks}
-        units={units}
-      />
-    ),
+    informacoesGerais: <InformacoesGerais formik={formik} units={units} />,
     integracao: <Integracao />,
   }
 

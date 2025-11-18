@@ -202,3 +202,35 @@ export async function DeleteAccountBank(payload) {
     }
   }
 }
+
+export async function SearchAccount(term) {
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const response = await api.get('/financeiro/bancos/search?q=' + term, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token ? 'Bearer ' + token.value : undefined,
+      },
+    })
+
+    return {
+      success: true,
+      data: response.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: 'Erro desconhecido ao tentar buscar unidades.',
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    const errData = error?.response?.data || fallback
+
+    return {
+      success: false,
+      error: errData,
+    }
+  }
+}

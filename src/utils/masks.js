@@ -83,3 +83,54 @@ export function formatCep(cepString) {
 
   return value
 }
+
+export function maskDecimal(value, fractionDigits = 2) {
+  if (!value) return ''
+
+  // Mantém apenas números
+  const numbers = String(value).replace(/\D/g, '')
+
+  if (!numbers) return ''
+
+  // Divide para gerar as casas decimais
+  const number = Number(numbers) / Math.pow(10, fractionDigits)
+
+  return number.toLocaleString('pt-BR', {
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  })
+}
+
+export function percentBRToNumber(value) {
+  if (!value) return 0
+
+  // deixa só dígitos e vírgula
+  const cleaned = String(value).replace(/[^\d,]/g, '')
+
+  if (!cleaned) return 0
+
+  // troca vírgula por ponto para virar número JS
+  const normalized = cleaned.replace(',', '.')
+
+  const num = parseFloat(normalized)
+  return Number.isNaN(num) ? 0 : num
+}
+
+export function maskPercentBR(value) {
+  if (value === undefined || value === null) return ''
+
+  // transforma em string e remove tudo que não for dígito ou vírgula
+  const v = String(value).replace(/[^\d,]/g, '')
+
+  // se não tiver vírgula, só retorna os dígitos
+  if (!v.includes(',')) {
+    return v
+  }
+
+  // se tiver vírgula, garante só a primeira
+  const [intPart, ...rest] = v.split(',')
+  const decPartRaw = rest.join('') // junta o que vier depois
+  const decPart = decPartRaw.slice(0, 2) // máximo 2 dígitos
+
+  return decPart ? `${intPart},${decPart}` : intPart
+}

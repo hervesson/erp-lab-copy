@@ -1,8 +1,9 @@
 import CustomSelect from '@/components/CustomSelect'
+import CustonSearchBanks from '@/components/CutomSearchBanks'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { CloseCircle, InfoCircle } from 'iconsax-reactjs'
 
-const InformacoesGerais = ({ formik, activeBanks, units }) => {
+const InformacoesGerais = ({ formik, units }) => {
   return (
     <div className="flex w-full flex-col gap-[32px] rounded bg-[#FFF] p-[48px]">
       <div>
@@ -36,15 +37,12 @@ const InformacoesGerais = ({ formik, activeBanks, units }) => {
                     Banco
                     <strong className="text-[#F23434]">*</strong>
                   </label>
-                  <CustomSelect
-                    select={formik.values.banco_id}
-                    setSelect={(option) => {
-                      formik.setFieldValue(`banco_id`, option)
+                  <CustonSearchBanks
+                    value={formik.values.banco_id.label}
+                    setValue={(opt) => {
+                      formik.setFieldValue(`banco_id`, opt.id)
                       formik.setFieldTouched(`banco_id`, true, false)
                     }}
-                    options={activeBanks}
-                    placeholder={'Selecione o banco'}
-                    className={'border border-[#BBBBBB]'}
                   />
                 </div>
                 <div className="flex flex-1 flex-col gap-[4px]">

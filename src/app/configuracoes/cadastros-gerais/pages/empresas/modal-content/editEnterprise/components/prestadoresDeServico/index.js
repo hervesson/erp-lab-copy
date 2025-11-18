@@ -10,7 +10,7 @@ const Telemedicina = forwardRef(
   (
     {
       formRegister,
-      activeBanks,
+
       onClose,
       onValidationChange,
       setLoading,
@@ -230,9 +230,7 @@ const Telemedicina = forwardRef(
     }, [formik.isValid, onValidationChange])
 
     const steps = {
-      informacoesGerais: (
-        <InformacoesGerais formik={formik} activeBanks={activeBanks} />
-      ),
+      informacoesGerais: <InformacoesGerais formik={formik} />,
     }
 
     return (

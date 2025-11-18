@@ -8,14 +8,7 @@ import InformacoesGerais from './components/informacoesGerais'
 
 const Telemedicina = forwardRef(
   (
-    {
-      formRegister,
-      activeBanks,
-      onClose,
-      onValidationChange,
-      setLoading,
-      findData,
-    },
+    { formRegister, onClose, onValidationChange, setLoading, findData },
     ref,
   ) => {
     const [tab, setTab] = useState('informacoesGerais')
@@ -230,9 +223,7 @@ const Telemedicina = forwardRef(
     }, [formik.isValid, onValidationChange])
 
     const steps = {
-      informacoesGerais: (
-        <InformacoesGerais formik={formik} activeBanks={activeBanks} />
-      ),
+      informacoesGerais: <InformacoesGerais formik={formik} />,
     }
 
     return (

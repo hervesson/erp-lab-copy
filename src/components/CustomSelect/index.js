@@ -9,7 +9,7 @@ const CustomSelect = ({
   options = [],
   placeholder = '',
   className,
-  readOnly = false,
+  readOnly,
 }) => {
   const [mostrarBandeja, setMostrarBandeja] = useState(false)
   const inputRef = useRef(null)
@@ -56,14 +56,14 @@ const CustomSelect = ({
             size="24"
             color="#383838"
             variant="broken"
-            onClick={() => setMostrarBandeja(false)}
+            onClick={readOnly ? null : () => setMostrarBandeja(true)}
           />
         ) : (
           <ArrowDown2
             size="24"
             color="#383838"
             variant="broken"
-            onClick={() => setMostrarBandeja(true)}
+            onClick={readOnly ? null : () => setMostrarBandeja(true)}
           />
         )}
       </div>

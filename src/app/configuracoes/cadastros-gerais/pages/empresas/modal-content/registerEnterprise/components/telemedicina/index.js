@@ -10,14 +10,7 @@ import InformacoesGerais from './components/informacoesGerais'
 
 const Telemedicina = forwardRef(
   (
-    {
-      formRegister,
-      activeBanks,
-      onClose,
-      onValidationChange,
-      setLoading,
-      findData,
-    },
+    { formRegister, onClose, onValidationChange, setLoading, findData },
     ref,
   ) => {
     const [tab, setTab] = useState('informacoesGerais')
@@ -29,7 +22,7 @@ const Telemedicina = forwardRef(
       validateOnChange: true,
       initialValues: {
         codigoInterno: formRegister.values.codigoInterno,
-        cnpj: formRegister.values.CNPJ,
+        cnpj: formRegister.values.cnpj,
         razaoSocial: formRegister.values.razaoSocial,
         nomeFantasia: formRegister.values.nomeFantasia,
         inscricaoMunicipal: formRegister.values.inscricaoMunicipal,
@@ -47,7 +40,7 @@ const Telemedicina = forwardRef(
         cidade: formRegister.values.cidade,
         nomeDoResponsavel: formRegister.values.nomeDoResponsavel,
         cargoResponsavel: formRegister.values.cargoResponsavel,
-        contatoResponsavel: formRegister.contatoResponsavel,
+        contatoResponsavel: formRegister.values.contatoResponsavel,
         email: formRegister.values.email,
         irrf: formRegister.values.irrf,
         pis: formRegister.values.pis,
@@ -198,9 +191,7 @@ const Telemedicina = forwardRef(
     }, [formik.isValid, onValidationChange])
 
     const steps = {
-      informacoesGerais: (
-        <InformacoesGerais formik={formik} activeBanks={activeBanks} />
-      ),
+      informacoesGerais: <InformacoesGerais formik={formik} />,
     }
 
     return (

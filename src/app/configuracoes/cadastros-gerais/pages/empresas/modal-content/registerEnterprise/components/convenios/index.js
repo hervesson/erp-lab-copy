@@ -2,6 +2,7 @@ import SuccessRegister from '@/components/Alerts/SuccessRegister'
 import ModalFramer from '@/components/ModalFramer'
 import { Outfit400 } from '@/fonts'
 import { CreateEnterprise } from '@/helpers'
+import { percentBRToNumber } from '@/utils'
 import { useFormik } from 'formik'
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { toast } from 'react-toastify'
@@ -11,14 +12,7 @@ import InformacoesGerais from './components/informacoesGerais'
 
 const Convenios = forwardRef(
   (
-    {
-      formRegister,
-      activeBanks,
-      onClose,
-      onValidationChange,
-      setLoading,
-      findData,
-    },
+    { formRegister, onClose, onValidationChange, setLoading, findData },
     ref,
   ) => {
     const [tab, setTab] = useState('informacoesGerais')
@@ -30,7 +24,7 @@ const Convenios = forwardRef(
       validateOnChange: true,
       initialValues: {
         codigoInterno: formRegister.values.codigoInterno,
-        cnpj: formRegister.values.CNPJ,
+        cnpj: formRegister.values.cnpj,
         razaoSocial: formRegister.values.razaoSocial,
         nomeFantasia: formRegister.values.nomeFantasia,
         inscricaoMunicipal: formRegister.values.inscricaoMunicipal,
@@ -48,7 +42,7 @@ const Convenios = forwardRef(
         cidade: formRegister.values.cidade,
         nomeDoResponsavel: formRegister.values.nomeDoResponsavel,
         cargoResponsavel: formRegister.values.cargoResponsavel,
-        contatoResponsavel: formRegister.contatoResponsavel,
+        contatoResponsavel: formRegister.values.contatoResponsavel,
         email: formRegister.values.email,
         irrf: formRegister.values.irrf,
         pis: formRegister.values.pis,
@@ -67,6 +61,7 @@ const Convenios = forwardRef(
         formaDePagamento: formRegister.values.formaDePagamento,
       },
       onSubmit: async (values) => {
+        console.log(values)
         setLoading(true)
         const payload = {
           tipoEmpresa: 'CONVENIOS', // "CONVENIOS", LABORATORIO_APOIO", "TELEMEDICINA", "FORNECEDORES", "PRESTADORES_SERVICOS"
@@ -91,11 +86,11 @@ const Convenios = forwardRef(
           cargoResponsavel: values.cargoResponsavel,
           contatoResponsavel: values.contatoResponsavel,
           emailResponsavel: values.email,
-          irrfPercentual: values.irrf || 0,
-          pisPercentual: values.pis || 0,
-          cofinsPercentual: values.cofins || 0,
-          csllPercentual: values.csll || 0,
-          issPercentual: values.iss || 0,
+          irrfPercentual: percentBRToNumber(values.irrf),
+          pisPercentual: percentBRToNumber(values.pis),
+          cofinsPercentual: percentBRToNumber(values.cofins),
+          csllPercentual: percentBRToNumber(values.csll),
+          issPercentual: percentBRToNumber(values.iss),
           reterIss: values.reterISS,
           reterIr: values.reterIR,
           reterPcc: values.reterPCC,
@@ -199,9 +194,7 @@ const Convenios = forwardRef(
     }, [formik.isValid, onValidationChange])
 
     const steps = {
-      informacoesGerais: (
-        <InformacoesGerais formik={formik} activeBanks={activeBanks} />
-      ),
+      informacoesGerais: <InformacoesGerais formik={formik} />,
     }
 
     return (

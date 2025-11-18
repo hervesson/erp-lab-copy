@@ -1,9 +1,8 @@
 import CustomSelect from '@/components/CustomSelect'
 import ModalFramer from '@/components/ModalFramer'
 import { Outfit400, Outfit500 } from '@/fonts'
-import { listAllActiveBanks } from '@/helpers'
 import { useFormik } from 'formik'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import Convenios from './components/convenios'
 import Fornecedores from './components/fornecedores'
 import LaboratorioDeApoio from './components/laboratorioDeApoio'
@@ -15,7 +14,7 @@ import CancelRegister from '@/components/Alerts/CancelRegister'
 
 const RegisterEnterprise = ({ onClose, setPage, findData }) => {
   const [tab, setTab] = useState({ id: '', label: '' })
-  const [activeBanks, setActiveBanks] = useState([])
+
   const [openModalAlerts, setOpenModalAlerts] = useState(false)
   const [isFormValid, setIsFormValid] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -26,34 +25,13 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
   const childFormFornecedoresDeApoioRef = useRef()
   const childFormPrestadoresDeServicoRef = useRef()
 
-  useEffect(() => {
-    const findBanks = async () => {
-      try {
-        const [allBanks] = await Promise.all([listAllActiveBanks()])
-
-        const banks = allBanks.data.map((item) => {
-          return {
-            id: item.id,
-            label: `${item.codigo} - ${item.nome}`,
-          }
-        })
-
-        setActiveBanks(banks)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    findBanks()
-  }, [])
-
   const formRegister = useFormik({
     // validationSchema: validationSchemaAccountBank,
     validateOnBlur: false,
     validateOnChange: true,
     initialValues: {
       codigoInterno: '',
-      CNPJ: '',
+      cnpj: '',
       razaoSocial: '',
       nomeFantasia: '',
       inscricaoMunicipal: '',
@@ -114,11 +92,10 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
   }
 
   const steps = {
-    '': <Register formik={formRegister} activeBanks={activeBanks} />,
+    '': <Register formik={formRegister} />,
     CONVÊNIOS: (
       <Convenios
         formRegister={formRegister}
-        activeBanks={activeBanks}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -129,7 +106,6 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
     'LABORATÓRIO DE APOIO': (
       <LaboratorioDeApoio
         formRegister={formRegister}
-        activeBanks={activeBanks}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -140,7 +116,6 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
     TELEMEDICINA: (
       <Telemedicina
         formRegister={formRegister}
-        activeBanks={activeBanks}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -151,7 +126,6 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
     'PRESTADORES DE SERVIÇO': (
       <PrestadoresDeServico
         formRegister={formRegister}
-        activeBanks={activeBanks}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -162,7 +136,6 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
     FORNECEDORES: (
       <Fornecedores
         formRegister={formRegister}
-        activeBanks={activeBanks}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}

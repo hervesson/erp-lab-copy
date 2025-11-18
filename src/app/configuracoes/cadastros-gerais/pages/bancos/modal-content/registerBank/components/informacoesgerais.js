@@ -1,10 +1,11 @@
 import CustomSelect from '@/components/CustomSelect'
+import CustonSearchBanks from '@/components/CutomSearchBanks'
 import Divider from '@/components/Divider'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { FieldArray, getIn } from 'formik'
 import { CloseCircle, InfoCircle } from 'iconsax-reactjs'
 
-const InformacoesGerais = ({ formik, activeBanks, units }) => {
+const InformacoesGerais = ({ formik, units }) => {
   const p = (i, field) => `informations.${i}.${field}`
 
   return (
@@ -50,15 +51,12 @@ const InformacoesGerais = ({ formik, activeBanks, units }) => {
                               Banco
                               <strong className="text-[#F23434]">*</strong>
                             </label>
-                            <CustomSelect
-                              select={
-                                formik.values.informations[index]?.banco_id ??
-                                null
-                              }
-                              setSelect={(option) => {
+
+                            <CustonSearchBanks
+                              setValue={(opt) => {
                                 formik.setFieldValue(
                                   `informations.${index}.banco_id`,
-                                  option,
+                                  opt.id,
                                 )
                                 formik.setFieldTouched(
                                   `informations.${index}.banco_id`,
@@ -66,9 +64,6 @@ const InformacoesGerais = ({ formik, activeBanks, units }) => {
                                   false,
                                 )
                               }}
-                              options={activeBanks} // [{id, label}, ...]
-                              placeholder="Selecione o banco"
-                              className="border border-[#BBBBBB]"
                             />
                           </div>
                           <div className="flex flex-1 flex-col gap-[4px]">

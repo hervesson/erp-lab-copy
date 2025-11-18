@@ -1,10 +1,12 @@
+import CustomSearchBanks from '@/components/CutomSearchBanks'
 import CustomSelect from '@/components/CustomSelect'
 import { Outfit400 } from '@/fonts'
-import { SearchCep } from '@/helpers'
-import { formatCep, formatCnpj, formatPhoneNumber } from '@/utils'
+import { SearchCep, SearchCnpj } from '@/helpers'
+import { formatCep, formatCnpj, formatPhoneNumber, maskDecimal } from '@/utils'
 import { InfoCircle, Trash } from 'iconsax-reactjs'
 
-const InformacoesGerais = ({ formik, activeBanks }) => {
+const InformacoesGerais = ({ formik }) => {
+  const safe = (value) => (value == null ? '' : value)
   const setFin = (index, key, value) => {
     formik.setFieldValue(`financeiro[${index}].${key}`, value)
   }
@@ -16,6 +18,26 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
       formik.setFieldValue('bairro', result?.data?.bairro)
       formik.setFieldValue('cidade', result?.data?.cidade)
       formik.setFieldValue('estado', result?.data?.estado)
+    }
+  }
+
+  const searchCNPJ = async () => {
+    const result = await SearchCnpj(encodeURIComponent(formik.values.cnpj))
+    if (result.success) {
+      formik.setFieldValue('nomeFantasia', safe(result.data.nomeFantasia))
+      formik.setFieldValue(
+        'inscricaoEstadual',
+        safe(result.data.inscricaoEstadual),
+      )
+      formik.setFieldValue('razaoSocial', safe(result.data.razaoSocial))
+      formik.setFieldValue('bairro', safe(result.data.bairro))
+      formik.setFieldValue('cidade', safe(result.data.cidade))
+      formik.setFieldValue('complemento', safe(result.data.complemento))
+      formik.setFieldValue('emailComercial', safe(result.data.emailComercial))
+      formik.setFieldValue('estado', safe(result.data.estado))
+      formik.setFieldValue('numero', safe(result.data.numero))
+      formik.setFieldValue('cep', safe(result.data.cep))
+      formik.setFieldValue('rua', safe(result.data.rua))
     }
   }
 
@@ -56,6 +78,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                 <input
                   {...formik.getFieldProps('cnpj')}
                   value={formatCnpj(formik.values.cnpj)}
+                  onBlur={() => searchCNPJ()}
                   type="text"
                   id="cnpj"
                   name="cnpj"
@@ -419,6 +442,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
             </label>
             <input
               {...formik.getFieldProps('irrf')}
+              value={maskDecimal(formik.values.irrf)}
               type="text"
               id="irrf"
               name="irrf"
@@ -435,6 +459,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
             </label>
             <input
               {...formik.getFieldProps('pis')}
+              value={maskDecimal(formik.values.pis)}
               type="text"
               id="pis"
               name="pis"
@@ -451,6 +476,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
             </label>
             <input
               {...formik.getFieldProps('cofins')}
+              value={maskDecimal(formik.values.cofins)}
               type="text"
               id="cofins"
               name="cofins"
@@ -467,6 +493,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
             </label>
             <input
               {...formik.getFieldProps('csll')}
+              value={maskDecimal(formik.values.csll)}
               type="text"
               id="csll"
               name="csll"
@@ -483,6 +510,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
             </label>
             <input
               {...formik.getFieldProps('iss')}
+              value={maskDecimal(formik.values.iss)}
               type="text"
               id="iss"
               name="iss"
@@ -499,6 +527,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
             </label>
             <input
               {...formik.getFieldProps('ibs')}
+              value={maskDecimal(formik.values.ibs)}
               type="text"
               id="ibs"
               name="ibs"
@@ -515,6 +544,7 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
             </label>
             <input
               {...formik.getFieldProps('cbs')}
+              value={maskDecimal(formik.values.cbs)}
               type="text"
               id="cbs"
               name="cbs"
@@ -716,17 +746,13 @@ const InformacoesGerais = ({ formik, activeBanks }) => {
                   Selecione um banco
                   <strong className="text-[#F23434]">*</strong>
                 </label>
-                <CustomSelect
-                  select={{ id: item.codigoBanco, label: item.banco }}
-                  setSelect={(opt) => {
-                    // opt: { id, label }
+                <CustomSearchBanks
+                  value={`${item.codigoBanco} - ${item.banco}`}
+                  setValue={(opt) => {
                     setFin(index, 'banco', opt?.label || '')
                     setFin(index, 'codigoBanco', opt?.id || '')
                     setFin(index, 'bancoId', opt?.id || '')
                   }}
-                  options={activeBanks}
-                  placeholder={'Selecione o banco'}
-                  className={'border border-[#BBBBBB]'}
                 />
               </div>
 

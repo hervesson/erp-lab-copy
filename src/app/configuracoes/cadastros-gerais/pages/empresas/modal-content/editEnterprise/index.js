@@ -1,7 +1,6 @@
 import CustomSelect from '@/components/CustomSelect'
 import { Outfit400, Outfit500 } from '@/fonts'
-import { listAllActiveBanks } from '@/helpers'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import Convenios from './components/convenios'
 import Fornecedores from './components/fornecedores'
 import LaboratorioDeApoio from './components/laboratorioDeApoio'
@@ -32,7 +31,6 @@ const EditEnterprise = ({ onClose, selectedEnterprise, findData }) => {
     },
   }
   const [tab, setTab] = useState(screens[selectedEnterprise.tipoEmpresa])
-  const [activeBanks, setActiveBanks] = useState([])
   const [isFormValid, setIsFormValid] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -42,27 +40,6 @@ const EditEnterprise = ({ onClose, selectedEnterprise, findData }) => {
   const childFormFornecedoresDeApoioRef = useRef()
   const childFormPrestadoresDeServicoRef = useRef()
 
-  useEffect(() => {
-    const findBanks = async () => {
-      try {
-        const [allBanks] = await Promise.all([listAllActiveBanks()])
-
-        const banks = allBanks.data.map((item) => {
-          return {
-            id: item.id,
-            label: `${item.codigo} - ${item.nome}`,
-          }
-        })
-
-        setActiveBanks(banks)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    findBanks()
-  }, [])
-
   const handleValidationChange = (isValid) => {
     setIsFormValid(isValid)
   }
@@ -71,7 +48,6 @@ const EditEnterprise = ({ onClose, selectedEnterprise, findData }) => {
     CONVÊNIOS: (
       <Convenios
         formRegister={selectedEnterprise}
-        activeBanks={activeBanks}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -82,7 +58,6 @@ const EditEnterprise = ({ onClose, selectedEnterprise, findData }) => {
     'LABORATÓRIO DE APOIO': (
       <LaboratorioDeApoio
         formRegister={selectedEnterprise}
-        activeBanks={activeBanks}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -93,7 +68,6 @@ const EditEnterprise = ({ onClose, selectedEnterprise, findData }) => {
     TELEMEDICINA: (
       <Telemedicina
         formRegister={selectedEnterprise}
-        activeBanks={activeBanks}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -104,7 +78,6 @@ const EditEnterprise = ({ onClose, selectedEnterprise, findData }) => {
     'PRESTADORES DE SERVIÇO': (
       <PrestadoresDeServico
         formRegister={selectedEnterprise}
-        activeBanks={activeBanks}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -115,7 +88,6 @@ const EditEnterprise = ({ onClose, selectedEnterprise, findData }) => {
     FORNECEDORES: (
       <Fornecedores
         formRegister={selectedEnterprise}
-        activeBanks={activeBanks}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -166,7 +138,7 @@ const EditEnterprise = ({ onClose, selectedEnterprise, findData }) => {
               <span
                 className={` ${Outfit400.className} text-[16px] text-[#0F9B7F]`}
               >
-                Cadastrar
+                Editar
               </span>
 
               <span

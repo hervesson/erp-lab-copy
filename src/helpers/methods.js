@@ -5,12 +5,12 @@ import { TOKEN_KEY } from '../app/middleware'
 
 import api from './api'
 
-export async function CreateEnterprise(payload) {
+export async function CreateMethod(payload) {
   try {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
 
-    const response = await api.post('/cadastros/empresas', payload, {
+    const response = await api.post('/exames/metodos', payload, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token.value,
@@ -37,12 +37,11 @@ export async function CreateEnterprise(payload) {
   }
 }
 
-export async function ListEnterprises(
+export async function ListMethods(
   term = '',
-  type = '',
   status = '',
-  page = '',
-  limit = '',
+  page = 1,
+  limit = 10,
 ) {
   try {
     const cookie = await cookies()
@@ -51,14 +50,11 @@ export async function ListEnterprises(
     // 1. Crie uma nova instância de URLSearchParams
     const params = new URLSearchParams()
 
-    if (type !== '') {
-      params.append('tipoEmpresa', type)
-    }
     if (status !== '') {
-      params.append('ativo', status)
+      params.append('status', status)
     }
     if (term !== '') {
-      params.append('termo', term)
+      params.append('search', term)
     }
     if (page !== '') {
       params.append('page', page)
@@ -69,9 +65,7 @@ export async function ListEnterprises(
 
     // 3. Concatene a query string à base da URL
     const queryString = params.toString() // Gera 'param1=value1&param2=value2'
-    const url = `/cadastros/empresas/search${queryString ? '?' + queryString : ''}` // Adiciona '?' apenas se houver query string
-
-    console.log(url)
+    const url = `/exames/metodos${queryString ? '?' + queryString : ''}` // Adiciona '?' apenas se houver query string
 
     const response = await api.get(url, {
       headers: {
@@ -86,7 +80,7 @@ export async function ListEnterprises(
     }
   } catch (error) {
     const fallback = {
-      message: 'Erro desconhecido ao tentar buscar unidades.',
+      message: 'Erro desconhecido ao tentar buscar métodos',
       statusCode: 500,
       error: 'UnknownError',
     }
@@ -100,71 +94,7 @@ export async function ListEnterprises(
   }
 }
 
-export async function ListAllEnterprises() {
-  try {
-    const cookie = await cookies()
-    const token = cookie.get(TOKEN_KEY)
-
-    const response = await api.get('/cadastros/empresas', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token ? 'Bearer ' + token.value : undefined,
-      },
-    })
-
-    return {
-      success: true,
-      data: response.data,
-    }
-  } catch (error) {
-    const fallback = {
-      message: 'Erro desconhecido ao tentar buscar unidades.',
-      statusCode: 500,
-      error: 'UnknownError',
-    }
-
-    const errData = error?.response?.data || fallback
-
-    return {
-      success: false,
-      error: errData,
-    }
-  }
-}
-
-export async function ListAllEnterprisesPerType(type) {
-  try {
-    const cookie = await cookies()
-    const token = cookie.get(TOKEN_KEY)
-
-    const response = await api.get('/cadastros/empresas/tipo/' + type, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token ? 'Bearer ' + token.value : undefined,
-      },
-    })
-
-    return {
-      success: true,
-      data: response.data,
-    }
-  } catch (error) {
-    const fallback = {
-      message: 'Erro desconhecido ao tentar buscar unidades.',
-      statusCode: 500,
-      error: 'UnknownError',
-    }
-
-    const errData = error?.response?.data || fallback
-
-    return {
-      success: false,
-      error: errData,
-    }
-  }
-}
-
-export async function ActiveStatusEnterprise(enterpriseId) {
+export async function ActiveStatusMethod(enterpriseId) {
   try {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
@@ -200,7 +130,7 @@ export async function ActiveStatusEnterprise(enterpriseId) {
   }
 }
 
-export async function InactiveStatusEnterprise(enterpriseId) {
+export async function InactiveStatusMethod(enterpriseId) {
   try {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
@@ -236,7 +166,7 @@ export async function InactiveStatusEnterprise(enterpriseId) {
   }
 }
 
-export async function DeleteEnterprise(enterpriseId) {
+export async function DeleteMethod(enterpriseId) {
   try {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
@@ -268,7 +198,7 @@ export async function DeleteEnterprise(enterpriseId) {
   }
 }
 
-export async function UpdateEnterprise(enterpriseId, payload) {
+export async function UpdateMethod(enterpriseId, payload) {
   try {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
@@ -291,6 +221,70 @@ export async function UpdateEnterprise(enterpriseId, payload) {
   } catch (error) {
     const fallback = {
       message: 'Erro desconhecido ao tentar criar unidade',
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    const errData = error?.response?.data || fallback
+
+    return {
+      success: false,
+      error: errData,
+    }
+  }
+}
+
+export async function LinklaboratoryToMethod(payload) {
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const response = await api.post('/exames/metodos', payload, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token.value,
+      },
+    })
+
+    return {
+      success: true,
+      data: response.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: 'Erro desconhecido ao tentar criar unidade',
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    const errData = error?.response?.data || fallback
+
+    return {
+      success: false,
+      error: errData,
+    }
+  }
+}
+
+export async function GetMethodPerId(id) {
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const response = await api.get('/exames/metodos/' + id, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token ? 'Bearer ' + token.value : undefined,
+      },
+    })
+
+    return {
+      success: true,
+      data: response.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: 'Erro desconhecido ao tentar buscar métodos',
       statusCode: 500,
       error: 'UnknownError',
     }

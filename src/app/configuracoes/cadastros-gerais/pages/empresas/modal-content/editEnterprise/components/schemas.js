@@ -8,22 +8,6 @@ const onlyDigits = (v) => (typeof v === 'string' ? v.replace(/\D+/g, '') : v)
 
 const cnpjRegex = /^\d{14}$/ // 14 dígitos
 
-const phoneOpt = Yup.string()
-  .transform(trimToUndefined)
-  .nullable()
-  .test('phone-mask', 'Telefone inválido', (value) => {
-    if (!value) return true // opcional
-
-    const maskRegex = /^\(\d{2}\)\s?\d{4,5}-\d{4}$/
-
-    return maskRegex.test(value)
-  })
-
-const emailOpt = Yup.string()
-  .transform(trimToUndefined)
-  .email('E-mail inválido')
-  .nullable()
-
 // Item de conta bancária
 const financialItemSchema = Yup.object({
   bancoId: Yup.string()
@@ -87,10 +71,31 @@ export const validationSchemaEnterprises = Yup.object({
     .required('Razão social é obrigatória')
     .max(150, 'Máximo de 150 caracteres'),
 
-  telefoneFixo: phoneOpt,
-  celular: phoneOpt,
+  telefoneFixo: Yup.string()
+    .transform(trimToUndefined)
+    .test('phone-mask', 'Telefone inválido', (value) => {
+      if (!value) return true // opcional
 
-  emailComercial: emailOpt,
+      const maskRegex = /^\(\d{2}\)\s?\d{4,5}-\d{4}$/
+
+      return maskRegex.test(value)
+    })
+    .required('O telefone fixo é obrigatório'),
+  celular: Yup.string()
+    .transform(trimToUndefined)
+    .test('phone-mask', 'Telefone inválido', (value) => {
+      if (!value) return true // opcional
+
+      const maskRegex = /^\(\d{2}\)\s?\d{4,5}-\d{4}$/
+
+      return maskRegex.test(value)
+    })
+    .required('O numero do celular fixo é obrigatório'),
+
+  emailComercial: Yup.string()
+    .transform(trimToUndefined)
+    .email('E-mail inválido')
+    .required('O email comercial é obrigatório'),
 
   // Endereço (ajuste required conforme sua regra de negócio)
   cep: Yup.string()
@@ -121,13 +126,31 @@ export const validationSchemaEnterprises = Yup.object({
   nomeDoResponsavel: Yup.string()
     .transform(trimToUndefined)
     .required('Nome do responsável é obrigatório'),
-  cargoResponsavel: Yup.string().transform(trimToUndefined).nullable(),
-  contatoResponsavel: phoneOpt,
-  emailResponsavel: emailOpt,
+  cargoResponsavel: Yup.string()
+    .transform(trimToUndefined)
+    .required('Cargo do responsável é obrigatório'),
+  contatoResponsavel: Yup.string()
+    .transform(trimToUndefined)
+    .test('phone-mask', 'Telefone inválido', (value) => {
+      if (!value) return true // opcional
+
+      const maskRegex = /^\(\d{2}\)\s?\d{4,5}-\d{4}$/
+
+      return maskRegex.test(value)
+    })
+    .required('O telefone do responsável é obrigatório'),
+  email: Yup.string()
+    .transform(trimToUndefined)
+    .email('E-mail inválido')
+    .required('O email do responsável é obrigatório'),
 
   // Financeiro — pelo menos 1 conta válida
   financeiro: Yup.array()
     .of(financialItemSchema)
     .min(1, 'Adicione ao menos uma conta bancária')
     .required('Informe as contas bancárias'),
+
+  nomeFantasia: Yup.string()
+    .transform(trimToUndefined)
+    .required('Nome fantasia é obrigatória'),
 })

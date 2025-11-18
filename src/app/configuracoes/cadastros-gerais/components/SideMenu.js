@@ -103,7 +103,7 @@ const SideMenu = ({ page, setPage }) => {
                 : 'text-[#8A8A8A] hover:bg-[#0F9B7F] hover:text-white'
             }`}
           >
-            <span className={`${Outfit400.className} `}>Metodos</span>
+            <span className={`${Outfit400.className} `}>Métodos</span>
           </button>
           <button
             onClick={() => setPage('amostras')}
