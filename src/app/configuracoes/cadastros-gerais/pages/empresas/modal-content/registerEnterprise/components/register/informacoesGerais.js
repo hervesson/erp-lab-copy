@@ -54,6 +54,8 @@ const InformacoesGerais = ({ formik, states }) => {
         'inscricaoEstadual',
         safe(result.data.inscricaoEstadual),
       )
+      formik.setFieldValue('telefoneFixo', safe(result.data.telefoneFixo))
+      formik.setFieldValue('optantePeloSimples', result.data.company.simples)
       formik.setFieldValue('razaoSocial', safe(result.data.razaoSocial))
       formik.setFieldValue('bairro', safe(result.data.bairro))
       formik.setFieldValue('cidade', {
