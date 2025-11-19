@@ -1,14 +1,79 @@
-import { Outfit400 } from '@/fonts'
-import { Clock, Trash } from 'iconsax-reactjs'
+import { Outfit300, Outfit400 } from '@/fonts'
+import { Clock, InfoCircle, Trash } from 'iconsax-reactjs'
 
-const Horarios = () => {
+const Horarios = ({ formik }) => {
+  const handleChange = (index, field, value, isArrayToggle = false) => {
+    // setOpeningHours((prev) =>
+    //   prev.map((item, i) => {
+    //     if (isArrayToggle && field === 'days') {
+    //       const exists = item[field].includes(value)
+
+    //       // Se for o item selecionado
+    //       if (i === index) {
+    //         return {
+    //           ...item,
+    //           [field]: exists
+    //             ? item[field].filter((v) => v !== value) // remove se já existe
+    //             : [...item[field], value], // adiciona se não existe
+    //         }
+    //       }
+
+    //       // Para os outros itens, removemos o dia caso exista
+    //       return {
+    //         ...item,
+    //         [field]: item[field].filter((v) => v !== value),
+    //       }
+    //     }
+
+    //     // Se for input "normal"
+    //     if (i === index) {
+    //       return { ...item, [field]: value }
+    //     }
+
+    //     return item
+    //   }),
+    // )
+
+    formik.setFieldValue(
+      'horarios',
+      formik.values.horarios.map((item, i) => {
+        if (isArrayToggle && field === 'days') {
+          const exists = item[field].includes(value)
+
+          // Se for o item selecionado
+          if (i === index) {
+            return {
+              ...item,
+              [field]: exists
+                ? item[field].filter((v) => v !== value) // remove se já existe
+                : [...item[field], value], // adiciona se não existe
+            }
+          }
+
+          // Para os outros itens, removemos o dia caso exista
+          return {
+            ...item,
+            [field]: item[field].filter((v) => v !== value),
+          }
+        }
+
+        // Se for input "normal"
+        if (i === index) {
+          return { ...item, [field]: value }
+        }
+
+        return item
+      }),
+    )
+  }
+
   return (
     <div className="flex flex-col gap-[16px]">
       <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
         Horários de atendimento
       </span>
 
-      {openingHours?.map((item, index) => {
+      {formik.values.horarios?.map((item, index) => {
         return (
           <div className="flex flex-col gap-[16px]" key={index.toString()}>
             <div className="flex gap-[16px]">
@@ -26,7 +91,7 @@ const Horarios = () => {
                         handleChange(index, 'days', 'SEGUNDA', true)
                       }
                       className={`${
-                        openingHours[index].days.includes('SEGUNDA')
+                        formik.values.horarios[index].days.includes('SEGUNDA')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
                       } flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
@@ -36,7 +101,7 @@ const Horarios = () => {
                     <span
                       onClick={() => handleChange(index, 'days', 'TERCA', true)}
                       className={`${
-                        openingHours[index].days.includes('TERCA')
+                        formik.values.horarios[index].days.includes('TERCA')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
                       } flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
@@ -48,7 +113,7 @@ const Horarios = () => {
                         handleChange(index, 'days', 'QUARTA', true)
                       }
                       className={`${
-                        openingHours[index].days.includes('QUARTA')
+                        formik.values.horarios[index].days.includes('QUARTA')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
                       } flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
@@ -60,7 +125,7 @@ const Horarios = () => {
                         handleChange(index, 'days', 'QUINTA', true)
                       }
                       className={`${
-                        openingHours[index].days.includes('QUINTA')
+                        formik.values.horarios[index].days.includes('QUINTA')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
                       } flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
@@ -70,7 +135,7 @@ const Horarios = () => {
                     <span
                       onClick={() => handleChange(index, 'days', 'SEXTA', true)}
                       className={`${
-                        openingHours[index].days.includes('SEXTA')
+                        formik.values.horarios[index].days.includes('SEXTA')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
                       } flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
@@ -82,7 +147,7 @@ const Horarios = () => {
                         handleChange(index, 'days', 'SABADO', true)
                       }
                       className={`${
-                        openingHours[index].days.includes('SABADO')
+                        formik.values.horarios[index].days.includes('SABADO')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
                       } flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
@@ -94,7 +159,7 @@ const Horarios = () => {
                         handleChange(index, 'days', 'DOMINGO', true)
                       }
                       className={`${
-                        openingHours[index].days.includes('DOMINGO')
+                        formik.values.horarios[index].days.includes('DOMINGO')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
                       } flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
@@ -106,7 +171,7 @@ const Horarios = () => {
                         handleChange(index, 'days', 'FERIADOS', true)
                       }
                       className={`${
-                        openingHours[index].days.includes('FERIADOS')
+                        formik.values.horarios[index].days.includes('FERIADOS')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
                       } flex h-[40px] w-[90px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
@@ -127,7 +192,7 @@ const Horarios = () => {
                 <div className="flex items-center gap-[16px]">
                   <div className="flex h-[40px] w-[100px] items-center gap-2 rounded-[8px] border border-[#A1A1A1] px-2">
                     <input
-                      value={openingHours[index].of}
+                      value={formik.values.horarios[index].of}
                       onChange={(e) =>
                         handleChange(index, 'of', e.target.value)
                       }
@@ -141,12 +206,12 @@ const Horarios = () => {
                   </span>
                   <div className="flex h-[40px] w-[100px] items-center gap-2 rounded-[8px] border border-[#A1A1A1] px-2">
                     <input
-                      value={openingHours[index].until}
+                      value={formik.values.horarios[index].until}
                       onChange={(e) =>
                         handleChange(index, 'until', e.target.value)
                       }
                       type="time"
-                      className={`${Outfit400.className} w-[60px] outline-0`}
+                      className={`${Outfit400.className} w-[60px] text-[#222222] outline-0`}
                     />
                     <Clock size="28" color="#A1A1A1" />
                   </div>
@@ -162,16 +227,16 @@ const Horarios = () => {
                 </label>
                 <div className="flex items-center gap-[16px]">
                   <div
-                    className={`flex h-[40px] w-[100px] items-center gap-2 rounded-[8px] ${openingHours[index].enabled ? 'border border-dashed' : 'border'} border-[#A1A1A1] px-2`}
+                    className={`flex h-[40px] w-[100px] items-center gap-2 rounded-[8px] ${formik.values.horarios[index].enabled ? 'border border-dashed' : 'border'} border-[#A1A1A1] px-2`}
                   >
                     <input
-                      value={openingHours[index].interval}
+                      value={formik.values.horarios[index].interval}
                       onChange={(e) =>
                         handleChange(index, 'interval', e.target.value)
                       }
                       type="time"
                       className={`${Outfit400.className} w-[60px] text-[#222222] outline-0`}
-                      disabled={openingHours[index].enabled}
+                      disabled={formik.values.horarios[index].enabled}
                     />
                     <Clock size="28" color="#A1A1A1" />
                   </div>
@@ -179,23 +244,23 @@ const Horarios = () => {
                     às
                   </span>
                   <div
-                    className={`flex h-[40px] w-[100px] items-center gap-2 rounded-[8px] ${openingHours[index].enabled ? 'border border-dashed' : 'border'} border-[#A1A1A1] px-2`}
+                    className={`flex h-[40px] w-[100px] items-center gap-2 rounded-[8px] ${formik.values.horarios[index].enabled ? 'border border-dashed' : 'border'} border-[#A1A1A1] px-2`}
                   >
                     <input
-                      value={openingHours[index].returnInterval}
+                      value={formik.values.horarios[index].returnInterval}
                       onChange={(e) =>
                         handleChange(index, 'returnInterval', e.target.value)
                       }
                       type="time"
                       className={`${Outfit400.className} w-[60px] text-[#222222] outline-0`}
-                      disabled={openingHours[index].enabled}
+                      disabled={formik.values.horarios[index].enabled}
                     />
                     <Clock size="28" color="#A1A1A1" />
                   </div>
                   <div className="flex items-center gap-2">
                     <input
                       type="checkbox"
-                      checked={openingHours[index].enabled}
+                      checked={formik.values.horarios[index].enabled}
                       onChange={(e) => {
                         handleChange(index, 'enabled', e.target.checked)
                         if (e.target.checked) {
@@ -212,17 +277,18 @@ const Horarios = () => {
                 </div>
               </div>
               <div className="flex flex-1 flex-col justify-end">
-                {openingHours[index].days.length > 0 ? (
+                {formik.values.horarios[index].days.length > 0 ? (
                   <div className="flex h-[40px] items-center gap-2 rounded-[50px] bg-[#E0FFF9] px-3">
                     <label
                       className={`${Outfit300.className} text-[14px] text-[#0F9B7F]`}
                     >
-                      {openingHours[index].days.join(' - ')} - das{' '}
-                      {openingHours[index].of} as {openingHours[index].until}{' '}
-                      {!openingHours[index].enabled && 'e das '}
-                      {openingHours[index].interval}{' '}
-                      {!openingHours[index].enabled && 'as '}
-                      {openingHours[index].returnInterval}
+                      {formik.values.horarios[index].days.join(' - ')} - das{' '}
+                      {formik.values.horarios[index].of} as{' '}
+                      {formik.values.horarios[index].until}{' '}
+                      {!formik.values.horarios[index].enabled && 'e das '}
+                      {formik.values.horarios[index].interval}{' '}
+                      {!formik.values.horarios[index].enabled && 'as '}
+                      {formik.values.horarios[index].returnInterval}
                     </label>
                   </div>
                 ) : (
@@ -236,13 +302,13 @@ const Horarios = () => {
                   </div>
                 )}
               </div>
-              {openingHours.length === 1 ? null : (
+              {formik.values.horarios.length === 1 ? null : (
                 <div
                   className="flex flex-col justify-end py-[8px]"
                   onClick={() =>
-                    setOpeningHours((prev) =>
-                      prev.filter((_, i) => i !== index),
-                    )
+                    formik.setFieldValue('horarios', [
+                      formik.values.horarios.filter((_, i) => i !== index),
+                    ])
                   }
                 >
                   <Trash size="28" color="#737373" />
@@ -256,8 +322,8 @@ const Horarios = () => {
       <button
         type="button"
         onClick={() =>
-          setOpeningHours([
-            ...openingHours,
+          formik.setFieldValue('horarios', [
+            ...formik.values.horarios,
             {
               days: [],
               of: '',

@@ -16,7 +16,7 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
         'inscricaoEstadual',
         safe(result.data.inscricaoEstadual),
       )
-      formik.setFieldValue('telefoneFixo', safe(result.data.telefoneFixo))
+      formik.setFieldValue('telefone', safe(result.data.telefoneFixo))
       formik.setFieldValue('optantePeloSimples', result.data.company.simples)
       formik.setFieldValue('razaoSocial', safe(result.data.razaoSocial))
       formik.setFieldValue('bairro', safe(result.data.bairro))
@@ -252,12 +252,16 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
               ) {
                 formik.setFieldValue('codigoServicoSecundarioSelecionados', [
                   ...formik.values.codigoServicoSecundarioSelecionados,
-                  formik.values.codigoServicoSecundario.id,
+                  formik.values.codigoServicoSecundario,
                 ])
               }
               formik.setFieldValue('codigoServicoSecundario', {})
             }}
             className={`${Outfit400.className} h-[40px] rounded-[8px] border border-[#0F9B7F] px-2 text-[#0F9B7F]`}
+            disabled={
+              Object.keys(formik.values.codigoServicoSecundario || {})
+                .length === 0
+            }
           >
             ADICIONAR
           </button>
@@ -345,6 +349,9 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
               formik.setFieldValue('cnaeSecundario', '')
             }}
             className={`${Outfit400.className} text-[] h-[40px] rounded-[8px] border-1 border-[#0F9B7F] px-2 text-[#0F9B7F]`}
+            disabled={
+              Object.keys(formik.values.cnaeSecundario || {}).length === 0
+            }
           >
             ADICIONAR
           </button>

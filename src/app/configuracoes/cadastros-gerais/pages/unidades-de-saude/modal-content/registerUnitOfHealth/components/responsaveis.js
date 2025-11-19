@@ -1,4 +1,7 @@
-const Responsaveis = () => {
+import { Outfit400 } from '@/fonts'
+import { formatPhoneNumber } from '@/utils'
+
+const Responsaveis = ({ formik }) => {
   return (
     <div className="flex flex-col gap-[16px]">
       <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
@@ -15,9 +18,11 @@ const Responsaveis = () => {
               <strong className="text-[#F23434]">*</strong>
             </label>
             <input
-              value={responsibleName}
-              onChange={(e) => setResponsibleName(e.target.value)}
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+              {...formik.getFieldProps('nomeResponsavel')}
+              type="text"
+              id="nomeResponsavel"
+              name="nomeResponsavel"
+              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite o nome do responsável"
             />
           </div>
@@ -31,10 +36,14 @@ const Responsaveis = () => {
               <strong className="text-[#F23434]">*</strong>
             </label>
             <input
-              value={formatPhoneNumber(responsibleContact)}
-              onChange={(e) => setResponsibleContact(e.target.value)}
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+              {...formik.getFieldProps('contatoResponsavel')}
+              value={formatPhoneNumber(formik.values.contatoResponsavel)}
+              type="text"
+              id="contatoResponsavel"
+              name="contatoResponsavel"
+              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite o contato do responsável"
+              maxLength={15}
             />
           </div>
         </div>
@@ -47,10 +56,12 @@ const Responsaveis = () => {
               <strong className="text-[#F23434]">*</strong>
             </label>
             <input
-              value={responsibleEmail}
-              onChange={(e) => setResponsibleEmail(e.target.value)}
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
-              placeholder="Digite o email do responsável"
+              {...formik.getFieldProps('emailResponsavel')}
+              type="email"
+              id="emailResponsavel"
+              name="emailResponsavel"
+              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+              placeholder="Digite o email de contato do responsável"
             />
           </div>
         </div>

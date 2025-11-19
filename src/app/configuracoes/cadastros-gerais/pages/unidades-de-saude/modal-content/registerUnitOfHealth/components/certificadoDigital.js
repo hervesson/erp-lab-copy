@@ -1,6 +1,21 @@
 import { Outfit300, Outfit400 } from '@/fonts'
+import { InfoCircle, Link } from 'iconsax-reactjs'
+import { useRef } from 'react'
 
-const CertificadoDigital = () => {
+const CertificadoDigital = ({ formik }) => {
+  const fileInputRef = useRef(null)
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      formik.setFieldValue('certificado', file.name)
+    }
+  }
+
+  const handleClick = () => {
+    fileInputRef.current.click() // abre o seletor de arquivos
+  }
+
   return (
     <div className="flex flex-col gap-[16px]">
       <span
@@ -12,18 +27,24 @@ const CertificadoDigital = () => {
       <div className="flex flex-col gap-[16px]">
         <div className="flex flex-1 gap-2">
           <button
-            onClick={cert ? () => setCert(null) : () => handleClick()}
+            onClick={
+              formik.values.certificado
+                ? () => formik.setFieldValue('certificado', '')
+                : () => handleClick()
+            }
             type="button"
-            className={`${Outfit400.className} ${cert ? 'border border-[#F23434] text-[#F23434]' : 'border border-[#0F9B7F] text-[#0F9B7F]'} flex h-[40px] w-[235px] items-center justify-evenly rounded-[8px]`}
+            className={`${Outfit400.className} ${formik.values.certificado ? 'border border-[#F23434] text-[#F23434]' : 'border border-[#0F9B7F] text-[#0F9B7F]'} flex h-[40px] w-[235px] items-center justify-evenly rounded-[8px]`}
           >
             <Link
               size="28"
-              color={cert ? '#F23434' : '#0F9B7F'}
+              color={formik.values.certificado ? '#F23434' : '#0F9B7F'}
               variant="TwoTone"
             />
-            {cert ? 'REMOVER CERTIFICADO' : 'VINCULAR CERTIFICADO'}
+            {formik.values.certificado
+              ? 'REMOVER CERTIFICADO'
+              : 'VINCULAR CERTIFICADO'}
           </button>
-          {cert ? (
+          {formik.values.certificado ? (
             <div className="flex h-[40px] items-center gap-2 rounded-[8px] bg-[#E9FDEE] px-3">
               <InfoCircle size="20" color="#2CB04B" variant="Bulk" />
               <label
@@ -44,6 +65,13 @@ const CertificadoDigital = () => {
           )}
         </div>
       </div>
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        className="hidden"
+        accept=".pem,.crt,.cer,.pdf" // opcional: tipos permitidos
+      />
     </div>
   )
 }

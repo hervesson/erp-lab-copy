@@ -1,114 +1,28 @@
 import ModalFramer from '@/components/ModalFramer'
 import { Outfit400, Outfit500 } from '@/fonts'
-import {
-  CreateUnit,
-  listAllActiveBanks,
-  ListAllCNAEs,
-  listAllServicesOfHealth,
-} from '@/helpers'
+import { ListAllCNAEs, listAllServicesOfHealth } from '@/helpers'
 import { useFormik } from 'formik'
-import { useEffect, useRef, useState } from 'react'
-import { toast, ToastContainer } from 'react-toastify'
+import { useEffect, useState } from 'react'
+import { ToastContainer } from 'react-toastify'
 import CancelRegister from './components/CancelRegister'
 import SuccessRegister from './components/SuccessRegister'
 
 // Components
+import CertificadoDigital from './components/certificadoDigital'
+import Endereco from './components/endereco'
+import Financeiro from './components/financeiro'
+import Horarios from './components/horarios'
+import Impostos from './components/impostos'
 import InformacoesBasicas from './components/informacoesBasicas'
+import Responsaveis from './components/responsaveis'
 
-const RegisterUnityOfHealth = ({ onClose, findData }) => {
-  const fileInputRef = useRef(null)
-
+const RegisterUnityOfHealth = ({ onClose }) => {
   // Loading
-  const [loading, setLoading] = useState(false)
+  const [loading] = useState(false)
 
-  // Informações básicas
-  const [name, setName] = useState('')
-  const [internalCode, setInternalCode] = useState('')
-  const [cnpj, setCnpj] = useState('')
-  const [corporateReason, setCorporateReason] = useState('')
-  const [fantasyName, setFantasyName] = useState('')
-  const [municipalRegistration, setMunicipalRegistration] = useState('')
-  const [stateRegistration, setStateRegistration] = useState('')
-  const [CNES, setCNES] = useState('')
-  const [contacts, setContacts] = useState('')
-  const [email, setEmail] = useState('')
-  const [mainServiceCode, setMainServiceCode] = useState('')
-
-  const [secondaryServiceCode, setSecondaryServiceCode] = useState('')
-  const [selectSecondaryServiceCode, setSelectSecondaryServiceCode] = useState(
-    [],
-  )
-
-  const [mainCNAE, setMainCNAE] = useState({})
-
-  const [secondaryCNAE, setSecondaryCNAE] = useState({})
-
-  const [selectSecondaryCNAE, setSelectSecondaryCNAE] = useState([])
-
-  // Endereço
-  const [cep, setCep] = useState('')
-  const [street, setStreet] = useState('')
-  const [number, setNumber] = useState('')
-  const [district, setDistrict] = useState('')
-  const [complement, setComplement] = useState('')
-  const [city, setCity] = useState('')
-  const [state, setState] = useState('')
-
-  // Dias de atendimento
-  const [openingHours, setOpeningHours] = useState([
-    {
-      days: [],
-      of: '',
-      until: '',
-      interval: '',
-      returnInterval: '',
-      enabled: true,
-    },
-  ])
-
-  // Responsáveis
-  const [responsibleName, setResponsibleName] = useState('')
-  const [responsibleContact, setResponsibleContact] = useState('')
-  const [responsibleEmail, setResponsibleEmail] = useState('')
-
-  // Impostos
-  const [IRRF, setIRRF] = useState('')
-  const [PIS, setPIS] = useState('')
-  const [COFINS, setCOFINS] = useState('')
-  const [CSLL, setCSLL] = useState('')
-  const [ISS, setISS] = useState('')
-  const [IBS, setIBS] = useState('')
-  const [CBS, setCBS] = useState('')
-  const [retainISS, setRetainISS] = useState(false)
-  const [retainIR, setRetainIR] = useState(false)
-  const [retainPCC, setRetainPCC] = useState(false)
-  const [retainIBS, setRetainIBS] = useState(false)
-  const [retainCBS, setRetainCBS] = useState(false)
-  const [nationalSimpleOptant, setNationalSimpleOptant] = useState(false)
-
-  // coisas
-  const [activeBanks, setActiveBanks] = useState([])
+  // Coisas
   const [services, setServices] = useState([])
   const [CNAEs, setCNAES] = useState([])
-
-  // Certificado digital
-  const [cert, setCert] = useState(false)
-
-  // Financeiro
-  const [financial, setFinancial] = useState([
-    {
-      banco: '',
-      codigoBanco: '',
-      bancoId: '',
-      agencia: '',
-      digitoAgencia: '',
-      contaCorrente: '',
-      digitoConta: '',
-      tipoConta: '',
-      principal: false,
-      observacoes: '',
-    },
-  ])
 
   const [step, setStep] = useState('')
   const [openModalAlerts, setOpenModalAlerts] = useState(false)
@@ -116,18 +30,10 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
   useEffect(() => {
     const findUsersByFilters = async () => {
       try {
-        const [allBanks, allServices, allCnaes] = await Promise.all([
-          listAllActiveBanks(),
+        const [allServices, allCnaes] = await Promise.all([
           listAllServicesOfHealth(),
           ListAllCNAEs(),
         ])
-
-        const banks = allBanks.data.map((item) => {
-          return {
-            id: item.id,
-            label: `${item.codigo} - ${item.nome}`,
-          }
-        })
 
         const servcs = allServices.data.map((item) => {
           return {
@@ -143,7 +49,6 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
           }
         })
 
-        setActiveBanks(banks)
         setServices(servcs)
         setCNAES(cns)
       } catch (error) {
@@ -154,224 +59,96 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
     findUsersByFilters()
   }, [])
 
-  // const handleClick = () => {
-  //   fileInputRef.current.click() // abre o seletor de arquivos
-  // }
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0]
-    if (file) {
-      setCert(file.name)
-    }
-  }
-
-  // const handleChangeFinancial = (index, field, value) => {
-  //   setFinancial((prev) =>
-  //     prev.map((item, i) => (i === index ? { ...item, [field]: value } : item)),
-  //   )
-  // }
-
-  // const handleChange = (index, field, value, isArrayToggle = false) => {
-  //   setOpeningHours((prev) =>
-  //     prev.map((item, i) => {
-  //       if (isArrayToggle && field === 'days') {
-  //         const exists = item[field].includes(value)
-
-  //         // Se for o item selecionado
-  //         if (i === index) {
-  //           return {
-  //             ...item,
-  //             [field]: exists
-  //               ? item[field].filter((v) => v !== value) // remove se já existe
-  //               : [...item[field], value], // adiciona se não existe
-  //           }
-  //         }
-
-  //         // Para os outros itens, removemos o dia caso exista
-  //         return {
-  //           ...item,
-  //           [field]: item[field].filter((v) => v !== value),
-  //         }
-  //       }
-
-  //       // Se for input "normal"
-  //       if (i === index) {
-  //         return { ...item, [field]: value }
-  //       }
-
-  //       return item
+  // const handleSubmit = async () => {
+  //   setLoading(true)
+  //   const payload = {
+  //     nomeUnidade: name,
+  //     codigoInterno: internalCode,
+  //     cnpj: cnpj.replace(/\D/g, '').slice(0, 14),
+  //     razaoSocial: corporateReason,
+  //     nomeFantasia: fantasyName,
+  //     inscricaoMunicipal: municipalRegistration,
+  //     inscricaoEstadual: stateRegistration,
+  //     cnes: CNES,
+  //     contatosUnidade: contacts,
+  //     email,
+  //     codigoServicoPrincipal: mainServiceCode.id,
+  //     codigoServicoSecundario: selectSecondaryServiceCode.map((e) => {
+  //       return e.id
   //     }),
-  //   )
-  // }
+  //     cnaePrincipalId: mainCNAE?.id,
+  //     cep: cep.replace('-', ''),
+  //     rua: street,
+  //     numero: number,
+  //     bairro: district,
+  //     complemento: complement,
+  //     estado: state,
+  //     cidade: city,
+  //     nomeResponsavel: responsibleName,
+  //     contatoResponsavel: responsibleContact,
+  //     emailResponsavel: responsibleEmail,
+  //     irrfPercentual: Number(IRRF),
+  //     pisPercentual: Number(PIS),
+  //     cofinsPercentual: Number(COFINS),
+  //     csllPercentual: Number(CSLL),
+  //     issPercentual: Number(ISS),
+  //     ibsPercentual: Number(IBS),
+  //     cbsPercentual: Number(CBS),
+  //     reterIss: retainISS,
+  //     reterIr: retainIR,
+  //     reterPcc: retainPCC,
+  //     reterIbs: retainIBS,
+  //     reterCbs: retainCBS,
+  //     optanteSimplesNacional: nationalSimpleOptant,
+  //     certificadoDigitalVinculado: !!cert,
+  //     ativo: true,
+  //     horariosAtendimento: openingHours.flatMap((item) =>
+  //       item.days.map((dia) => ({
+  //         diaSemana: dia,
+  //         horarioInicio: item.of || '',
+  //         horarioFim: item.until || '',
+  //         intervaloInicio: item.interval || '00:00',
+  //         intervaloFim: item.returnInterval || '00:00',
+  //         semIntervalo: item.enabled,
+  //       })),
+  //     ),
+  //     dadosBancarios: financial.map((e) => {
+  //       return {
+  //         bancoId: e.bancoId,
+  //         agencia: e.agencia,
+  //         digitoAgencia: e.digitoAgencia,
+  //         contaCorrente: e.contaCorrente,
+  //         digitoConta: e.digitoConta,
+  //         tipoConta: 'CORRENTE',
+  //         principal: true,
+  //         observacoes: '0',
+  //       }
+  //     }),
+  //     cnaeSecundarios: selectSecondaryCNAE.map((e) => {
+  //       return { cnaeId: e.id }
+  //     }),
+  //   }
 
-  const handleSubmit = async () => {
-    setLoading(true)
-    const payload = {
-      nomeUnidade: name,
-      codigoInterno: internalCode,
-      cnpj: cnpj.replace(/\D/g, '').slice(0, 14),
-      razaoSocial: corporateReason,
-      nomeFantasia: fantasyName,
-      inscricaoMunicipal: municipalRegistration,
-      inscricaoEstadual: stateRegistration,
-      cnes: CNES,
-      contatosUnidade: contacts,
-      email,
-      codigoServicoPrincipal: mainServiceCode.id,
-      codigoServicoSecundario: selectSecondaryServiceCode.map((e) => {
-        return e.id
-      }),
-      cnaePrincipalId: mainCNAE?.id,
-      cep: cep.replace('-', ''),
-      rua: street,
-      numero: number,
-      bairro: district,
-      complemento: complement,
-      estado: state,
-      cidade: city,
-      nomeResponsavel: responsibleName,
-      contatoResponsavel: responsibleContact,
-      emailResponsavel: responsibleEmail,
-      irrfPercentual: Number(IRRF),
-      pisPercentual: Number(PIS),
-      cofinsPercentual: Number(COFINS),
-      csllPercentual: Number(CSLL),
-      issPercentual: Number(ISS),
-      ibsPercentual: Number(IBS),
-      cbsPercentual: Number(CBS),
-      reterIss: retainISS,
-      reterIr: retainIR,
-      reterPcc: retainPCC,
-      reterIbs: retainIBS,
-      reterCbs: retainCBS,
-      optanteSimplesNacional: nationalSimpleOptant,
-      certificadoDigitalVinculado: !!cert,
-      ativo: true,
-      horariosAtendimento: openingHours.flatMap((item) =>
-        item.days.map((dia) => ({
-          diaSemana: dia,
-          horarioInicio: item.of || '',
-          horarioFim: item.until || '',
-          intervaloInicio: item.interval || '00:00',
-          intervaloFim: item.returnInterval || '00:00',
-          semIntervalo: item.enabled,
-        })),
-      ),
-      dadosBancarios: financial.map((e) => {
-        return {
-          bancoId: e.bancoId,
-          agencia: e.agencia,
-          digitoAgencia: e.digitoAgencia,
-          contaCorrente: e.contaCorrente,
-          digitoConta: e.digitoConta,
-          tipoConta: 'CORRENTE',
-          principal: true,
-          observacoes: '0',
-        }
-      }),
-      cnaeSecundarios: selectSecondaryCNAE.map((e) => {
-        return { cnaeId: e.id }
-      }),
-    }
+  //   try {
+  //     const responseCreateUnity = await CreateUnit(payload)
 
-    try {
-      const responseCreateUnity = await CreateUnit(payload)
-
-      if (responseCreateUnity.success) {
-        setStep('sucess')
-        setOpenModalAlerts(true)
-        findData()
-      } else {
-        responseCreateUnity.error.message.forEach((element) => {
-          toast.error(element, {
-            position: 'top-right',
-          })
-        })
-      }
-    } catch (error) {
-      console.log('erro', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  // const searchCEP = async () => {
-  //   if (cep.length === 9) {
-  //     const result = await SearchCep(cep)
-  //     setStreet(result?.data?.rua)
-  //     setDistrict(result?.data?.bairro)
-  //     setCity(result?.data?.cidade)
-  //     setState(result?.data?.estado)
+  //     if (responseCreateUnity.success) {
+  //       setStep('sucess')
+  //       setOpenModalAlerts(true)
+  //       findData()
+  //     } else {
+  //       responseCreateUnity.error.message.forEach((element) => {
+  //         toast.error(element, {
+  //           position: 'top-right',
+  //         })
+  //       })
+  //     }
+  //   } catch (error) {
+  //     console.log('erro', error)
+  //   } finally {
+  //     setLoading(false)
   //   }
   // }
-
-  const resetFields = () => {
-    setName('')
-    setInternalCode('')
-    setCnpj('')
-    setCorporateReason('')
-    setFantasyName('')
-    setMunicipalRegistration('')
-    setStateRegistration('')
-    setCNES('')
-    setContacts('')
-    setEmail('')
-    setMainServiceCode('')
-    setSecondaryServiceCode('')
-    setSelectSecondaryServiceCode([])
-    setMainCNAE({})
-    setSecondaryCNAE({})
-    setSelectSecondaryCNAE([])
-    setCep('')
-    setStreet('')
-    setNumber('')
-    setDistrict('')
-    setComplement('')
-    setCity('')
-    setState('')
-    setOpeningHours([
-      {
-        days: [],
-        of: '',
-        until: '',
-        interval: '',
-        returnInterval: '',
-        enabled: true,
-      },
-    ])
-    setResponsibleName('')
-    setResponsibleContact('')
-    setResponsibleEmail('')
-    setIRRF('')
-    setPIS('')
-    setCOFINS('')
-    setCSLL('')
-    setISS('')
-    setIBS('')
-    setCBS('')
-    setRetainISS(false)
-    setRetainIR(false)
-    setRetainPCC(false)
-    setRetainIBS(false)
-    setRetainCBS(false)
-    setNationalSimpleOptant(false)
-    setCert(false)
-    setFinancial([
-      {
-        banco: '',
-        codigoBanco: '',
-        bancoId: '',
-        agencia: '',
-        digitoAgencia: '',
-        contaCorrente: '',
-        digitoConta: '',
-        tipoConta: '',
-        principal: false,
-        observacoes: '',
-      },
-    ])
-    setStep('sucess')
-  }
 
   const steps = {
     cancel: (
@@ -384,7 +161,6 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
       <SuccessRegister
         onClose={() => {
           setOpenModalAlerts(false)
-          resetFields()
         }}
         onCloseRegister={() => onClose()}
       />
@@ -412,6 +188,58 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
       cnaePrincipal: {},
       cnaeSecundario: {},
       cnaesSecundariosSelecionados: [],
+
+      // endereço
+      cep: '',
+      rua: '',
+      numero: '',
+      bairro: '',
+      complemento: '',
+      estado: '',
+      cidade: '',
+
+      // horarios
+      horarios: [
+        {
+          days: [],
+          of: '',
+          until: '',
+          interval: '',
+          returnInterval: '',
+          enabled: true,
+        },
+      ],
+
+      // responsavel
+      nomeResponsavel: '',
+      emailResponsavel: '',
+      contatoResponsavel: '',
+
+      // impostos
+      irrf: '',
+      pis: '',
+      cofins: '',
+      csll: '',
+      iss: '',
+      ibs: '',
+      cbs: '',
+
+      // financeiro
+      financeiro: [
+        {
+          banco: '', // label do banco
+          codigoBanco: '', // ex.: "001"
+          bancoId: '', // id interno/opcional
+          agencia: '',
+          tipoDeConta: '',
+          digitoAgencia: '',
+          conta: '',
+          digitoConta: '',
+        },
+      ],
+
+      // certificado
+      certificado: null,
     },
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -458,7 +286,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
             </button>
             <button
               type="button"
-              onClick={() => handleSubmit()}
+              // onClick={() => handleSubmit()}
               className="flex h-[44px] items-center justify-evenly rounded-[8px] bg-[#A9A9A9] px-4 text-[#494949] hover:bg-[#0F9B7F] hover:text-[#fff]"
             >
               <span className={`${Outfit400.className} uppercase`}>
@@ -478,26 +306,19 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
               CNAEs={CNAEs}
             />
             {/* endereco */}
-            {/* <Endereco /> */}
+            <Endereco formik={formik} />
             {/* horários */}
-            {/* <Horarios /> */}
+            <Horarios formik={formik} />
             {/* responsável */}
-            {/* <Responsaveis /> */}
+            <Responsaveis formik={formik} />
             {/* impostos */}
-            {/* <Impostos /> */}
+            <Impostos formik={formik} />
             {/* financeiro */}
-            {/* <Financeiro /> */}
+            <Financeiro formik={formik} />
             {/* certificado digital */}
-            {/* <CertificadoDigital /> */}
+            <CertificadoDigital formik={formik} />
           </div>
         </div>
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          className="hidden"
-          accept=".pem,.crt,.cer,.pdf" // opcional: tipos permitidos
-        />
       </form>
       {openModalAlerts && (
         <ModalFramer
