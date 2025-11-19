@@ -35,8 +35,14 @@ const InformacoesGerais = ({ formik, states }) => {
       const result = await SearchCep(formik.values.cep)
       formik.setFieldValue('rua', result?.data?.rua)
       formik.setFieldValue('bairro', result?.data?.bairro)
-      formik.setFieldValue('cidade', result?.data?.cidade)
-      formik.setFieldValue('estado', result?.data?.estado)
+      formik.setFieldValue('cidade', {
+        id: '',
+        label: safe(result.data.cidade),
+      })
+      formik.setFieldValue('estado', {
+        id: '',
+        label: safe(result.data.estado),
+      })
     }
   }
 
@@ -50,10 +56,16 @@ const InformacoesGerais = ({ formik, states }) => {
       )
       formik.setFieldValue('razaoSocial', safe(result.data.razaoSocial))
       formik.setFieldValue('bairro', safe(result.data.bairro))
-      formik.setFieldValue('cidade', safe(result.data.cidade))
+      formik.setFieldValue('cidade', {
+        id: '',
+        label: safe(result.data.cidade),
+      })
       formik.setFieldValue('complemento', safe(result.data.complemento))
       formik.setFieldValue('emailComercial', safe(result.data.emailComercial))
-      formik.setFieldValue('estado', safe(result.data.estado))
+      formik.setFieldValue('estado', {
+        id: '',
+        label: safe(result.data.estado),
+      })
       formik.setFieldValue('numero', safe(result.data.numero))
       formik.setFieldValue('cep', safe(result.data.cep))
       formik.setFieldValue('rua', safe(result.data.rua))
