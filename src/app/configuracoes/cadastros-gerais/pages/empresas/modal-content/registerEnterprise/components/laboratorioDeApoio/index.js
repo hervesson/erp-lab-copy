@@ -10,14 +10,7 @@ import InformacoesGerais from './components/informacoesGerais'
 
 const LaboratorioDeApoio = forwardRef(
   (
-    {
-      formRegister,
-
-      onClose,
-      onValidationChange,
-      setLoading,
-      findData,
-    },
+    { formRegister, states, onClose, onValidationChange, setLoading, findData },
     ref,
   ) => {
     const [tab, setTab] = useState('informacoesGerais')
@@ -198,7 +191,7 @@ const LaboratorioDeApoio = forwardRef(
     }, [formik.isValid, onValidationChange])
 
     const steps = {
-      informacoesGerais: <InformacoesGerais formik={formik} />,
+      informacoesGerais: <InformacoesGerais formik={formik} states={states} />,
     }
 
     return (

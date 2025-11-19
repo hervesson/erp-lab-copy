@@ -2,15 +2,33 @@ import CustomSelect from '@/components/CustomSelect'
 import CustomSearchBanks from '@/components/CutomSearchBanks'
 import DecimalInputBR from '@/components/DecimalInputBR'
 import { Outfit400 } from '@/fonts'
-import { SearchCep, SearchCnpj } from '@/helpers'
+import { SearchCep, SearchCities, SearchCnpj } from '@/helpers'
 import { formatCep, formatCnpj, formatPhoneNumber } from '@/utils'
 import { InfoCircle, Trash } from 'iconsax-reactjs'
+import { useEffect, useState } from 'react'
 
-const InformacoesGerais = ({ formik }) => {
+const InformacoesGerais = ({ formik, states }) => {
   const safe = (value) => (value == null ? '' : value)
   const setFin = (index, key, value) => {
     formik.setFieldValue(`financeiro[${index}].${key}`, value)
   }
+  const [cities, setCities] = useState()
+
+  useEffect(() => {
+    const findData = async () => {
+      const states = await SearchCities(formik?.values?.estado?.item?.uf)
+      const stt = states.data.map((item) => {
+        return {
+          id: item.id,
+          label: item.nome,
+          item,
+        }
+      })
+      setCities(stt)
+    }
+
+    findData()
+  }, [formik.values.estado])
 
   const searchCEP = async () => {
     if (formik.values.cep.length === 9) {
@@ -326,13 +344,14 @@ const InformacoesGerais = ({ formik }) => {
                   >
                     Estado<strong className="text-[#F23434]">*</strong>
                   </label>
-                  <input
-                    {...formik.getFieldProps('estado')}
-                    type="text"
-                    id="estado"
-                    name="estado"
-                    className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  <CustomSelect
+                    select={formik.values.estado}
+                    setSelect={(option) =>
+                      formik.setFieldValue('estado', option)
+                    }
+                    options={states}
                     placeholder="Digite o estado"
+                    className="border border-[#BBBBBB]"
                   />
                 </div>
                 <div className="flex flex-1 flex-col gap-[4px]">
@@ -341,13 +360,14 @@ const InformacoesGerais = ({ formik }) => {
                   >
                     Cidade<strong className="text-[#F23434]">*</strong>
                   </label>
-                  <input
-                    {...formik.getFieldProps('cidade')}
-                    type="text"
-                    id="cidade"
-                    name="cidade"
-                    className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
-                    placeholder="Digite o estado"
+                  <CustomSelect
+                    select={formik.values.cidade}
+                    setSelect={(option) =>
+                      formik.setFieldValue('cidade', option)
+                    }
+                    options={cities}
+                    placeholder="Digite a cidade"
+                    className="border border-[#BBBBBB]"
                   />
                 </div>
               </div>

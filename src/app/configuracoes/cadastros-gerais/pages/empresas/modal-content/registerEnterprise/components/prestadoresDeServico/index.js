@@ -10,14 +10,7 @@ import InformacoesGerais from './components/informacoesGerais'
 
 const PrestadoresDeServico = forwardRef(
   (
-    {
-      formRegister,
-
-      onClose,
-      onValidationChange,
-      setLoading,
-      findData,
-    },
+    { formRegister, states, onClose, onValidationChange, setLoading, findData },
     ref,
   ) => {
     const [tab, setTab] = useState('informacoesGerais')
@@ -84,8 +77,8 @@ const PrestadoresDeServico = forwardRef(
           numero: values.numero,
           bairro: values.bairro,
           complemento: values.complemento,
-          estado: values.estado,
-          cidade: values.cidade,
+          estado: values.estado.label,
+          cidade: values.cidade.label,
           nomeResponsavel: values.nomeDoResponsavel,
           cargoResponsavel: values.cargoResponsavel,
           contatoResponsavel: values.contatoResponsavel,
@@ -198,7 +191,7 @@ const PrestadoresDeServico = forwardRef(
     }, [formik.isValid, onValidationChange])
 
     const steps = {
-      informacoesGerais: <InformacoesGerais formik={formik} />,
+      informacoesGerais: <InformacoesGerais formik={formik} states={states} />,
     }
 
     return (

@@ -12,7 +12,7 @@ import InformacoesGerais from './components/informacoesGerais'
 
 const Convenios = forwardRef(
   (
-    { formRegister, onClose, onValidationChange, setLoading, findData },
+    { formRegister, states, onClose, onValidationChange, setLoading, findData },
     ref,
   ) => {
     const [tab, setTab] = useState('informacoesGerais')
@@ -61,7 +61,6 @@ const Convenios = forwardRef(
         formaDePagamento: formRegister.values.formaDePagamento,
       },
       onSubmit: async (values) => {
-        console.log(values)
         setLoading(true)
         const payload = {
           tipoEmpresa: 'CONVENIOS', // "CONVENIOS", LABORATORIO_APOIO", "TELEMEDICINA", "FORNECEDORES", "PRESTADORES_SERVICOS"
@@ -80,8 +79,8 @@ const Convenios = forwardRef(
           numero: values.numero,
           bairro: values.bairro,
           complemento: values.complemento,
-          estado: values.estado,
-          cidade: values.cidade,
+          estado: values.estado.label,
+          cidade: values.cidade.label,
           nomeResponsavel: values.nomeDoResponsavel,
           cargoResponsavel: values.cargoResponsavel,
           contatoResponsavel: values.contatoResponsavel,
@@ -194,7 +193,7 @@ const Convenios = forwardRef(
     }, [formik.isValid, onValidationChange])
 
     const steps = {
-      informacoesGerais: <InformacoesGerais formik={formik} />,
+      informacoesGerais: <InformacoesGerais formik={formik} states={states} />,
     }
 
     return (

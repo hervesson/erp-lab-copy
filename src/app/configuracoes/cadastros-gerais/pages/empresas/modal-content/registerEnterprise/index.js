@@ -1,8 +1,9 @@
 import CustomSelect from '@/components/CustomSelect'
 import ModalFramer from '@/components/ModalFramer'
 import { Outfit400, Outfit500 } from '@/fonts'
+import { SearchStates } from '@/helpers'
 import { useFormik } from 'formik'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Convenios from './components/convenios'
 import Fornecedores from './components/fornecedores'
 import LaboratorioDeApoio from './components/laboratorioDeApoio'
@@ -15,6 +16,8 @@ import CancelRegister from '@/components/Alerts/CancelRegister'
 const RegisterEnterprise = ({ onClose, setPage, findData }) => {
   const [tab, setTab] = useState({ id: '', label: '' })
 
+  const [states, setStates] = useState([])
+
   const [openModalAlerts, setOpenModalAlerts] = useState(false)
   const [isFormValid, setIsFormValid] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -24,6 +27,22 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
   const childFormLaboratorioDeApoioRef = useRef()
   const childFormFornecedoresDeApoioRef = useRef()
   const childFormPrestadoresDeServicoRef = useRef()
+
+  useEffect(() => {
+    const findData = async () => {
+      const states = await SearchStates()
+      const stt = states.data.map((item) => {
+        return {
+          id: item.id,
+          label: item.nome,
+          item,
+        }
+      })
+      setStates(stt)
+    }
+
+    findData()
+  }, [])
 
   const formRegister = useFormik({
     // validationSchema: validationSchemaAccountBank,
@@ -92,10 +111,11 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
   }
 
   const steps = {
-    '': <Register formik={formRegister} />,
+    '': <Register formik={formRegister} states={states} />,
     CONVÊNIOS: (
       <Convenios
         formRegister={formRegister}
+        states={states}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -106,6 +126,7 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
     'LABORATÓRIO DE APOIO': (
       <LaboratorioDeApoio
         formRegister={formRegister}
+        states={states}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -116,6 +137,7 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
     TELEMEDICINA: (
       <Telemedicina
         formRegister={formRegister}
+        states={states}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -126,6 +148,7 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
     'PRESTADORES DE SERVIÇO': (
       <PrestadoresDeServico
         formRegister={formRegister}
+        states={states}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -136,6 +159,7 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
     FORNECEDORES: (
       <Fornecedores
         formRegister={formRegister}
+        states={states}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}

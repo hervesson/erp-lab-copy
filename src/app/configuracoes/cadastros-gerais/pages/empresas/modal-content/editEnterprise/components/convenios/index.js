@@ -8,7 +8,7 @@ import InformacoesGerais from './components/informacoesGerais'
 
 const Telemedicina = forwardRef(
   (
-    { formRegister, onClose, onValidationChange, setLoading, findData },
+    { formRegister, states, onClose, onValidationChange, setLoading, findData },
     ref,
   ) => {
     const [tab, setTab] = useState('informacoesGerais')
@@ -44,8 +44,8 @@ const Telemedicina = forwardRef(
         numero: formRegister?.numero,
         bairro: formRegister?.bairro,
         complemento: formRegister?.complemento,
-        estado: formRegister?.estado,
-        cidade: formRegister?.cidade,
+        estado: { id: '', label: formRegister?.estado },
+        cidade: { id: '', label: formRegister?.cidade },
         nomeDoResponsavel: formRegister?.nomeResponsavel,
         cargoResponsavel: formRegister?.cargoResponsavel,
         contatoResponsavel: formRegister?.contatoResponsavel,
@@ -106,17 +106,17 @@ const Telemedicina = forwardRef(
           numero: values.numero,
           bairro: values.bairro,
           complemento: values.complemento,
-          estado: values.estado,
-          cidade: values.cidade,
+          estado: values.estado.label,
+          cidade: values.cidade.label,
           nomeResponsavel: values.nomeDoResponsavel,
           cargoResponsavel: values.cargoResponsavel,
           contatoResponsavel: values.contatoResponsavel,
           emailResponsavel: values.email,
-          irrfPercentual: Number(values.irrf) || 0,
-          pisPercentual: Number(values.pis) || 0,
-          cofinsPercentual: Number(values.cofins) || 0,
-          csllPercentual: Number(values.csll) || 0,
-          issPercentual: Number(values.iss) || 0,
+          irrfPercentual: values.irrf || 0,
+          pisPercentual: values.pis || 0,
+          cofinsPercentual: values.cofins || 0,
+          csllPercentual: values.csll || 0,
+          issPercentual: values.iss || 0,
           reterIss: values.reterISS,
           reterIr: values.reterIR,
           reterPcc: values.reterPCC,
@@ -223,7 +223,7 @@ const Telemedicina = forwardRef(
     }, [formik.isValid, onValidationChange])
 
     const steps = {
-      informacoesGerais: <InformacoesGerais formik={formik} />,
+      informacoesGerais: <InformacoesGerais formik={formik} states={states} />,
     }
 
     return (

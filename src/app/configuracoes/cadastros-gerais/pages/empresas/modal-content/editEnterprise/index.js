@@ -1,6 +1,7 @@
 import CustomSelect from '@/components/CustomSelect'
 import { Outfit400, Outfit500 } from '@/fonts'
-import { useRef, useState } from 'react'
+import { SearchStates } from '@/helpers'
+import { useEffect, useRef, useState } from 'react'
 import Convenios from './components/convenios'
 import Fornecedores from './components/fornecedores'
 import LaboratorioDeApoio from './components/laboratorioDeApoio'
@@ -40,6 +41,24 @@ const EditEnterprise = ({ onClose, selectedEnterprise, findData }) => {
   const childFormFornecedoresDeApoioRef = useRef()
   const childFormPrestadoresDeServicoRef = useRef()
 
+  const [states, setStates] = useState([])
+
+  useEffect(() => {
+    const findData = async () => {
+      const states = await SearchStates()
+      const stt = states.data.map((item) => {
+        return {
+          id: item.id,
+          label: item.nome,
+          item,
+        }
+      })
+      setStates(stt)
+    }
+
+    findData()
+  }, [])
+
   const handleValidationChange = (isValid) => {
     setIsFormValid(isValid)
   }
@@ -48,6 +67,7 @@ const EditEnterprise = ({ onClose, selectedEnterprise, findData }) => {
     CONVÊNIOS: (
       <Convenios
         formRegister={selectedEnterprise}
+        states={states}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -58,6 +78,7 @@ const EditEnterprise = ({ onClose, selectedEnterprise, findData }) => {
     'LABORATÓRIO DE APOIO': (
       <LaboratorioDeApoio
         formRegister={selectedEnterprise}
+        states={states}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -68,6 +89,7 @@ const EditEnterprise = ({ onClose, selectedEnterprise, findData }) => {
     TELEMEDICINA: (
       <Telemedicina
         formRegister={selectedEnterprise}
+        states={states}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -78,6 +100,7 @@ const EditEnterprise = ({ onClose, selectedEnterprise, findData }) => {
     'PRESTADORES DE SERVIÇO': (
       <PrestadoresDeServico
         formRegister={selectedEnterprise}
+        states={states}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
@@ -88,6 +111,7 @@ const EditEnterprise = ({ onClose, selectedEnterprise, findData }) => {
     FORNECEDORES: (
       <Fornecedores
         formRegister={selectedEnterprise}
+        states={states}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}

@@ -1,15 +1,35 @@
-import CustomSearchBanks from '@/components/CutomSearchBanks'
 import CustomSelect from '@/components/CustomSelect'
+import CustomSearchBanks from '@/components/CutomSearchBanks'
 import { Outfit400 } from '@/fonts'
-import { SearchCep, SearchCnpj } from '@/helpers'
-import { formatCep, formatCnpj, formatPhoneNumber, maskDecimal } from '@/utils'
+import { SearchCep, SearchCities, SearchCnpj } from '@/helpers'
+import { formatCep, formatCnpj, formatPhoneNumber } from '@/utils'
 import { InfoCircle, Trash } from 'iconsax-reactjs'
+import { useEffect, useState } from 'react'
+import DecimalInputBR from '@/components/DecimalInputBR'
 
-const InformacoesGerais = ({ formik }) => {
+const InformacoesGerais = ({ formik, states }) => {
   const safe = (value) => (value == null ? '' : value)
   const setFin = (index, key, value) => {
     formik.setFieldValue(`financeiro[${index}].${key}`, value)
   }
+
+  const [cities, setCities] = useState()
+
+  useEffect(() => {
+    const findData = async () => {
+      const states = await SearchCities(formik?.values?.estado?.item?.uf)
+      const stt = states.data.map((item) => {
+        return {
+          id: item.id,
+          label: item.nome,
+          item,
+        }
+      })
+      setCities(stt)
+    }
+
+    findData()
+  }, [formik.values.estado])
 
   const searchCEP = async () => {
     if (formik.values.cep.length === 9) {
@@ -315,13 +335,12 @@ const InformacoesGerais = ({ formik }) => {
                 >
                   Estado<strong className="text-[#F23434]">*</strong>
                 </label>
-                <input
-                  {...formik.getFieldProps('estado')}
-                  type="text"
-                  id="estado"
-                  name="estado"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                <CustomSelect
+                  select={formik.values.estado}
+                  setSelect={(option) => formik.setFieldValue('estado', option)}
+                  options={states}
                   placeholder="Digite o estado"
+                  className="border border-[#BBBBBB]"
                 />
               </div>
               <div className="flex flex-1 flex-col gap-[4px]">
@@ -330,13 +349,12 @@ const InformacoesGerais = ({ formik }) => {
                 >
                   Cidade<strong className="text-[#F23434]">*</strong>
                 </label>
-                <input
-                  {...formik.getFieldProps('cidade')}
-                  type="text"
-                  id="cidade"
-                  name="cidade"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
-                  placeholder="Digite o estado"
+                <CustomSelect
+                  select={formik.values.cidade}
+                  setSelect={(option) => formik.setFieldValue('cidade', option)}
+                  options={cities}
+                  placeholder="Digite a cidade"
+                  className="border border-[#BBBBBB]"
                 />
               </div>
             </div>
@@ -440,12 +458,11 @@ const InformacoesGerais = ({ formik }) => {
               IRRF (% ou R$)
               <InfoCircle size="20" color="#A1A1A1" />
             </label>
-            <input
-              {...formik.getFieldProps('irrf')}
-              value={maskDecimal(formik.values.irrf)}
-              type="text"
-              id="irrf"
+            <DecimalInputBR
               name="irrf"
+              id="irrf"
+              value={formik.values.irrf} // <-- NUMBER (ex: 12.9)
+              onChange={(num) => formik.setFieldValue('irrf', num)}
               className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
@@ -457,12 +474,11 @@ const InformacoesGerais = ({ formik }) => {
               PIS (% ou R$)
               <InfoCircle size="20" color="#A1A1A1" />
             </label>
-            <input
-              {...formik.getFieldProps('pis')}
-              value={maskDecimal(formik.values.pis)}
-              type="text"
-              id="pis"
+            <DecimalInputBR
               name="pis"
+              id="pis"
+              value={formik.values.pis} // <-- NUMBER (ex: 12.9)
+              onChange={(num) => formik.setFieldValue('pis', num)}
               className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
@@ -474,12 +490,11 @@ const InformacoesGerais = ({ formik }) => {
               COFINS (% ou R$)
               <InfoCircle size="20" color="#A1A1A1" />
             </label>
-            <input
-              {...formik.getFieldProps('cofins')}
-              value={maskDecimal(formik.values.cofins)}
-              type="text"
-              id="cofins"
+            <DecimalInputBR
               name="cofins"
+              id="cofins"
+              value={formik.values.cofins} // <-- NUMBER (ex: 12.9)
+              onChange={(num) => formik.setFieldValue('cofins', num)}
               className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
@@ -491,12 +506,12 @@ const InformacoesGerais = ({ formik }) => {
               CSLL (% ou R$)
               <InfoCircle size="20" color="#A1A1A1" />
             </label>
-            <input
-              {...formik.getFieldProps('csll')}
-              value={maskDecimal(formik.values.csll)}
-              type="text"
-              id="csll"
+
+            <DecimalInputBR
               name="csll"
+              id="csll"
+              value={formik.values.csll} // <-- NUMBER (ex: 12.9)
+              onChange={(num) => formik.setFieldValue('csll', num)}
               className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
@@ -508,12 +523,12 @@ const InformacoesGerais = ({ formik }) => {
               ISS (% ou R$)
               <InfoCircle size="20" color="#A1A1A1" />
             </label>
-            <input
-              {...formik.getFieldProps('iss')}
-              value={maskDecimal(formik.values.iss)}
-              type="text"
-              id="iss"
+
+            <DecimalInputBR
               name="iss"
+              id="iss"
+              value={formik.values.iss} // <-- NUMBER (ex: 12.9)
+              onChange={(num) => formik.setFieldValue('iss', num)}
               className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
@@ -525,12 +540,12 @@ const InformacoesGerais = ({ formik }) => {
               IBS (% ou R$)
               <InfoCircle size="20" color="#A1A1A1" />
             </label>
-            <input
-              {...formik.getFieldProps('ibs')}
-              value={maskDecimal(formik.values.ibs)}
-              type="text"
-              id="ibs"
+
+            <DecimalInputBR
               name="ibs"
+              id="ibs"
+              value={formik.values.ibs} // <-- NUMBER (ex: 12.9)
+              onChange={(num) => formik.setFieldValue('ibs', num)}
               className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
@@ -542,12 +557,12 @@ const InformacoesGerais = ({ formik }) => {
               CBS (% ou R$)
               <InfoCircle size="20" color="#A1A1A1" />
             </label>
-            <input
-              {...formik.getFieldProps('cbs')}
-              value={maskDecimal(formik.values.cbs)}
-              type="text"
-              id="cbs"
+
+            <DecimalInputBR
               name="cbs"
+              id="cbs"
+              value={formik.values.cbs} // <-- NUMBER (ex: 12.9)
+              onChange={(num) => formik.setFieldValue('cbs', num)}
               className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />

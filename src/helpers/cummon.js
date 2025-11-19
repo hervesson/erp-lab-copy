@@ -117,3 +117,64 @@ export async function SearchCnpj(CNPJ) {
     }
   }
 }
+
+export async function SearchStates() {
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const auth = await api.get('/infraestrutura/estados', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token.value,
+      },
+    })
+
+    return {
+      success: true,
+      data: auth.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: error.response.data,
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    return {
+      success: false,
+      error: fallback,
+    }
+  }
+}
+
+export async function SearchCities(UF) {
+  console.log(UF)
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const auth = await api.get('/infraestrutura/cidades?uf=' + UF, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token.value,
+      },
+    })
+
+    return {
+      success: true,
+      data: auth.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: error.response.data,
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    return {
+      success: false,
+      error: fallback,
+    }
+  }
+}
