@@ -1,11 +1,12 @@
 import ModalFramer from '@/components/ModalFramer'
 import { Outfit400, Outfit500 } from '@/fonts'
-import { ListAllCNAEs, listAllServicesOfHealth } from '@/helpers'
+import { CreateUnit, ListAllCNAEs, listAllServicesOfHealth } from '@/helpers'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
-import { ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import CancelRegister from './components/CancelRegister'
 import SuccessRegister from './components/SuccessRegister'
+import { validationSchemaCreateUnit } from './schema'
 
 // Components
 import CertificadoDigital from './components/certificadoDigital'
@@ -16,9 +17,9 @@ import Impostos from './components/impostos'
 import InformacoesBasicas from './components/informacoesBasicas'
 import Responsaveis from './components/responsaveis'
 
-const RegisterUnityOfHealth = ({ onClose }) => {
+const RegisterUnityOfHealth = ({ onClose, findData }) => {
   // Loading
-  const [loading] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   // Coisas
   const [services, setServices] = useState([])
@@ -59,97 +60,6 @@ const RegisterUnityOfHealth = ({ onClose }) => {
     findUsersByFilters()
   }, [])
 
-  // const handleSubmit = async () => {
-  //   setLoading(true)
-  //   const payload = {
-  //     nomeUnidade: name,
-  //     codigoInterno: internalCode,
-  //     cnpj: cnpj.replace(/\D/g, '').slice(0, 14),
-  //     razaoSocial: corporateReason,
-  //     nomeFantasia: fantasyName,
-  //     inscricaoMunicipal: municipalRegistration,
-  //     inscricaoEstadual: stateRegistration,
-  //     cnes: CNES,
-  //     contatosUnidade: contacts,
-  //     email,
-  //     codigoServicoPrincipal: mainServiceCode.id,
-  //     codigoServicoSecundario: selectSecondaryServiceCode.map((e) => {
-  //       return e.id
-  //     }),
-  //     cnaePrincipalId: mainCNAE?.id,
-  //     cep: cep.replace('-', ''),
-  //     rua: street,
-  //     numero: number,
-  //     bairro: district,
-  //     complemento: complement,
-  //     estado: state,
-  //     cidade: city,
-  //     nomeResponsavel: responsibleName,
-  //     contatoResponsavel: responsibleContact,
-  //     emailResponsavel: responsibleEmail,
-  //     irrfPercentual: Number(IRRF),
-  //     pisPercentual: Number(PIS),
-  //     cofinsPercentual: Number(COFINS),
-  //     csllPercentual: Number(CSLL),
-  //     issPercentual: Number(ISS),
-  //     ibsPercentual: Number(IBS),
-  //     cbsPercentual: Number(CBS),
-  //     reterIss: retainISS,
-  //     reterIr: retainIR,
-  //     reterPcc: retainPCC,
-  //     reterIbs: retainIBS,
-  //     reterCbs: retainCBS,
-  //     optanteSimplesNacional: nationalSimpleOptant,
-  //     certificadoDigitalVinculado: !!cert,
-  //     ativo: true,
-  //     horariosAtendimento: openingHours.flatMap((item) =>
-  //       item.days.map((dia) => ({
-  //         diaSemana: dia,
-  //         horarioInicio: item.of || '',
-  //         horarioFim: item.until || '',
-  //         intervaloInicio: item.interval || '00:00',
-  //         intervaloFim: item.returnInterval || '00:00',
-  //         semIntervalo: item.enabled,
-  //       })),
-  //     ),
-  //     dadosBancarios: financial.map((e) => {
-  //       return {
-  //         bancoId: e.bancoId,
-  //         agencia: e.agencia,
-  //         digitoAgencia: e.digitoAgencia,
-  //         contaCorrente: e.contaCorrente,
-  //         digitoConta: e.digitoConta,
-  //         tipoConta: 'CORRENTE',
-  //         principal: true,
-  //         observacoes: '0',
-  //       }
-  //     }),
-  //     cnaeSecundarios: selectSecondaryCNAE.map((e) => {
-  //       return { cnaeId: e.id }
-  //     }),
-  //   }
-
-  //   try {
-  //     const responseCreateUnity = await CreateUnit(payload)
-
-  //     if (responseCreateUnity.success) {
-  //       setStep('sucess')
-  //       setOpenModalAlerts(true)
-  //       findData()
-  //     } else {
-  //       responseCreateUnity.error.message.forEach((element) => {
-  //         toast.error(element, {
-  //           position: 'top-right',
-  //         })
-  //       })
-  //     }
-  //   } catch (error) {
-  //     console.log('erro', error)
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
-
   const steps = {
     cancel: (
       <CancelRegister
@@ -168,10 +78,12 @@ const RegisterUnityOfHealth = ({ onClose }) => {
   }
 
   const formik = useFormik({
-    // validationSchema: validationSchemaAccountBank,
+    validationSchema: validationSchemaCreateUnit,
     validateOnBlur: false,
     validateOnChange: true,
     initialValues: {
+      // informações básicas
+
       nomeUnidade: '',
       codigoInterno: '',
       cnpj: '',
@@ -216,13 +128,19 @@ const RegisterUnityOfHealth = ({ onClose }) => {
       contatoResponsavel: '',
 
       // impostos
-      irrf: '',
-      pis: '',
-      cofins: '',
-      csll: '',
-      iss: '',
-      ibs: '',
-      cbs: '',
+      irrf: 0,
+      pis: 0,
+      cofins: 0,
+      csll: 0,
+      iss: 0,
+      ibs: 0,
+      cbs: 0,
+      reterISS: false,
+      reterIR: false,
+      reterPCC: false,
+      reterIBS: false,
+      reterCBS: false,
+      optantePeloSimples: false,
 
       // financeiro
       financeiro: [
@@ -241,14 +159,152 @@ const RegisterUnityOfHealth = ({ onClose }) => {
       // certificado
       certificado: null,
     },
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: async (values) => {
+      setLoading(true)
+      const payload = {
+        nomeUnidade: values.nomeUnidade,
+        codigoInterno: values.codigoInterno,
+        cnpj: values.cnpj.replace(/\D/g, '').slice(0, 14),
+        razaoSocial: values.razaoSocial,
+        nomeFantasia: values.nomeFantasia,
+        inscricaoMunicipal: values.inscricaoMunicipal,
+        inscricaoEstadual: values.inscricaoEstadual,
+        cnes: values.cnes,
+        contatosUnidade: values.telefone,
+        email: values.email,
+        codigoServicoPrincipal: values.codigoServicoPrincipal.id || '',
+        codigoServicoSecundario: values.cnaesSecundariosSelecionados.map(
+          (e) => {
+            return e.id
+          },
+        ),
+        cnaePrincipalId: values.cnaePrincipal.id || '',
+        cnaeSecundarios: values.cnaesSecundariosSelecionados.map((e) => {
+          return { cnaeId: e.id }
+        }),
+        cep: values.cep.replace('-', ''),
+        rua: values.rua,
+        numero: values.numero,
+        bairro: values.bairro,
+        complemento: values.complemento,
+        estado: values.estado.label,
+        cidade: values.cidade.label,
+        nomeResponsavel: values.nomeResponsavel,
+        contatoResponsavel: values.contatoResponsavel,
+        emailResponsavel: values.emailResponsavel,
+        irrfPercentual: values.irrf,
+        pisPercentual: values.pis,
+        cofinsPercentual: values.cofins,
+        csllPercentual: values.csll,
+        issPercentual: values.iss,
+        ibsPercentual: values.ibs,
+        cbsPercentual: values.cbs,
+        reterIss: values.reterISS,
+        reterIr: values.reterIR,
+        reterPcc: values.reterPCC,
+        reterIbs: values.reterIBS,
+        reterCbs: values.reterCBS,
+        optanteSimplesNacional: values.optantePeloSimples,
+        certificadoDigitalVinculado: !!values.certificado,
+        ativo: true,
+        horariosAtendimento: values.horarios.flatMap((item) =>
+          item.days.map((dia) => ({
+            diaSemana: dia,
+            horarioInicio: item.of || '',
+            horarioFim: item.until || '',
+            intervaloInicio: item.interval || '00:00',
+            intervaloFim: item.returnInterval || '00:00',
+            semIntervalo: item.enabled,
+          })),
+        ),
+        contas_bancarias: values.financeiro.map((e) => {
+          return {
+            banco_id: e.bancoId,
+            agencia: e.agencia,
+            digito_agencia: e.digitoAgencia,
+            numero_conta: e.conta,
+            digito_conta: e.digitoConta,
+            tipo_conta: e.tipoDeConta.id,
+          }
+        }),
+      }
+
       try {
-        console.log(values)
+        const responseCreateUnity = await CreateUnit(payload)
+        if (responseCreateUnity.success) {
+          setStep('sucess')
+          setOpenModalAlerts(true)
+          findData()
+          formik.resetForm()
+        } else {
+          responseCreateUnity.error.erros.forEach((element) => {
+            toast.error(element, {
+              position: 'top-right',
+            })
+          })
+        }
+      } catch (error) {
+        console.log('erro', error)
       } finally {
-        setSubmitting(false)
+        setLoading(false)
       }
     },
   })
+
+  const getErrorMessages = (errors) => {
+    const messages = []
+
+    const walk = (err) => {
+      if (!err) return
+
+      if (typeof err === 'string') {
+        messages.push(err)
+        return
+      }
+
+      if (Array.isArray(err)) {
+        err.forEach(walk)
+        return
+      }
+
+      if (typeof err === 'object') {
+        Object.values(err).forEach(walk)
+      }
+    }
+
+    walk(errors)
+
+    // remove duplicadas
+    return [...new Set(messages)]
+  }
+
+  const handleValidateAndSubmit = async () => {
+    const errors = await formik.validateForm()
+
+    if (Object.keys(errors).length > 0) {
+      const messages = getErrorMessages(errors)
+
+      toast.error(
+        <div>
+          <p>Corrija os campos abaixo:</p>
+          <ul className="mt-2 list-disc pl-5">
+            {messages.map((msg, index) => (
+              <li key={index}>{msg}</li>
+            ))}
+          </ul>
+        </div>,
+        {
+          position: 'top-right',
+          autoClose: 8000,
+        },
+      )
+
+      return // não faz submit
+    }
+
+    // se não tiver erro, chama o submit do formik
+    formik.handleSubmit()
+  }
 
   return (
     <>
@@ -286,8 +342,13 @@ const RegisterUnityOfHealth = ({ onClose }) => {
             </button>
             <button
               type="button"
-              // onClick={() => handleSubmit()}
-              className="flex h-[44px] items-center justify-evenly rounded-[8px] bg-[#A9A9A9] px-4 text-[#494949] hover:bg-[#0F9B7F] hover:text-[#fff]"
+              onClick={handleValidateAndSubmit}
+              className={`flex h-[44px] w-[128px] items-center justify-evenly rounded-[8px] ${
+                formik.isValid
+                  ? 'bg-[#0F9B7F] text-white hover:from-[#3BC1E2] hover:to-[#1D6F87]'
+                  : 'bg-[#A9A9A9] text-[#494949]'
+              } ${Outfit400.className}`}
+              disabled={loading}
             >
               <span className={`${Outfit400.className} uppercase`}>
                 {loading ? 'Finalizando' : 'Finalizar'}
@@ -328,7 +389,7 @@ const RegisterUnityOfHealth = ({ onClose }) => {
           {steps[step]}
         </ModalFramer>
       )}
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </>
   )
 }

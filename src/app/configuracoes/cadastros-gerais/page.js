@@ -11,7 +11,7 @@ import SideMenu from './components/SideMenu'
 // principais
 import Agendas from './pages/agendas'
 import Amostras from './pages/amostras'
-import Exams from './pages/exames'
+import Exams from './pages/_exames'
 import Kits from './pages/kits'
 import ExamMatrix from './pages/matrizes-de-exames'
 import Methods from './pages/metodos'

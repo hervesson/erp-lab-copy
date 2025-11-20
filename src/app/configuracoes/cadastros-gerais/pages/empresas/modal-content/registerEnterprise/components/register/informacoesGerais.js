@@ -16,7 +16,7 @@ const InformacoesGerais = ({ formik, states }) => {
 
   useEffect(() => {
     const findData = async () => {
-      const states = await SearchCities(formik?.values?.estado?.item?.uf)
+      const states = await SearchCities(formik?.values?.estado?.label)
       const stt = states.data.map((item) => {
         return {
           id: item.id,

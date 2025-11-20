@@ -93,6 +93,10 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
     }
   }
 
+  const deleteMethod = (method) => {
+    console.log(method)
+  }
+
   return (
     <div className="flex flex-1 flex-col gap-[32px]">
       <div className="flex h-[84px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
@@ -217,6 +221,7 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
+                  onClick={() => deleteMethod()}
                 >
                   <div className="flex h-full items-center justify-center">
                     <Trash size="28" color="#737373" variant="Outline" />
