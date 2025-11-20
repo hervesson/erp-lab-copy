@@ -123,6 +123,10 @@ export const validationSchemaCreateUnit = Yup.object({
     .email('Informe um e-mail válido')
     .required('Informe o e-mail'),
 
+  codigoServicoPrincipal: Yup.object({
+    label: Yup.string().required('Selecione um codigo de serviço principal'),
+  }),
+
   // 📍 Endereço
   cep: Yup.string().transform(trimToUndefined).required('Informe o CEP'),
 
@@ -139,8 +143,11 @@ export const validationSchemaCreateUnit = Yup.object({
     label: Yup.string().required('Selecione a cidade'),
   }),
 
+  complemento: Yup.string()
+    .transform(trimToUndefined)
+    .required('Informe o complemento'),
+
   // sem validação obrigatória / estrutura
-  codigoServicoPrincipal: Yup.mixed().nullable(),
   codigoServicoSecundarioSelecionados: Yup.array().nullable(),
   cnaePrincipal: Yup.mixed().nullable(),
   cnaesSecundariosSelecionados: Yup.array().nullable(),

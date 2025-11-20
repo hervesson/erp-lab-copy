@@ -25,6 +25,7 @@ const Financeiro = ({ formik }) => {
               </label>
 
               <CustomSearchBanks
+                value={`${item.codigoBanco} - ${item.banco}`}
                 setValue={(opt) => {
                   setFin(index, 'banco', opt?.label || '')
                   setFin(index, 'codigoBanco', opt?.id || '')

@@ -84,8 +84,6 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
           }
         })
 
-        console.log(servcs)
-
         const principalService = servcs.find(
           (element) => element.id === unit?.codigoServicoPrincipal,
         )
@@ -173,17 +171,17 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
 
       // responsavel
       nomeResponsavel: unit?.nomeResponsavel,
-      emailResponsavel: unit?.contatoResponsavel,
-      contatoResponsavel: unit?.emailResponsavel,
+      emailResponsavel: unit?.emailResponsavel,
+      contatoResponsavel: unit?.contatoResponsavel,
 
       // impostos
-      irrf: unit?.irrfPercentual,
-      pis: unit?.pisPercentual,
-      cofins: unit?.cofinsPercentual,
-      csll: unit?.csllPercentual,
-      iss: unit?.issPercentual,
-      ibs: unit?.ibsPercentual,
-      cbs: unit?.cbsPercentual,
+      irrf: Number(unit?.irrfPercentual),
+      pis: Number(unit?.pisPercentual),
+      cofins: Number(unit?.cofinsPercentual),
+      csll: Number(unit?.csllPercentual),
+      iss: Number(unit?.issPercentual),
+      ibs: Number(unit?.ibsPercentual),
+      cbs: Number(unit?.cbsPercentual),
       reterISS: unit?.reterIss,
       reterIR: unit?.reterIr,
       reterPCC: unit?.reterPcc,
@@ -194,8 +192,8 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
       // financeiro
       financeiro: unit?.contas_bancarias.map((i) => {
         return {
-          banco: '', // não tem
-          codigoBanco: '', // não tem
+          banco: i.conta_bancaria?.banco?.nome, // não tem
+          codigoBanco: i.conta_bancaria?.banco?.codigo, // não tem
           bancoId: i.conta_bancaria?.banco_id, // id interno/opcional
           agencia: i.conta_bancaria?.agencia,
           tipoDeConta:
@@ -231,7 +229,7 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
         contatosUnidade: values.telefone,
         email: values.email,
         codigoServicoPrincipal: values.codigoServicoPrincipal.id || '',
-        codigoServicoSecundario: values.cnaesSecundariosSelecionados.map(
+        codigoServicoSecundario: values.codigoServicoSecundarioSelecionados.map(
           (e) => {
             return e.id
           },
@@ -279,6 +277,7 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
           return {
             banco_id: e.bancoId,
             agencia: e.agencia,
+            numero_conta: e.conta,
             digito_agencia: e.digitoAgencia,
             digito_conta: e.digitoConta,
             tipo_conta: e.tipoDeConta.id,
