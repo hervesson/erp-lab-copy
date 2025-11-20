@@ -173,7 +173,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
         contatosUnidade: values.telefone,
         email: values.email,
         codigoServicoPrincipal: values.codigoServicoPrincipal.id || '',
-        codigoServicoSecundario: values.cnaesSecundariosSelecionados.map(
+        codigoServicoSecundario: values.codigoServicoSecundarioSelecionados.map(
           (e) => {
             return e.id
           },
