@@ -215,6 +215,7 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
       <div className="flex flex-1 flex-col gap-[4px]">
         <label className={`${Outfit400.className} text-[14px] text-[#222222]`}>
           Código do serviço principal
+          <strong className="text-[#F23434]">*</strong>
         </label>
         <CustomSelect
           select={formik.values.codigoServicoPrincipal}

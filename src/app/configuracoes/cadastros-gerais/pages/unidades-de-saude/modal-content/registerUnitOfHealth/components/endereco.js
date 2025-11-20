@@ -150,7 +150,7 @@ const Endereco = ({ formik }) => {
               <label
                 className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
-                Complemento
+                Complemento<strong className="text-[#F23434]">*</strong>
               </label>
               <input
                 {...formik.getFieldProps('complemento')}

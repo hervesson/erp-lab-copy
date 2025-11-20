@@ -363,70 +363,79 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
   }
 
   return (
-    <form className="flex h-screen flex-col bg-[#F9F9F9]" onSubmit={() => null}>
-      <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-[#fff] px-[48px]">
-        <div className="flex flex-col">
-          <span
-            className={` ${Outfit400.className} text-[16px] text-[#0F9B7F]`}
-          >
-            Editar
-          </span>
-          <span
-            className={` ${Outfit500.className} text-[16px] text-[#222222]`}
-          >
-            Unidades de saúde
-          </span>
-        </div>
-        <div className="flex gap-[16px]">
-          <button
-            type="button"
-            onClick={() => onClose()}
-            className="flex h-[44px] w-[108px] items-center justify-evenly rounded-[8px] border border-[#F23434]"
-          >
-            <span className={`${Outfit400.className} text-[#F23434] uppercase`}>
-              Cancelar
+    <>
+      <form
+        className="flex h-screen flex-col bg-[#F9F9F9]"
+        onSubmit={() => null}
+      >
+        <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-[#fff] px-[48px]">
+          <div className="flex flex-col">
+            <span
+              className={` ${Outfit400.className} text-[16px] text-[#0F9B7F]`}
+            >
+              Editar
             </span>
-          </button>
-          <button
-            type="button"
-            onClick={handleValidateAndSubmit}
-            className={`flex h-[44px] w-[128px] items-center justify-evenly rounded-[8px] ${
-              formik.isValid
-                ? 'bg-[#0F9B7F] text-white hover:from-[#3BC1E2] hover:to-[#1D6F87]'
-                : 'bg-[#A9A9A9] text-[#494949]'
-            } ${Outfit400.className}`}
-            disabled={loading}
-          >
-            <span className={`${Outfit400.className} uppercase`}>
-              {loading ? 'Salvando' : 'Salvar'}
+            <span
+              className={` ${Outfit500.className} text-[16px] text-[#222222]`}
+            >
+              Unidades de saúde
             </span>
-          </button>
+          </div>
+          <div className="flex gap-[16px]">
+            <button
+              type="button"
+              onClick={() => onClose()}
+              className="flex h-[44px] w-[108px] items-center justify-evenly rounded-[8px] border border-[#F23434]"
+            >
+              <span
+                className={`${Outfit400.className} text-[#F23434] uppercase`}
+              >
+                Cancelar
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={handleValidateAndSubmit}
+              className={`flex h-[44px] w-[128px] items-center justify-evenly rounded-[8px] ${
+                formik.isValid
+                  ? 'bg-[#0F9B7F] text-white hover:from-[#3BC1E2] hover:to-[#1D6F87]'
+                  : 'bg-[#A9A9A9] text-[#494949]'
+              } ${Outfit400.className}`}
+              disabled={loading}
+            >
+              <span className={`${Outfit400.className} uppercase`}>
+                {loading ? 'Salvando' : 'Salvar'}
+              </span>
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* <div className="flex h-full w-full gap-x-3 overflow-x-auto"> */}
-      <div className="flex h-full w-screen gap-x-3 overflow-x-auto">
-        <div className="mx-[48px] my-[28px] flex h-fit flex-1 flex-col gap-[32px] rounded bg-[#fff] p-[48px]">
-          {/* informacoes */}
-          <InformacoesBasicas
-            formik={formik}
-            services={services}
-            CNAEs={CNAEs}
-          />
-          {/* endereco */}
-          <Endereco formik={formik} />
-          {/* horários */}
-          <Horarios formik={formik} />
-          {/* responsável */}
-          <Responsaveis formik={formik} />
-          {/* impostos */}
-          <Impostos formik={formik} />
-          {/* financeiro */}
-          <Financeiro formik={formik} />
-          {/* certificado digital */}
-          <CertificadoDigital formik={formik} />
+        {/* <div className="flex h-full w-full gap-x-3 overflow-x-auto"> */}
+        <div className="flex h-full w-screen gap-x-3 overflow-x-auto">
+          <div className="mx-[48px] my-[28px] flex h-fit flex-1 flex-col gap-[32px] rounded bg-[#fff] p-[48px]">
+            {/* informacoes */}
+            <InformacoesBasicas
+              formik={formik}
+              services={services}
+              CNAEs={CNAEs}
+            />
+            {/* endereco */}
+            <Endereco formik={formik} />
+            {/* horários */}
+            <Horarios formik={formik} />
+            {/* responsável */}
+            <Responsaveis formik={formik} />
+            {/* impostos */}
+            <Impostos formik={formik} />
+            {/* financeiro */}
+            <Financeiro formik={formik} />
+            {/* certificado digital */}
+            <CertificadoDigital formik={formik} />
+          </div>
         </div>
-      </div>
+
+        <ToastContainer />
+      </form>
       {openModalAlerts && (
         <ModalFramer
           open={openModalAlerts}
@@ -435,8 +444,7 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
           <SuccessEdit onCloseRegister={() => onClose()} />
         </ModalFramer>
       )}
-      <ToastContainer />
-    </form>
+    </>
   )
 }
 
