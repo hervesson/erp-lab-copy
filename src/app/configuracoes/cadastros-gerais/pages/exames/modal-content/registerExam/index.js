@@ -1,5 +1,5 @@
 import { Outfit300, Outfit400, Outfit500 } from '@/fonts'
-import { listAllUnits } from '@/helpers'
+import { listAllFields } from '@/helpers'
 import { useFormik } from 'formik'
 import { DocumentDownload } from 'iconsax-reactjs'
 import { useEffect, useState } from 'react'
@@ -18,7 +18,7 @@ import SuccessRegister from '@/components/Alerts/SuccessRegister'
 // colocar o findData
 const RegisterExam = ({ onClose }) => {
   const [tab, setTab] = useState('informacoesGerais')
-  const [units, setUnits] = useState([])
+  const [fields, setFields] = useState([])
 
   const [step, setStep] = useState('')
   const [openModalAlerts, setOpenModalAlerts] = useState(false)
@@ -26,16 +26,9 @@ const RegisterExam = ({ onClose }) => {
   useEffect(() => {
     const findUsersByFilters = async () => {
       try {
-        const [unts] = await Promise.all([listAllUnits()])
+        const [fields] = await Promise.all([listAllFields()])
 
-        const unt = unts.data.data.map((item) => {
-          return {
-            id: item.id,
-            label: `${item.nomeUnidade}`,
-            item,
-          }
-        })
-        setUnits(unt)
+        setFields(fields.data.data)
       } catch (error) {
         console.error(error)
       }
@@ -96,8 +89,10 @@ const RegisterExam = ({ onClose }) => {
   })
 
   const steps = {
-    informacoesGerais: <InformacoesGerais formik={formik} units={units} />,
-    informacoesInternas: <InformacoesInternas formik={formik} />,
+    informacoesGerais: <InformacoesGerais formik={formik} fields={fields} />,
+    informacoesInternas: (
+      <InformacoesInternas formik={formik} fields={fields} />
+    ),
     informacoesDeApoio: <InformacoesDeApoio formik={formik} />,
   }
 

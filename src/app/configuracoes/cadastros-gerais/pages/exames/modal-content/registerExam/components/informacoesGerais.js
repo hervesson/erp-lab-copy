@@ -2,7 +2,8 @@ import CustomSelect from '@/components/CustomSelect'
 import { Outfit400 } from '@/fonts'
 import { InfoCircle } from 'iconsax-reactjs'
 
-const InformacoesGerais = ({ formik }) => {
+const InformacoesGerais = ({ formik, fields }) => {
+  console.log(fields)
   return (
     <div className="flex w-full flex-col gap-[32px] rounded bg-[#FFF] p-[48px]">
       <div className="flex flex-col gap-[32px]">
@@ -143,7 +144,14 @@ const InformacoesGerais = ({ formik }) => {
                 <CustomSelect
                   select={formik.values.tipoExame}
                   setSelect={(e) => formik.setFieldValue('tipoExame', e)}
-                  options={[{ id: 1, label: 'LABORATORIAL' }]}
+                  options={fields
+                    ?.find((element) => element?.nomeCampo === 'tipo_exames')
+                    ?.alternativas.map((i) => {
+                      return {
+                        id: i.id,
+                        label: i.textoAlternativa,
+                      }
+                    })}
                   placeholder={'Selecione o tipo de exame'}
                   className={'border border-[#BBBBBB]'}
                 />
@@ -160,10 +168,14 @@ const InformacoesGerais = ({ formik }) => {
                   setSelect={(e) =>
                     formik.setFieldValue('especialidadeExame', e)
                   }
-                  options={[
-                    { id: 1, label: 'HEMATOLOGIA' },
-                    { id: 2, label: '2' },
-                  ]}
+                  options={fields
+                    ?.find((element) => element?.nomeCampo === 'especialidade')
+                    ?.alternativas.map((i) => {
+                      return {
+                        id: i.id,
+                        label: i.textoAlternativa,
+                      }
+                    })}
                   placeholder={'Selecione uma especialidade'}
                   className={'border border-[#BBBBBB]'}
                 />
@@ -178,7 +190,14 @@ const InformacoesGerais = ({ formik }) => {
                 <CustomSelect
                   select={formik.values.grupo}
                   setSelect={(e) => formik.setFieldValue('grupo', e)}
-                  options={[{ id: 1, label: 'PROCEDIMENTOS LABORATORIAIS' }]}
+                  options={fields
+                    ?.find((element) => element?.nomeCampo === 'grupo')
+                    ?.alternativas.map((i) => {
+                      return {
+                        id: i.id,
+                        label: i.textoAlternativa,
+                      }
+                    })}
                   placeholder={'Selecione um grupo'}
                   className={'border border-[#BBBBBB]'}
                 />
@@ -195,7 +214,14 @@ const InformacoesGerais = ({ formik }) => {
                 <CustomSelect
                   select={formik.values.subGrupo}
                   setSelect={(e) => formik.setFieldValue('subGrupo', e)}
-                  options={[{ id: 1, label: 'HEMATOLOGIA LABORATORIAL' }]}
+                  options={fields
+                    ?.find((element) => element?.nomeCampo === 'subgrupo')
+                    ?.alternativas.map((i) => {
+                      return {
+                        id: i.id,
+                        label: i.textoAlternativa,
+                      }
+                    })}
                   placeholder={'Selecione um SubGrupo'}
                   className={'border border-[#BBBBBB]'}
                 />
@@ -209,7 +235,14 @@ const InformacoesGerais = ({ formik }) => {
                 <CustomSelect
                   select={formik.values.setor}
                   setSelect={(e) => formik.setFieldValue('setor', e)}
-                  options={[{ id: 1, label: 'ANALISES CLÍNICAS' }]}
+                  options={fields
+                    ?.find((element) => element?.nomeCampo === 'setor')
+                    ?.alternativas.map((i) => {
+                      return {
+                        id: i.id,
+                        label: i.textoAlternativa,
+                      }
+                    })}
                   placeholder={'Selecione um setor'}
                   className={'border border-[#BBBBBB]'}
                 />

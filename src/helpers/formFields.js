@@ -26,8 +26,40 @@ export async function listAllFormField(term = '', page = 1, limit = 10) {
     // 3. Concatene a query string à base da URL
     const queryString = params.toString() // Gera 'param1=value1&param2=value2'
     const url = `/infraestrutura/campos-formulario/search${queryString ? '?' + queryString : ''}` // Adiciona '?' apenas se houver query string
-    console.log(url)
+
     const response = await api.get(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token ? 'Bearer ' + token.value : undefined,
+      },
+    })
+
+    return {
+      success: true,
+      data: response.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: 'Erro desconhecido ao tentar buscar unidades.',
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    const errData = error?.response?.data || fallback
+
+    return {
+      success: false,
+      error: errData,
+    }
+  }
+}
+
+export async function listAllFields() {
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const response = await api.get('/infraestrutura/campos-formulario/search', {
       headers: {
         'Content-Type': 'application/json',
         Authorization: token ? 'Bearer ' + token.value : undefined,

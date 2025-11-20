@@ -2,7 +2,7 @@ import CustomSelect from '@/components/CustomSelect'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { DocumentDownload, InfoCircle } from 'iconsax-reactjs'
 
-const InformacoesInternas = ({ formik }) => {
+const InformacoesInternas = ({ formik, fields }) => {
   return (
     <div className="flex w-full flex-col gap-[32px] rounded bg-[#FFF] p-[48px]">
       {/* Configuração */}
@@ -22,7 +22,14 @@ const InformacoesInternas = ({ formik }) => {
             <CustomSelect
               select={formik.values.metodologiaUtilizada}
               setSelect={(e) => formik.setFieldValue('metodologiaUtilizada', e)}
-              options={[{ id: 1, label: 'SANGUE' }]}
+              options={fields
+                ?.find((element) => element?.nomeCampo === 'metodologia')
+                ?.alternativas.map((i) => {
+                  return {
+                    id: i.id,
+                    label: i.textoAlternativa,
+                  }
+                })}
               placeholder={'Selecione uma metodologia'}
               className={'border border-[#BBBBBB]'}
             />
@@ -36,7 +43,14 @@ const InformacoesInternas = ({ formik }) => {
             <CustomSelect
               select={formik.values.unidadeDeMedida}
               setSelect={(e) => formik.setFieldValue('unidadeDeMedida', e)}
-              options={[{ id: 1, label: 'SORO' }]}
+              options={fields
+                ?.find((element) => element?.nomeCampo === 'unidade_medida')
+                ?.alternativas.map((i) => {
+                  return {
+                    id: i.id,
+                    label: i.textoAlternativa,
+                  }
+                })}
               placeholder={'Selecione uma unidade de medida'}
               className={'border border-[#BBBBBB]'}
             />
@@ -125,7 +139,14 @@ const InformacoesInternas = ({ formik }) => {
               setSelect={(e) =>
                 formik.setFieldValue('amostraBiologicaNecessaria', e)
               }
-              options={[{ id: 1, label: 'SANGUE' }]}
+              options={fields
+                ?.find((element) => element?.nomeCampo === 'amostra')
+                ?.alternativas.map((i) => {
+                  return {
+                    id: i.id,
+                    label: i.textoAlternativa,
+                  }
+                })}
               placeholder={'Selecione uma amostra'}
               className={'border border-[#BBBBBB]'}
             />
@@ -139,7 +160,14 @@ const InformacoesInternas = ({ formik }) => {
             <CustomSelect
               select={formik.values.amostraAEnviar}
               setSelect={(e) => formik.setFieldValue('amostraAEnviar', e)}
-              options={[{ id: 1, label: 'SORO' }]}
+              options={fields
+                ?.find((element) => element?.nomeCampo === 'amostra')
+                ?.alternativas.map((i) => {
+                  return {
+                    id: i.id,
+                    label: i.textoAlternativa,
+                  }
+                })}
               placeholder={'Selecione uma amostra'}
               className={'border border-[#BBBBBB]'}
             />
@@ -154,7 +182,14 @@ const InformacoesInternas = ({ formik }) => {
             <CustomSelect
               select={formik.values.tipoDeRecipiente}
               setSelect={(e) => formik.setFieldValue('tipoDeRecipiente', e)}
-              options={[{ id: 1, label: 'TUBO COM EDTA' }]}
+              options={fields
+                ?.find((element) => element?.nomeCampo === 'tipo_recipiente')
+                ?.alternativas.map((i) => {
+                  return {
+                    id: i.id,
+                    label: i.textoAlternativa,
+                  }
+                })}
               placeholder={'Selecione um recipiente para coleta'}
               className={'border border-[#BBBBBB]'}
             />
@@ -171,7 +206,14 @@ const InformacoesInternas = ({ formik }) => {
             <CustomSelect
               select={formik.values.regiaoDeColeta}
               setSelect={(e) => formik.setFieldValue('regiaoDeColeta', e)}
-              options={[{ id: 1, label: 'NÃO SE APLICA' }]}
+              options={fields
+                ?.find((element) => element?.nomeCampo === 'regiao_coleta')
+                ?.alternativas.map((i) => {
+                  return {
+                    id: i.id,
+                    label: i.textoAlternativa,
+                  }
+                })}
               placeholder={'Selecione uma ou mais regioões de coleta'}
               className={'border border-[#BBBBBB]'}
             />
@@ -206,7 +248,14 @@ const InformacoesInternas = ({ formik }) => {
             <CustomSelect
               select={formik.values.valorMinimoRequerido}
               setSelect={(e) => formik.setFieldValue('valorMinimoRequerido', e)}
-              options={[{ id: 1, label: '2ML' }]}
+              options={fields
+                ?.find((element) => element?.nomeCampo === 'volume_minimo')
+                ?.alternativas.map((i) => {
+                  return {
+                    id: i.id,
+                    label: i.textoAlternativa,
+                  }
+                })}
               placeholder={'Selecione um volume minímo'}
               className={'border border-[#BBBBBB]'}
             />
@@ -220,7 +269,14 @@ const InformacoesInternas = ({ formik }) => {
             <CustomSelect
               select={formik.values.estabilidade}
               setSelect={(e) => formik.setFieldValue('estabilidade', e)}
-              options={[{ id: 1, label: 'ATÉ 1 DIA ENTRE 2 E 8*C' }]}
+              options={fields
+                ?.find((element) => element?.nomeCampo === 'estabilidade')
+                ?.alternativas.map((i) => {
+                  return {
+                    id: i.id,
+                    label: i.textoAlternativa,
+                  }
+                })}
               placeholder={'Selecione uma estabilidade'}
               className={'border border-[#BBBBBB]'}
             />
