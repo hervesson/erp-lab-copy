@@ -1,11 +1,11 @@
+import CancelRegister from '@/components/Alerts/CancelRegister'
+import SuccessRegister from '@/components/Alerts/SuccessRegister'
 import ModalFramer from '@/components/ModalFramer'
 import { Outfit400, Outfit500 } from '@/fonts'
 import { CreateUnit, ListAllCNAEs, listAllServicesOfHealth } from '@/helpers'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import CancelRegister from './components/CancelRegister'
-import SuccessRegister from './components/SuccessRegister'
 import { validationSchemaCreateUnit } from './schema'
 
 // Components
@@ -71,8 +71,12 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
       <SuccessRegister
         onClose={() => {
           setOpenModalAlerts(false)
+          formik.resetForm()
         }}
-        onCloseRegister={() => onClose()}
+        onCloseRegister={() => {
+          setOpenModalAlerts(false)
+          onClose()
+        }}
       />
     ),
   }
