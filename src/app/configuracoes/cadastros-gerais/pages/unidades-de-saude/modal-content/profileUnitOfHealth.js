@@ -7,6 +7,7 @@ import { InfoCircle } from 'iconsax-reactjs'
 dayjs.extend(customParseFormat)
 
 const ProfileUnitHealth = ({ unit = {} }) => {
+  console.log(unit)
   return (
     <div className="flex flex-col gap-[24px] bg-[#FFF] p-[24px]">
       <div className="flex h-[62px] items-center justify-between rounded-[12px] bg-[#F9F9F9] px-[16px]">
@@ -455,7 +456,7 @@ const ProfileUnitHealth = ({ unit = {} }) => {
           Financeiro
         </p>
         <div className="flex flex-1 items-center justify-between">
-          {unit.dadosBancarios.map((item, index) => {
+          {unit.contas_bancarias.map((item, index) => {
             return (
               <div
                 key={index.toString()}
@@ -470,7 +471,20 @@ const ProfileUnitHealth = ({ unit = {} }) => {
                   <label
                     className={`${Outfit400.className} text-[16px] text-[#222222]`}
                   >
-                    {item?.banco?.codigo} - {item?.banco?.nome}
+                    {item?.conta_bancaria?.banco?.codigo} -{' '}
+                    {item?.conta_bancaria?.banco?.nome}
+                  </label>
+                </div>
+                <div className="flex flex-col">
+                  <label
+                    className={`${Outfit400.className} text-[14px] text-[#494949]`}
+                  >
+                    Tipo de conta
+                  </label>
+                  <label
+                    className={`${Outfit400.className} text-[16px] text-[#222222]`}
+                  >
+                    {item?.conta_bancaria?.tipo_conta}
                   </label>
                 </div>
                 <div className="flex flex-col">
@@ -482,11 +496,13 @@ const ProfileUnitHealth = ({ unit = {} }) => {
                   <label
                     className={`${Outfit400.className} text-[16px] text-[#222222]`}
                   >
-                    {item?.agencia}-{item?.digitoAgencia} /{' '}
-                    {item?.contaCorrente}-{item?.digitoConta}
+                    {item?.conta_bancaria?.agencia}-
+                    {item?.conta_bancaria?.digito_agencia} /{' '}
+                    {item?.conta_bancaria?.numero_conta}-
+                    {item?.conta_bancaria?.digito_conta}
                   </label>
                 </div>
-                {index !== unit.dadosBancarios.length - 1 && (
+                {index !== unit.contas_bancarias.length - 1 && (
                   <div className="mx-3 border border-[#D4D4D4]" />
                 )}
               </div>
