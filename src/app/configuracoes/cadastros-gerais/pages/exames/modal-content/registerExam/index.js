@@ -15,7 +15,8 @@ import InformacoesInternas from './components/informacoesInternas'
 import CancelRegister from '@/components/Alerts/CancelRegister'
 import SuccessRegister from '@/components/Alerts/SuccessRegister'
 
-const RegisterExam = ({ onClose, findData }) => {
+// colocar o findData
+const RegisterExam = ({ onClose }) => {
   const [tab, setTab] = useState('informacoesGerais')
   const [units, setUnits] = useState([])
 

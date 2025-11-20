@@ -120,6 +120,7 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
     }
 
     findUsersByFilters()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const formik = useFormik({
