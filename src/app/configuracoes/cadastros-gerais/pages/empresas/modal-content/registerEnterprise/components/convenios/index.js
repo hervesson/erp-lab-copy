@@ -8,10 +8,10 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { toast } from 'react-toastify'
 import { validationSchemaEnterprises } from '../schemas'
 
+import Atendimento from './components/atendimento'
 import InformacoesEspecificas from './components/informacoesEspecificas'
 import InformacoesGerais from './components/informacoesGerais'
 import Integracao from './components/integracao'
-import Atendimento from './components/atendimento'
 
 const Convenios = forwardRef(
   (
@@ -199,7 +199,7 @@ const Convenios = forwardRef(
       informacoesGerais: <InformacoesGerais formik={formik} states={states} />,
       informacoesEspecificas: <InformacoesEspecificas formik={formik} />,
       integracao: <Integracao />,
-      atendimento: <Atendimento />
+      atendimento: <Atendimento />,
     }
 
     return (
