@@ -11,7 +11,10 @@ import { validationSchemaEnterprises } from '../schemas'
 import Atendimento from './components/atendimento'
 import InformacoesEspecificas from './components/informacoesEspecificas'
 import InformacoesGerais from './components/informacoesGerais'
+import Instrucoes from './components/instrucoes'
 import Integracao from './components/integracao'
+import Planos from './components/planos'
+import Restricoes from './components/restricoes'
 
 const Convenios = forwardRef(
   (
@@ -198,8 +201,11 @@ const Convenios = forwardRef(
     const steps = {
       informacoesGerais: <InformacoesGerais formik={formik} states={states} />,
       informacoesEspecificas: <InformacoesEspecificas formik={formik} />,
-      integracao: <Integracao />,
-      atendimento: <Atendimento />,
+      integracao: <Integracao formik={formik} />,
+      atendimento: <Atendimento formik={formik} />,
+      restricoes: <Restricoes formik={formik} />,
+      planos: <Planos formik={formik} />,
+      instrucoes: <Instrucoes formik={formik} />,
     }
 
     return (
@@ -235,22 +241,22 @@ const Convenios = forwardRef(
           </button>
           <button
             type="button"
-            onClick={() => setTab('vincularExames')}
-            className={`${Outfit400.className} ${tab === 'vincularExames' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
+            onClick={() => setTab('restricoes')}
+            className={`${Outfit400.className} ${tab === 'restricoes' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
           >
             RESTRIÇÕES
           </button>
           <button
             type="button"
-            onClick={() => setTab('vincularExames')}
-            className={`${Outfit400.className} ${tab === 'vincularExames' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
+            onClick={() => setTab('planos')}
+            className={`${Outfit400.className} ${tab === 'planos' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
           >
             PLANOS
           </button>
           <button
             type="button"
-            onClick={() => setTab('vincularExames')}
-            className={`${Outfit400.className} ${tab === 'vincularExames' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
+            onClick={() => setTab('instrucoes')}
+            className={`${Outfit400.className} ${tab === 'instrucoes' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
           >
             INSTRUÇÕES
           </button>

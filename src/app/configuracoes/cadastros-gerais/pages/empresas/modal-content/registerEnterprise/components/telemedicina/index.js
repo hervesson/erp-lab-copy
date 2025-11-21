@@ -7,6 +7,7 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { toast } from 'react-toastify'
 import { validationSchemaEnterprises } from '../schemas'
 import InformacoesGerais from './components/informacoesGerais'
+import Integracao from './components/integracao'
 
 const Telemedicina = forwardRef(
   (
@@ -192,6 +193,7 @@ const Telemedicina = forwardRef(
 
     const steps = {
       informacoesGerais: <InformacoesGerais formik={formik} states={states} />,
+      integracao: <Integracao />,
     }
 
     return (
@@ -206,8 +208,8 @@ const Telemedicina = forwardRef(
           </button>
           <button
             type="button"
-            onClick={() => setTab('informacoesEspecificas')}
-            className={`${Outfit400.className} ${tab === 'informacoesEspecificas' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
+            onClick={() => setTab('integracao')}
+            className={`${Outfit400.className} ${tab === 'integracao' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
           >
             INTEGRAÇÃO
           </button>
