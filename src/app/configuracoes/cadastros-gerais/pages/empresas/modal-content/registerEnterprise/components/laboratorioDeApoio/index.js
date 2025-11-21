@@ -6,8 +6,11 @@ import { useFormik } from 'formik'
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { toast } from 'react-toastify'
 import { validationSchemaEnterprises } from '../schemas'
+
+// Components
 import InformacoesGerais from './components/informacoesGerais'
 import Integracao from './components/integracao'
+import VincularExames from './components/vincularExames'
 
 const LaboratorioDeApoio = forwardRef(
   (
@@ -194,6 +197,7 @@ const LaboratorioDeApoio = forwardRef(
     const steps = {
       informacoesGerais: <InformacoesGerais formik={formik} states={states} />,
       integracao: <Integracao formik={formik} />,
+      vincularExames: <VincularExames formik={formik} />,
     }
 
     return (
