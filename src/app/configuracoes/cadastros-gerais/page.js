@@ -15,7 +15,7 @@ import Exams from './pages/exames'
 import Kits from './pages/kits'
 import ExamMatrix from './pages/matrizes-de-exames'
 import Methods from './pages/metodos'
-import Profissionais from './pages/profissionais/page'
+import Profissionais from './pages/profissionais'
 import UnitOfHealth from './pages/unidades-de-saude'
 import Users from './pages/usuarios'
 

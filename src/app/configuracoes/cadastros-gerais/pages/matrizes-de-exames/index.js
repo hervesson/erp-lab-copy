@@ -50,7 +50,7 @@ const ExamMatrix = ({
         <div className="flex h-[40px] flex-2 items-center rounded-[8px] border border-[#BBBBBB] px-2">
           <input
             placeholder="Pesquisar"
-            className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] outline-0`}
+            className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
           />
           <SearchStatus size="24" color="#A1A1A1" variant="Bulk" />
         </div>
@@ -85,7 +85,7 @@ const ExamMatrix = ({
               Editar
             </th>
             <th
-              className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
+              className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
             >
               Visualizar
             </th>

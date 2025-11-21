@@ -10,8 +10,8 @@ import {
   Book,
   Edit2,
   More,
-  Profile2User,
   SearchStatus,
+  UserSearch,
 } from 'iconsax-reactjs'
 import { useEffect, useState } from 'react'
 import { IsActive } from '../../../../../components/IsActive'
@@ -59,7 +59,7 @@ const Users = ({ modalRegisterUser, setModalRegisterUser }) => {
         <div className="mx-[10px] flex h-[64px] w-full items-center rounded-[8px] bg-white">
           <div className="flex gap-3 rounded-[8px] px-[8px]">
             <div className="flex h-[48px] w-[48px] items-center justify-center rounded-[8px] bg-[#F9F9F9]">
-              <Profile2User size="28" color="#A1A1A1" />
+              <UserSearch size="28" color="#A1A1A1" />
             </div>
             <div className="flex flex-col justify-around">
               <span
@@ -75,11 +75,21 @@ const Users = ({ modalRegisterUser, setModalRegisterUser }) => {
         </div>
       </div>
       <div className="flex gap-2">
-        <CustomSelect />
+        <CustomSelect
+          select={{ id: 'todas', label: 'Status: Todas' }}
+          // setSelect={(e) => findDataPerStatus(e)}
+          options={[
+            { id: '', label: 'Todas' },
+            { id: 'ativas', label: 'Ativas' },
+            { id: 'inativas', label: 'Inativas' },
+          ]}
+          placeholder={'Tipos de exames: todos'}
+          className={'bg-[#F9F9F9]'}
+        />
         <div className="flex h-[40px] flex-2 items-center rounded-[8px] border border-[#BBBBBB] px-2">
           <input
             placeholder="Pesquisar"
-            className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] outline-0`}
+            className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
           />
           <SearchStatus size="24" color="#A1A1A1" variant="Bulk" />
         </div>
