@@ -119,7 +119,7 @@ const RootLayout = () => {
       />
     ),
     adquirentes: <Adquirentes />,
-    hieraquiaCFO: <HierarquiaCFO />,
+    hierarquiaCFO: <HierarquiaCFO />,
     importacaoDeTabelas: <ImportacaoDeTabelas />,
     integracoes: <Integracoes />,
     'campos-de-fomulario': (
