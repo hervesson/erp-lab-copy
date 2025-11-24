@@ -99,8 +99,8 @@ const SalasSetores = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
 
   return (
     <div className="flex flex-1 flex-col gap-[32px]">
-      <div className="flex h-[84px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
-        <div className="flex flex-1 gap-3 rounded-[8px] px-[8px]">
+      <div className="flex h-[76px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
+        <div className="flex flex-1 gap-3 rounded-[8px] px-[16px]">
           <div className="flex flex-1 items-center justify-around gap-[16px]">
             <CustomSelect
               select={{ id: 'todas', label: 'Status: Todas' }}
