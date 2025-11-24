@@ -1,4 +1,3 @@
-'use client'
 import CustomSelect from '@/components/CustomSelect'
 import ModalUp from '@/components/ModalUp'
 import { Outfit300, Outfit400, Outfit700 } from '@/fonts'
@@ -25,8 +24,8 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
   return (
     <div className="flex flex-1 flex-col gap-[32px]">
       <div className="flex h-[84px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
-        <div className="mx-[10px] flex h-[64px] w-full items-center rounded-[8px] bg-white">
-          <div className="flex gap-3 rounded-[8px] px-[8px]">
+        <div className="mx-[10px] flex h-16 w-full items-center rounded-[8px] bg-white">
+          <div className="flex gap-3 rounded-[8px] px-2">
             <div className="flex h-[48px] w-[48px] items-center justify-center rounded-[8px] bg-[#F9F9F9]">
               <Heart size="28" color="#A1A1A1" />
             </div>
@@ -108,7 +107,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
           {exams?.map((item, index) => {
             return (
               <tr
-                className="h-[64px] border-b border-[#D9D9D9] bg-white py-[5px]"
+                className="h-16 border-b border-[#D9D9D9] bg-white py-[5px]"
                 key={index.toString()}
               >
                 <td
