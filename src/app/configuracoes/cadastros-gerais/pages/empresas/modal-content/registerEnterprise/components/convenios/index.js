@@ -6,6 +6,7 @@ import {
   SearchCadastroPaciente,
   SearchOrdemDeServico,
   SearchTiss,
+  UpdateConvenio,
 } from '@/helpers'
 import { percentBRToNumber } from '@/utils'
 import { useFormik } from 'formik'
@@ -36,9 +37,19 @@ const Convenios = forwardRef(
   ) => {
     const [tab, setTab] = useState('informacoesGerais')
     const [openModalAlerts, setOpenModalAlerts] = useState(false)
-    const [optCadastroPaciente, setOptCadastroPaciente] = useState([])
-    const [optOrdemDeServico, setOptOrdemDeServico] = useState([])
-    const [optTiss, setOptTiss] = useState([])
+
+    const [cadPacientesOpcionais, setCadPacientesOpcionais] = useState([])
+
+    const [cadPacientesObrigatorio, setCadPacientesObrigatorio] = useState([])
+
+    const [cadOrdemServicoOpcionais, setCadOrdemServicoOpcionais] = useState([])
+
+    const [cadOrdemServicoObrigatorio, setCadOrdemServicoObrigatorio] =
+      useState([])
+
+    const [cadTissOpcionais, setCadTissOpcionais] = useState([])
+
+    const [cadTissObrigatorios, setCadTissObrigatorios] = useState([])
 
     useEffect(() => {
       const findUsersByFilters = async () => {
@@ -50,9 +61,9 @@ const Convenios = forwardRef(
               SearchTiss(),
             ])
 
-          setOptCadastroPaciente(optCadastroPaciente.data)
-          setOptOrdemDeServico(optOrdemDeServico.data)
-          setOptTiss(optTiss.data)
+          setCadPacientesOpcionais(optCadastroPaciente.data)
+          setCadOrdemServicoOpcionais(optOrdemDeServico.data)
+          setCadTissOpcionais(optTiss.data)
         } catch (error) {
           console.error(error)
         }
@@ -111,12 +122,12 @@ const Convenios = forwardRef(
         valorFilme: '',
         diaVencimento: '',
         cnes: '',
-        tiss: true,
+        tiss: false,
         versaoTiss: '',
         tissCodigoOperadora: '',
         codigoOperadora: '',
         codigoPrestador: '',
-        envio: '',
+        envio: {},
         faturaAte: {},
         vencimento: '',
         contrato: '',
@@ -182,6 +193,41 @@ const Convenios = forwardRef(
           const responseCreateEnterprise = await CreateEnterprise(payload)
 
           if (responseCreateEnterprise.success) {
+            // fazer o update mandando as outras informações específicas
+
+            const payloadUpdate = {
+              nome: values.nomeConvenio,
+              registro_ans: values.registroAns,
+              matricula: values.matricula,
+              tipo_convenio_id: values.tipoConvenio.id,
+              forma_liquidacao_id: values.formaLiquidacao.id,
+              valor_ch: values.valorCH,
+              valor_filme: values.valorFilme,
+              tiss: values.tiss,
+              versao_tiss: values.versaoTiss,
+              codigo_operadora_tiss: values.tissCodigoOperadora,
+              codigo_operadora_autorizacao: values.codigoOperadora,
+              codigo_prestador: values.codigoPrestador,
+              envio_faturamento_id: values.envio.id,
+              fatura_ate_dia: values.faturaAte,
+              dia_vencimento: values.diaVencimento,
+              data_contrato: values.contrato,
+              data_ultimo_ajuste: values.ultimoAjuste,
+              instrucoes_faturamento: values.instrucoesParaFaturmento,
+              tabela_servico_id: values.tabelaDeServico.id,
+              tabela_base_id: values.tabelaBase.id,
+              tabela_material_id: values.tabelaMaterial.id,
+              cnes: values.cnes,
+              co_participacao: true,
+              nota_fiscal_exige_fatura: true,
+              contato: values.contato,
+              instrucoes: values.instrucoes,
+              observacoes_gerais: values.observacoes,
+              ativo: true,
+            }
+
+            await UpdateConvenio(payloadUpdate)
+
             setOpenModalAlerts(true)
             findData()
           } else {
@@ -272,9 +318,20 @@ const Convenios = forwardRef(
       atendimento: (
         <Atendimento
           formik={formik}
-          optCadastroPaciente={optCadastroPaciente}
-          optOrdemDeServico={optOrdemDeServico}
-          optTiss={optTiss}
+          cadPacientesOpcionais={cadPacientesOpcionais}
+          setCadPacientesOpcionais={(e) => setCadPacientesOpcionais(e)}
+          cadPacientesObrigatorio={cadPacientesObrigatorio}
+          setCadPacientesObrigatorio={(e) => setCadPacientesObrigatorio(e)}
+          cadOrdemServicoOpcionais={cadOrdemServicoOpcionais}
+          setCadOrdemServicoOpcionais={(e) => setCadOrdemServicoOpcionais(e)}
+          cadOrdemServicoObrigatorio={cadOrdemServicoObrigatorio}
+          setCadOrdemServicoObrigatorio={(e) =>
+            setCadOrdemServicoObrigatorio(e)
+          }
+          cadTissOpcionais={cadTissOpcionais}
+          setCadTissOpcionais={(e) => setCadTissOpcionais(e)}
+          cadTissObrigatorios={cadTissObrigatorios}
+          setCadTissObrigatorios={(e) => setCadTissObrigatorios(e)}
         />
       ),
       restricoes: <Restricoes formik={formik} />,
@@ -283,7 +340,7 @@ const Convenios = forwardRef(
     }
 
     return (
-      <div className="mx-[48px] my-[28px] flex h-fit flex-1 flex-col rounded">
+      <div className="mx-[48px] my-7 flex h-fit flex-1 flex-col rounded">
         <div className="flex h-[56px] items-center gap-8 px-[48px]">
           <button
             type="button"

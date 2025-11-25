@@ -110,13 +110,12 @@ export const validationSchemaEnterprises = Yup.object({
   bairro: Yup.string()
     .transform(trimToUndefined)
     .required('Bairro é obrigatório'),
-  estado: Yup.string()
-    .transform(trimToUndefined)
-    .length(2, 'Use a sigla do estado (UF)')
-    .required('Estado é obrigatório'),
-  cidade: Yup.string()
-    .transform(trimToUndefined)
-    .required('Cidade é obrigatória'),
+  estado: Yup.object({
+    label: Yup.string().required('Selecione o estado'),
+  }),
+  cidade: Yup.object({
+    label: Yup.string().required('Selecione a cidade'),
+  }),
 
   formaDePagamento: Yup.object({
     id: Yup.string().required('Selecione a forma de pagamento'),
@@ -153,4 +152,92 @@ export const validationSchemaEnterprises = Yup.object({
   nomeFantasia: Yup.string()
     .transform(trimToUndefined)
     .required('Nome fantasia é obrigatória'),
+
+  nomeConvenio: Yup.string()
+    .transform(trimToUndefined)
+    .required('Informe o nome do convênio'),
+
+  registroAns: Yup.string()
+    .transform(trimToUndefined)
+    .required('Informe o registro ANS'),
+
+  matricula: Yup.string().transform(trimToUndefined).nullable(),
+
+  tipoConvenio: Yup.object({
+    id: Yup.string().required('Selecione o tipo de convênio'),
+  }).required('Tipo de convênio é obrigatório'), // tipo_convenio_id
+
+  formaLiquidacao: Yup.object({
+    id: Yup.string().required('Selecione a forma de liquidação'),
+  }).required('Tipo de convênio é obrigatório'), // forma_liquidacao_id
+
+  valorCH: Yup.number()
+    .typeError('Informe um valor numérico para o valor CH')
+    .required('Informe o valor CH'),
+
+  valorFilme: Yup.number()
+    .typeError('Informe um valor numérico para o valor do filme')
+    .nullable(),
+
+  tiss: Yup.string()
+    .transform(trimToUndefined)
+    .required('Informe o código TISS'),
+
+  versaoTiss: Yup.string()
+    .transform(trimToUndefined)
+    .required('Informe a versão TISS'),
+
+  tissCodigoOperadora: Yup.string()
+    .transform(trimToUndefined)
+    .required('Informe o código da operadora TISS'),
+
+  codigoOperadora: Yup.string()
+    .transform(trimToUndefined)
+    .required('Informe o código da operadora para autorização'),
+
+  codigoPrestador: Yup.string()
+    .transform(trimToUndefined)
+    .required('Informe o código do prestador'),
+
+  envio: Yup.object({
+    id: Yup.string().required('Selecione o tipo de envio'),
+  }).required('Tipo de envio é obrigatório'), // envio_faturamento_id
+
+  faturaAte: Yup.object({
+    id: Yup.string().required('Selecione um dia pra faturar até'),
+  }).required('Dia até pra ser faturado é obrigatório'),
+
+  diaVencimento: Yup.number()
+    .typeError('Informe um dia válido para vencimento')
+    .min(1, 'Dia mínimo é 1')
+    .max(31, 'Dia máximo é 31')
+    .required('Informe o dia de vencimento'),
+
+  contrato: Yup.string().required('Contrato é obrigatorio'),
+
+  ultimoAjuste: Yup.string().required('Último ajuste é obrigatorio'),
+
+  instrucoesParaFaturmento: Yup.string().transform(trimToUndefined).nullable(),
+
+  tabelaDeServico: Yup.object({
+    id: Yup.string().required('Selecione a tebela de serviço'),
+  }).required('Tipo de tabela de serviço é obrigatória'), // tabela_servico_id
+
+  tabelaBase: Yup.object({
+    id: Yup.string().required('Selecione a tebela base'),
+  }).required('Tipo de tabela base é obrigatória'), // tabela_base_id
+
+  tabelaMaterial: Yup.object({
+    id: Yup.string().required('Selecione a tebela material'),
+  }).required('Tipo de tabela material é obrigatória'), // tabela_material_id
+
+  cnes: Yup.string().transform(trimToUndefined).required('Informe o CNES'),
+
+  contato: Yup.string()
+    .transform(trimToUndefined)
+    .required('Digite as informaçcões de contato'),
+
+  instrucoes: Yup.string().transform(trimToUndefined).nullable(),
+
+  observacoes: Yup.string().transform(trimToUndefined).nullable(),
 })

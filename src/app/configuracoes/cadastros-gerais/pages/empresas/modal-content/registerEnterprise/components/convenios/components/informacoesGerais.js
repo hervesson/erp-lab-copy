@@ -37,11 +37,11 @@ const InformacoesGerais = ({ formik, states }) => {
       formik.setFieldValue('rua', result?.data?.rua)
       formik.setFieldValue('bairro', result?.data?.bairro)
       formik.setFieldValue('cidade', {
-        id: '',
+        id: safe(result.data.cidade),
         label: safe(result.data.cidade),
       })
       formik.setFieldValue('estado', {
-        id: '',
+        id: safe(result.data.estado),
         label: safe(result.data.estado),
       })
     }

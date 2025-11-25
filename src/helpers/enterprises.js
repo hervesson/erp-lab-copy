@@ -303,3 +303,39 @@ export async function UpdateEnterprise(enterpriseId, payload) {
     }
   }
 }
+
+export async function UpdateConvenio(convenioId) {
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const response = await api.patch(
+      '/relacionamento/convenios/' + convenioId,
+      {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token.value,
+        },
+      },
+    )
+
+    return {
+      success: true,
+      data: response.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: 'Erro desconhecido ao tentar criar unidade',
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    const errData = error?.response?.data || fallback
+
+    return {
+      success: false,
+      error: errData,
+    }
+  }
+}

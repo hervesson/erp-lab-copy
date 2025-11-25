@@ -1,10 +1,10 @@
 import CustomSelect from '@/components/CustomSelect'
+import DecimalInputBR from '@/components/DecimalInputBR'
 import { Outfit400 } from '@/fonts'
 import { gerarDias } from '@/utils'
 import { InfoCircle } from 'iconsax-reactjs'
 
 const InformacoesEspecificas = ({ formik, fields }) => {
-  console.log(fields)
   return (
     <div className="flex w-full flex-col gap-[32px] rounded bg-[#FFF] p-[48px]">
       <div className="flex flex-col gap-[32px]">
@@ -121,12 +121,12 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   </label>
                   <InfoCircle size="20" color="#A1A1A1" />
                 </div>
-                <input
-                  {...formik.getFieldProps('valorCH')}
-                  type="text"
+                <DecimalInputBR
                   id="valorCH"
                   name="valorCH"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  value={formik.values.valorCH} // <-- NUMBER (ex: 12.9)
+                  onChange={(num) => formik.setFieldValue('valorCH', num)}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o valor do CH"
                 />
               </div>
@@ -137,12 +137,12 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   Valor do filme
                   <strong className="text-[#F23434]">*</strong>
                 </label>
-                <input
-                  {...formik.getFieldProps('valorFilme')}
-                  type="text"
+                <DecimalInputBR
                   id="valorFilme"
                   name="valorFilme"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  value={formik.values.valorFilme} // <-- NUMBER (ex: 12.9)
+                  onChange={(num) => formik.setFieldValue('valorFilme', num)}
+                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o valor do filme"
                 />
               </div>
@@ -361,8 +361,8 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                 <input
                   {...formik.getFieldProps('ultimoAjuste')}
                   type="text"
-                  id="sinonimos"
-                  name="sinonimos"
+                  id="ultimoAjuste"
+                  name="ultimoAjuste"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Data do último ajuste"
                 />
@@ -527,7 +527,7 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   id="contato"
                   name="contato"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
-                  placeholder="Digite as informações o contato"
+                  placeholder="Digite as informações do contato"
                 />
               </div>
             </div>
