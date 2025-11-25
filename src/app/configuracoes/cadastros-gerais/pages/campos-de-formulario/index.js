@@ -6,7 +6,6 @@ import { Outfit300, Outfit400 } from '@/fonts'
 import {
   DeleteAlternative,
   listAllFormField,
-  listFormFields,
   UpdateStatusField,
 } from '@/helpers'
 import useDebounce from '@/hooks/useDebounce'
@@ -49,11 +48,11 @@ const CamposDeFormulario = ({
       try {
         const [lisFormFields, lstFields] = await Promise.all([
           listAllFormField(),
-          listFormFields(),
+          listAllFormField('', 1, 1000),
         ])
 
         // mantém apenas itens com alternativas = 0 (ou inexistente)
-        const zeroAltItems = (lstFields?.data ?? []).filter(
+        const zeroAltItems = (lstFields?.data.data ?? []).filter(
           (e) => !Array.isArray(e.alternativas) || e.alternativas.length === 0,
         )
 
@@ -76,11 +75,11 @@ const CamposDeFormulario = ({
     try {
       const [lisFormFields, lstFields] = await Promise.all([
         listAllFormField(term, page, limit),
-        listFormFields(),
+        listAllFormField('', 1, 1000),
       ])
 
       // mantém apenas itens com alternativas = 0 (ou inexistente)
-      const zeroAltItems = (lstFields?.data ?? []).filter(
+      const zeroAltItems = (lstFields?.data.data ?? []).filter(
         (e) => !Array.isArray(e.alternativas) || e.alternativas.length === 0,
       )
 

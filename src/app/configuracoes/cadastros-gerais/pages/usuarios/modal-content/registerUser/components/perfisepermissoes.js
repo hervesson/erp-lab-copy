@@ -182,14 +182,14 @@ const PerfisePermissoes = () => {
         <div className="flex gap-[32px]">
           <div className="flex flex-1 flex-col">
             <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
-              <spam className={`${Outfit400.className} text-[#494949]`}>
+              <span className={`${Outfit400.className} text-[#494949]`}>
                 PERMISSOES DISPONÍVEIS
-              </spam>
-              <spam
+              </span>
+              <span
                 className={`${Outfit400.className} text-[#057B64] underline`}
               >
                 Remover todos
-              </spam>
+              </span>
             </div>
             <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
               <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
@@ -211,14 +211,14 @@ const PerfisePermissoes = () => {
           </div>
           <div className="flex flex-1 flex-col">
             <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
-              <spam className={`${Outfit400.className} text-[#494949]`}>
+              <span className={`${Outfit400.className} text-[#494949]`}>
                 PERMISSOES SELECIONADAS
-              </spam>
-              <spam
+              </span>
+              <span
                 className={`${Outfit400.className} text-[#057B64] underline`}
               >
                 Remover todos
-              </spam>
+              </span>
             </div>
             <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
               <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
@@ -241,14 +241,14 @@ const PerfisePermissoes = () => {
         <div className="flex gap-[32px]">
           <div className="flex flex-1 flex-col">
             <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
-              <spam className={`${Outfit400.className} text-[#494949]`}>
+              <span className={`${Outfit400.className} text-[#494949]`}>
                 PERMISSOES DISPONÍVEIS
-              </spam>
-              <spam
+              </span>
+              <span
                 className={`${Outfit400.className} text-[#057B64] underline`}
               >
                 Remover todos
-              </spam>
+              </span>
             </div>
             <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
               <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
@@ -270,14 +270,14 @@ const PerfisePermissoes = () => {
           </div>
           <div className="flex flex-1 flex-col">
             <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
-              <spam className={`${Outfit400.className} text-[#494949]`}>
+              <span className={`${Outfit400.className} text-[#494949]`}>
                 PERMISSOES SELECIONADAS
-              </spam>
-              <spam
+              </span>
+              <span
                 className={`${Outfit400.className} text-[#057B64] underline`}
               >
                 Remover todos
-              </spam>
+              </span>
             </div>
             <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
               <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">

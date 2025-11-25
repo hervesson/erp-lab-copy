@@ -1,7 +1,12 @@
 import SuccessRegister from '@/components/Alerts/SuccessRegister'
 import ModalFramer from '@/components/ModalFramer'
 import { Outfit400 } from '@/fonts'
-import { CreateEnterprise } from '@/helpers'
+import {
+  CreateEnterprise,
+  SearchCadastroPaciente,
+  SearchOrdemDeServico,
+  SearchTiss,
+} from '@/helpers'
 import { percentBRToNumber } from '@/utils'
 import { useFormik } from 'formik'
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
@@ -18,11 +23,43 @@ import Restricoes from './components/restricoes'
 
 const Convenios = forwardRef(
   (
-    { formRegister, states, onClose, onValidationChange, setLoading, findData },
+    {
+      formRegister,
+      states,
+      fields,
+      onClose,
+      onValidationChange,
+      setLoading,
+      findData,
+    },
     ref,
   ) => {
     const [tab, setTab] = useState('informacoesGerais')
     const [openModalAlerts, setOpenModalAlerts] = useState(false)
+    const [optCadastroPaciente, setOptCadastroPaciente] = useState([])
+    const [optOrdemDeServico, setOptOrdemDeServico] = useState([])
+    const [optTiss, setOptTiss] = useState([])
+
+    useEffect(() => {
+      const findUsersByFilters = async () => {
+        try {
+          const [optCadastroPaciente, optOrdemDeServico, optTiss] =
+            await Promise.all([
+              SearchCadastroPaciente(),
+              SearchOrdemDeServico(),
+              SearchTiss(),
+            ])
+
+          setOptCadastroPaciente(optCadastroPaciente.data)
+          setOptOrdemDeServico(optOrdemDeServico.data)
+          setOptTiss(optTiss.data)
+        } catch (error) {
+          console.error(error)
+        }
+      }
+
+      findUsersByFilters()
+    }, [])
 
     const formik = useFormik({
       validationSchema: validationSchemaEnterprises,
@@ -65,6 +102,34 @@ const Convenios = forwardRef(
         optantePeloSimples: formRegister.values.optantePeloSimples,
         financeiro: formRegister.values.financeiro,
         formaDePagamento: formRegister.values.formaDePagamento,
+        nomeConvenio: '',
+        registroAns: '',
+        matricula: '',
+        tipoConvenio: {},
+        formaLiquidacao: {},
+        valorCH: '',
+        valorFilme: '',
+        diaVencimento: '',
+        cnes: '',
+        tiss: true,
+        versaoTiss: '',
+        tissCodigoOperadora: '',
+        codigoOperadora: '',
+        codigoPrestador: '',
+        envio: '',
+        faturaAte: {},
+        vencimento: '',
+        contrato: '',
+        ultimoAjuste: '',
+        instrucoesParaFaturmento: '',
+        tabelaDeServico: {},
+        tabelaBase: {},
+        tabelaMaterial: {},
+        coParticipacao: false,
+        notaFiscalfatura: false,
+        contato: '',
+        instrucoes: '',
+        observacoes: '',
       },
       onSubmit: async (values) => {
         setLoading(true)
@@ -200,9 +265,18 @@ const Convenios = forwardRef(
 
     const steps = {
       informacoesGerais: <InformacoesGerais formik={formik} states={states} />,
-      informacoesEspecificas: <InformacoesEspecificas formik={formik} />,
+      informacoesEspecificas: (
+        <InformacoesEspecificas formik={formik} fields={fields} />
+      ),
       integracao: <Integracao formik={formik} />,
-      atendimento: <Atendimento formik={formik} />,
+      atendimento: (
+        <Atendimento
+          formik={formik}
+          optCadastroPaciente={optCadastroPaciente}
+          optOrdemDeServico={optOrdemDeServico}
+          optTiss={optTiss}
+        />
+      ),
       restricoes: <Restricoes formik={formik} />,
       planos: <Planos formik={formik} />,
       instrucoes: <Instrucoes formik={formik} />,

@@ -1,8 +1,10 @@
 import CustomSelect from '@/components/CustomSelect'
 import { Outfit400 } from '@/fonts'
+import { gerarDias } from '@/utils'
 import { InfoCircle } from 'iconsax-reactjs'
 
 const InformacoesEspecificas = ({ formik, fields }) => {
+  console.log(fields)
   return (
     <div className="flex w-full flex-col gap-[32px] rounded bg-[#FFF] p-[48px]">
       <div className="flex flex-col gap-[32px]">
@@ -21,10 +23,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   <strong className="text-[#F23434]">*</strong>
                 </label>
                 <input
-                  {...formik.getFieldProps('nomeExame')}
+                  {...formik.getFieldProps('nomeConvenio')}
                   type="text"
-                  id="nomeExame"
-                  name="nomeExame"
+                  id="nomeConvenio"
+                  name="nomeConvenio"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Digite o nome do convênio"
                 />
@@ -37,10 +39,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   <strong className="text-[#F23434]">*</strong>
                 </label>
                 <input
-                  {...formik.getFieldProps('codigoInterno')}
+                  {...formik.getFieldProps('registroAns')}
                   type="text"
-                  id="codigoInterno"
-                  name="codigoInterno"
+                  id="registroAns"
+                  name="registroAns"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Digite o registro ANS"
                 />
@@ -52,10 +54,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   Matrícula<strong className="text-[#F23434]">*</strong>
                 </label>
                 <input
-                  {...formik.getFieldProps('sinonimos')}
+                  {...formik.getFieldProps('matricula')}
                   type="text"
-                  id="sinonimos"
-                  name="sinonimos"
+                  id="matricula"
+                  name="matricula"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Digite a matrícula"
                 />
@@ -71,10 +73,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                 </label>
 
                 <CustomSelect
-                  select={formik.values.grupo}
-                  setSelect={(e) => formik.setFieldValue('grupo', e)}
+                  select={formik.values.tipoConvenio}
+                  setSelect={(e) => formik.setFieldValue('tipoConvenio', e)}
                   options={fields
-                    ?.find((element) => element?.nomeCampo === 'grupo')
+                    ?.find((element) => element?.nomeCampo === 'tipo_convenio')
                     ?.alternativas.map((i) => {
                       return {
                         id: i.id,
@@ -93,10 +95,12 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   <strong className="text-[#F23434]">*</strong>
                 </label>
                 <CustomSelect
-                  select={formik.values.grupo}
-                  setSelect={(e) => formik.setFieldValue('grupo', e)}
+                  select={formik.values.formaLiquidacao}
+                  setSelect={(e) => formik.setFieldValue('formaLiquidacao', e)}
                   options={fields
-                    ?.find((element) => element?.nomeCampo === 'grupo')
+                    ?.find(
+                      (element) => element?.nomeCampo === 'forma_liquidacao',
+                    )
                     ?.alternativas.map((i) => {
                       return {
                         id: i.id,
@@ -118,10 +122,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   <InfoCircle size="20" color="#A1A1A1" />
                 </div>
                 <input
-                  {...formik.getFieldProps('codigoAMB')}
+                  {...formik.getFieldProps('valorCH')}
                   type="text"
-                  id="codigoAMB"
-                  name="codigoAMB"
+                  id="valorCH"
+                  name="valorCH"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Digite o valor do CH"
                 />
@@ -134,10 +138,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   <strong className="text-[#F23434]">*</strong>
                 </label>
                 <input
-                  {...formik.getFieldProps('nomeExame')}
+                  {...formik.getFieldProps('valorFilme')}
                   type="text"
-                  id="nomeExame"
-                  name="nomeExame"
+                  id="valorFilme"
+                  name="valorFilme"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Digite o valor do filme"
                 />
@@ -152,10 +156,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                 </label>
 
                 <input
-                  {...formik.getFieldProps('nomeExame')}
+                  {...formik.getFieldProps('diaVencimento')}
                   type="text"
-                  id="nomeExame"
-                  name="nomeExame"
+                  id="diaVencimento"
+                  name="diaVencimento"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Digite o dia de vencimento"
                 />
@@ -167,10 +171,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   CNES<strong className="text-[#F23434]">*</strong>
                 </label>
                 <input
-                  {...formik.getFieldProps('nomeExame')}
+                  {...formik.getFieldProps('cnes')}
                   type="text"
-                  id="nomeExame"
-                  name="nomeExame"
+                  id="cnes"
+                  name="cnes"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Digite o CNES"
                 />
@@ -188,15 +192,15 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                 <div className="flex gap-2">
                   <button
                     type="button"
-                    className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.peso ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
-                    onClick={() => formik.setFieldValue('peso', true)}
+                    className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.tiss ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                    onClick={() => formik.setFieldValue('tiss', true)}
                   >
                     SIM
                   </button>
                   <button
                     type="button"
-                    className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.peso ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
-                    onClick={() => formik.setFieldValue('peso', false)}
+                    className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.tiss ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                    onClick={() => formik.setFieldValue('tiss', false)}
                   >
                     NÃO
                   </button>
@@ -209,10 +213,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   Versão do TISS<strong className="text-[#F23434]">*</strong>
                 </label>
                 <input
-                  {...formik.getFieldProps('nomeExame')}
+                  {...formik.getFieldProps('versaoTiss')}
                   type="text"
-                  id="nomeExame"
-                  name="nomeExame"
+                  id="versaoTiss"
+                  name="versaoTiss"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Digite a versão do TISS"
                 />
@@ -227,10 +231,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   <strong className="text-[#F23434]">*</strong>
                 </label>
                 <input
-                  {...formik.getFieldProps('nomeExame')}
+                  {...formik.getFieldProps('tissCodigoOperadora')}
                   type="text"
-                  id="nomeExame"
-                  name="nomeExame"
+                  id="tissCodigoOperadora"
+                  name="tissCodigoOperadora"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Digite o codigo da operadora TISS"
                 />
@@ -243,10 +247,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   <strong className="text-[#F23434]">*</strong>
                 </label>
                 <input
-                  {...formik.getFieldProps('codigoInterno')}
+                  {...formik.getFieldProps('codigoOperadora')}
                   type="text"
-                  id="codigoInterno"
-                  name="codigoInterno"
+                  id="codigoOperadora"
+                  name="codigoOperadora"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Digite o código da operadora (autorização)"
                 />
@@ -259,10 +263,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   <strong className="text-[#F23434]">*</strong>
                 </label>
                 <input
-                  {...formik.getFieldProps('sinonimos')}
+                  {...formik.getFieldProps('codigoPrestador')}
                   type="text"
-                  id="sinonimos"
-                  name="sinonimos"
+                  id="codigoPrestador"
+                  name="codigoPrestador"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Digite o codigo do prestador"
                 />
@@ -286,10 +290,12 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   <strong className="text-[#F23434]">*</strong>
                 </label>
                 <CustomSelect
-                  select={formik.values.grupo}
-                  setSelect={(e) => formik.setFieldValue('grupo', e)}
+                  select={formik.values.envio}
+                  setSelect={(e) => formik.setFieldValue('envio', e)}
                   options={fields
-                    ?.find((element) => element?.nomeCampo === 'grupo')
+                    ?.find(
+                      (element) => element?.nomeCampo === 'envio_faturamento',
+                    )
                     ?.alternativas.map((i) => {
                       return {
                         id: i.id,
@@ -308,16 +314,9 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   <strong className="text-[#F23434]">*</strong>
                 </label>
                 <CustomSelect
-                  select={formik.values.grupo}
-                  setSelect={(e) => formik.setFieldValue('grupo', e)}
-                  options={fields
-                    ?.find((element) => element?.nomeCampo === 'grupo')
-                    ?.alternativas.map((i) => {
-                      return {
-                        id: i.id,
-                        label: i.textoAlternativa,
-                      }
-                    })}
+                  select={formik.values.faturaAte}
+                  setSelect={(e) => formik.setFieldValue('faturaAte', e)}
+                  options={gerarDias()}
                   placeholder={'Selecione o dia limite da fatura'}
                   className={'border border-[#BBBBBB]'}
                 />
@@ -330,16 +329,9 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   <strong className="text-[#F23434]">*</strong>
                 </label>
                 <CustomSelect
-                  select={formik.values.grupo}
-                  setSelect={(e) => formik.setFieldValue('grupo', e)}
-                  options={fields
-                    ?.find((element) => element?.nomeCampo === 'grupo')
-                    ?.alternativas.map((i) => {
-                      return {
-                        id: i.id,
-                        label: i.textoAlternativa,
-                      }
-                    })}
+                  select={formik.values.vencimento}
+                  setSelect={(e) => formik.setFieldValue('vencimento', e)}
+                  options={gerarDias()}
                   placeholder={'Selecione o dia de vencimento'}
                   className={'border border-[#BBBBBB]'}
                 />
@@ -352,10 +344,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   <strong className="text-[#F23434]">*</strong>
                 </label>
                 <input
-                  {...formik.getFieldProps('codigoInterno')}
+                  {...formik.getFieldProps('contrato')}
                   type="text"
-                  id="codigoInterno"
-                  name="codigoInterno"
+                  id="contrato"
+                  name="contrato"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Data de assinatura do contrato"
                 />
@@ -367,7 +359,7 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   Último ajuste <strong className="text-[#F23434]">*</strong>
                 </label>
                 <input
-                  {...formik.getFieldProps('sinonimos')}
+                  {...formik.getFieldProps('ultimoAjuste')}
                   type="text"
                   id="sinonimos"
                   name="sinonimos"
@@ -383,10 +375,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                 Instruções para faturamento
               </label>
               <textarea
-                {...formik.getFieldProps('preparoFeminino')}
+                {...formik.getFieldProps('instrucoesParaFaturmento')}
                 type="text"
-                id="preparoFeminino"
-                name="preparoFeminino"
+                id="instrucoesParaFaturmento"
+                name="instrucoesParaFaturmento"
                 className={`rounded-[8px] border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
                 placeholder="Digite as instruções"
               />
@@ -409,10 +401,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   <strong className="text-[#F23434]">*</strong>
                 </label>
                 <CustomSelect
-                  select={formik.values.grupo}
-                  setSelect={(e) => formik.setFieldValue('grupo', e)}
+                  select={formik.values.tabelaDeServico}
+                  setSelect={(e) => formik.setFieldValue('tabelaDeServico', e)}
                   options={fields
-                    ?.find((element) => element?.nomeCampo === 'grupo')
+                    ?.find((element) => element?.nomeCampo === 'tabela_servico')
                     ?.alternativas.map((i) => {
                       return {
                         id: i.id,
@@ -431,10 +423,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   <strong className="text-[#F23434]">*</strong>
                 </label>
                 <CustomSelect
-                  select={formik.values.grupo}
-                  setSelect={(e) => formik.setFieldValue('grupo', e)}
+                  select={formik.values.tabelaBase}
+                  setSelect={(e) => formik.setFieldValue('tabelaBase', e)}
                   options={fields
-                    ?.find((element) => element?.nomeCampo === 'grupo')
+                    ?.find((element) => element?.nomeCampo === 'tabela_base')
                     ?.alternativas.map((i) => {
                       return {
                         id: i.id,
@@ -452,10 +444,12 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   Tabela material<strong className="text-[#F23434]">*</strong>
                 </label>
                 <CustomSelect
-                  select={formik.values.grupo}
-                  setSelect={(e) => formik.setFieldValue('grupo', e)}
+                  select={formik.values.tabelaMaterial}
+                  setSelect={(e) => formik.setFieldValue('tabelaMaterial', e)}
                   options={fields
-                    ?.find((element) => element?.nomeCampo === 'grupo')
+                    ?.find(
+                      (element) => element?.nomeCampo === 'tabela_material',
+                    )
                     ?.alternativas.map((i) => {
                       return {
                         id: i.id,
@@ -478,15 +472,17 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                 <div className="flex gap-2">
                   <button
                     type="button"
-                    className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.peso ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
-                    onClick={() => formik.setFieldValue('peso', true)}
+                    className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.coParticipacao ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                    onClick={() => formik.setFieldValue('coParticipacao', true)}
                   >
                     SIM
                   </button>
                   <button
                     type="button"
-                    className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.peso ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
-                    onClick={() => formik.setFieldValue('peso', false)}
+                    className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.coParticipacao ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                    onClick={() =>
+                      formik.setFieldValue('coParticipacao', false)
+                    }
                   >
                     NÃO
                   </button>
@@ -501,15 +497,19 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                 <div className="flex gap-2">
                   <button
                     type="button"
-                    className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.peso ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
-                    onClick={() => formik.setFieldValue('peso', true)}
+                    className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.notaFiscalfatura ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                    onClick={() =>
+                      formik.setFieldValue('notaFiscalfatura', true)
+                    }
                   >
                     SIM
                   </button>
                   <button
                     type="button"
-                    className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.peso ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
-                    onClick={() => formik.setFieldValue('peso', false)}
+                    className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.notaFiscalfatura ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                    onClick={() =>
+                      formik.setFieldValue('notaFiscalfatura', false)
+                    }
                   >
                     NÃO
                   </button>
@@ -522,10 +522,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   Contato<strong className="text-[#F23434]">*</strong>
                 </label>
                 <input
-                  {...formik.getFieldProps('sinonimos')}
+                  {...formik.getFieldProps('contato')}
                   type="text"
-                  id="sinonimos"
-                  name="sinonimos"
+                  id="contato"
+                  name="contato"
                   className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                   placeholder="Digite as informações o contato"
                 />
@@ -540,10 +540,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   Instruções
                 </label>
                 <textarea
-                  {...formik.getFieldProps('preparoPublicoGeral')}
+                  {...formik.getFieldProps('instrucoes')}
                   type="text"
-                  id="preparoPublicoGeral"
-                  name="preparoPublicoGeral"
+                  id="instrucoes"
+                  name="instrucoes"
                   className={`rounded-[8px] border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
                   placeholder="Digite as insntruções"
                 />
@@ -555,10 +555,10 @@ const InformacoesEspecificas = ({ formik, fields }) => {
                   Observações gerais
                 </label>
                 <textarea
-                  {...formik.getFieldProps('preparoFeminino')}
+                  {...formik.getFieldProps('observacoes')}
                   type="text"
-                  id="preparoFeminino"
-                  name="preparoFeminino"
+                  id="observacoes"
+                  name="observacoes"
                   className={`rounded-[8px] border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
                   placeholder="Digite as observações gerais"
                 />

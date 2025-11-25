@@ -1,8 +1,33 @@
 import { Outfit400 } from '@/fonts'
-import { ArrowRight2 } from 'iconsax-reactjs'
+import { ArrowLeft2, ArrowRight2 } from 'iconsax-reactjs'
+import { useState } from 'react'
 
-const Atendimento = () => {
-  // Informações básicas
+const Atendimento = ({ optCadastroPaciente, optOrdemDeServico, optTiss }) => {
+  // Cadastro de pacientes
+  const [cadPacientesOpcionais, setCadPacientesOpcionais] =
+    useState(optCadastroPaciente)
+
+  const [selectItemCadPaciente, setSelectItemCadPaciente] = useState(null)
+
+  const [cadPacientesObrigatorio, setCadPacientesObrigatorio] = useState([])
+
+  // Ordem de serviço
+  const [cadOrdemServicoOpcionais, setCadOrdemServicoOpcionais] =
+    useState(optOrdemDeServico)
+
+  const [selectItemCadOrdemServico, setSelectItemCadOrdemServico] =
+    useState(null)
+
+  const [cadOrdemServicoObrigatorio, setCadOrdemServicoObrigatorio] = useState(
+    [],
+  )
+
+  // Tiss
+  const [cadTissOpcionais, setCadTissOpcionais] = useState(optTiss)
+
+  const [selectItemCadTiss, setSelectItemCadTiss] = useState(null)
+
+  const [cadTissObrigatorios, setCadTissObrigatorios] = useState([])
 
   return (
     <div className="flex w-full flex-col gap-[32px] rounded bg-[#FFF] p-[48px]">
@@ -16,87 +41,100 @@ const Atendimento = () => {
         <div className="flex gap-[32px]">
           <div className="flex flex-1 flex-col">
             <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
-              <spam className={`${Outfit400.className} text-[#494949]`}>
+              <span className={`${Outfit400.className} text-[#494949]`}>
                 CAMPOS <strong>OPCIONAIS</strong>
-              </spam>
-              <spam
+              </span>
+              <span
                 className={`${Outfit400.className} text-[#057B64] underline`}
               >
                 Todos opcionais
-              </spam>
+              </span>
             </div>
             <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
-              <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
-                <span
-                  className={`${Outfit400.className} text-[#737373] uppercase`}
-                >
-                  CPF próprio
-                </span>
-              </div>
-              <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
-                <span
-                  className={`${Outfit400.className} text-[#737373] uppercase`}
-                >
-                  Acomodação
-                </span>
-              </div>
-              <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
-                <span
-                  className={`${Outfit400.className} text-[#737373] uppercase`}
-                >
-                  Altura
-                </span>
-              </div>
-              <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
-                <span
-                  className={`${Outfit400.className} text-[#737373] uppercase`}
-                >
-                  Cartão sus
-                </span>
-              </div>
-              <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
-                <span
-                  className={`${Outfit400.className} text-[#737373] uppercase`}
-                >
-                  Cep
-                </span>
-              </div>
-              <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
-                <span
-                  className={`${Outfit400.className} text-[#737373] uppercase`}
-                >
-                  Cid do paciente
-                </span>
-              </div>
+              {cadPacientesOpcionais?.map((item, index) => {
+                return (
+                  <div
+                    className={`mx-2 flex h-[40px] items-center rounded-[8px] p-2 ${item === selectItemCadPaciente ? 'bg-[#0F9B7F]' : 'bg-white'}`}
+                    key={index.toString()}
+                    onClick={() => setSelectItemCadPaciente(item)}
+                  >
+                    <span
+                      className={`${Outfit400.className} text-[#737373] uppercase ${item === selectItemCadPaciente ? 'text-white' : 'text-[#737373]'}`}
+                    >
+                      {item}
+                    </span>
+                  </div>
+                )
+              })}
             </div>
           </div>
           <div className="flex flex-col justify-center gap-[4px]">
-            <div className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]">
+            <button
+              type="button"
+              className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]"
+              onClick={() => {
+                setCadPacientesOpcionais(
+                  cadPacientesOpcionais.filter(
+                    (item) => item !== selectItemCadPaciente,
+                  ),
+                )
+                setCadPacientesObrigatorio((prev) => [
+                  ...prev,
+                  selectItemCadPaciente,
+                ])
+                setSelectItemCadPaciente(null)
+              }}
+              disabled={selectItemCadPaciente === null}
+            >
               <ArrowRight2 size="28" color="#3E3E3E" />
-            </div>
-            <div className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]">
-              <ArrowRight2 size="28" color="#3E3E3E" />
-            </div>
+            </button>
+            <button
+              type="button"
+              className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]"
+              onClick={() => {
+                setCadPacientesObrigatorio(
+                  cadPacientesObrigatorio.filter(
+                    (item) => item !== selectItemCadPaciente,
+                  ),
+                )
+                setCadPacientesOpcionais((prev) => [
+                  ...prev,
+                  selectItemCadPaciente,
+                ])
+                setSelectItemCadPaciente(null)
+              }}
+              disabled={selectItemCadPaciente === null}
+            >
+              <ArrowLeft2 size="28" color="#3E3E3E" />
+            </button>
           </div>
           <div className="flex flex-1 flex-col">
             <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
-              <spam className={`${Outfit400.className} text-[#494949]`}>
+              <span className={`${Outfit400.className} text-[#494949]`}>
                 CAMPOS <strong>OBRIGATÓRIOS</strong>
-              </spam>
-              <spam
+              </span>
+              <span
                 className={`${Outfit400.className} text-[#057B64] underline`}
               >
                 Todos obrigatórios
-              </spam>
+              </span>
             </div>
             <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
-              <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
-                <span
-                  className={`${Outfit400.className} text-[#737373] uppercase`}
-                >
-                  ipsun loren
-                </span>
-              </div>
+              {cadPacientesObrigatorio?.map((item, index) => {
+                return (
+                  <div
+                    className={`mx-2 flex h-[40px] items-center rounded-[8px] p-2 ${item === selectItemCadPaciente ? 'bg-[#0F9B7F]' : 'bg-white'}`}
+                    key={index.toString()}
+                    onClick={() => setSelectItemCadPaciente(item)}
+                  >
+                    <span
+                      className={`${Outfit400.className} text-[#737373] uppercase ${item === selectItemCadPaciente ? 'text-white' : 'text-[#737373]'}`}
+                    >
+                      {item}
+                    </span>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </div>
@@ -110,52 +148,100 @@ const Atendimento = () => {
         <div className="flex gap-[32px]">
           <div className="flex flex-1 flex-col">
             <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
-              <spam className={`${Outfit400.className} text-[#494949]`}>
+              <span className={`${Outfit400.className} text-[#494949]`}>
                 CAMPOS <strong>OPCIONAIS</strong>
-              </spam>
-              <spam
+              </span>
+              <span
                 className={`${Outfit400.className} text-[#057B64] underline`}
               >
                 Todos opcionais
-              </spam>
+              </span>
             </div>
             <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
-              <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
-                <span
-                  className={`${Outfit400.className} text-[#737373] uppercase`}
-                >
-                  ipsun loren
-                </span>
-              </div>
+              {cadOrdemServicoOpcionais?.map((item, index) => {
+                return (
+                  <div
+                    className={`mx-2 flex h-[40px] items-center rounded-[8px] p-2 ${item === selectItemCadOrdemServico ? 'bg-[#0F9B7F]' : 'bg-white'}`}
+                    key={index.toString()}
+                    onClick={() => setSelectItemCadOrdemServico(item)}
+                  >
+                    <span
+                      className={`${Outfit400.className} text-[#737373] uppercase ${item === selectItemCadOrdemServico ? 'text-white' : 'text-[#737373]'}`}
+                    >
+                      {item}
+                    </span>
+                  </div>
+                )
+              })}
             </div>
           </div>
           <div className="flex flex-col justify-center gap-[4px]">
-            <div className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]">
+            <button
+              type="button"
+              className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]"
+              onClick={() => {
+                setCadOrdemServicoOpcionais(
+                  cadOrdemServicoOpcionais.filter(
+                    (item) => item !== selectItemCadOrdemServico,
+                  ),
+                )
+                setCadOrdemServicoObrigatorio((prev) => [
+                  ...prev,
+                  selectItemCadOrdemServico,
+                ])
+                setSelectItemCadOrdemServico(null)
+              }}
+              disabled={selectItemCadOrdemServico === null}
+            >
               <ArrowRight2 size="28" color="#3E3E3E" />
-            </div>
-            <div className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]">
-              <ArrowRight2 size="28" color="#3E3E3E" />
-            </div>
+            </button>
+            <button
+              type="button"
+              className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]"
+              onClick={() => {
+                setCadOrdemServicoObrigatorio(
+                  cadOrdemServicoObrigatorio.filter(
+                    (item) => item !== selectItemCadOrdemServico,
+                  ),
+                )
+                setCadOrdemServicoOpcionais((prev) => [
+                  ...prev,
+                  selectItemCadOrdemServico,
+                ])
+                setSelectItemCadOrdemServico(null)
+              }}
+              disabled={selectItemCadOrdemServico === null}
+            >
+              <ArrowLeft2 size="28" color="#3E3E3E" />
+            </button>
           </div>
           <div className="flex flex-1 flex-col">
             <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
-              <spam className={`${Outfit400.className} text-[#494949]`}>
+              <span className={`${Outfit400.className} text-[#494949]`}>
                 CAMPOS <strong>OBRIGATÓRIOS</strong>
-              </spam>
-              <spam
+              </span>
+              <span
                 className={`${Outfit400.className} text-[#057B64] underline`}
               >
                 Todos opcionais
-              </spam>
+              </span>
             </div>
             <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
-              <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
-                <span
-                  className={`${Outfit400.className} text-[#737373] uppercase`}
-                >
-                  ipsun loren
-                </span>
-              </div>
+              {cadOrdemServicoObrigatorio?.map((item, index) => {
+                return (
+                  <div
+                    className={`mx-2 flex h-[40px] items-center rounded-[8px] p-2 ${item === selectItemCadOrdemServico ? 'bg-[#0F9B7F]' : 'bg-white'}`}
+                    key={index.toString()}
+                    onClick={() => setSelectItemCadOrdemServico(item)}
+                  >
+                    <span
+                      className={`${Outfit400.className} text-[#737373] uppercase ${item === selectItemCadOrdemServico ? 'text-white' : 'text-[#737373]'}`}
+                    >
+                      {item}
+                    </span>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </div>
@@ -169,58 +255,98 @@ const Atendimento = () => {
         <div className="flex gap-[32px]">
           <div className="flex flex-1 flex-col">
             <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
-              <spam className={`${Outfit400.className} text-[#494949]`}>
+              <span className={`${Outfit400.className} text-[#494949]`}>
                 CAMPOS <strong>OPCIONAIS</strong>
-              </spam>
-              <spam
+              </span>
+              <span
                 className={`${Outfit400.className} text-[#057B64] underline`}
               >
                 Todos opcionais
-              </spam>
+              </span>
             </div>
             <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
-              <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
-                <span
-                  className={`${Outfit400.className} text-[#737373] uppercase`}
-                >
-                  ipsun loren
-                </span>
-              </div>
+              {cadTissOpcionais?.map((item, index) => {
+                return (
+                  <div
+                    className={`mx-2 flex h-[40px] items-center rounded-[8px] p-2 ${item === selectItemCadTiss ? 'bg-[#0F9B7F]' : 'bg-white'}`}
+                    key={index.toString()}
+                    onClick={() => setSelectItemCadTiss(item)}
+                  >
+                    <span
+                      className={`${Outfit400.className} text-[#737373] uppercase ${item === selectItemCadTiss ? 'text-white' : 'text-[#737373]'}`}
+                    >
+                      {item}
+                    </span>
+                  </div>
+                )
+              })}
             </div>
           </div>
           <div className="flex flex-col justify-center gap-[4px]">
-            <div className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]">
+            <button
+              type="button"
+              className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]"
+              onClick={() => {
+                setCadTissOpcionais(
+                  cadTissOpcionais.filter((item) => item !== selectItemCadTiss),
+                )
+                setCadTissObrigatorios((prev) => [...prev, selectItemCadTiss])
+                setSelectItemCadTiss(null)
+              }}
+              disabled={selectItemCadTiss === null}
+            >
               <ArrowRight2 size="28" color="#3E3E3E" />
-            </div>
-            <div className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]">
-              <ArrowRight2 size="28" color="#3E3E3E" />
-            </div>
+            </button>
+            <button
+              type="button"
+              className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]"
+              onClick={() => {
+                setCadTissObrigatorios(
+                  cadTissObrigatorios.filter(
+                    (item) => item !== selectItemCadTiss,
+                  ),
+                )
+                setCadTissOpcionais((prev) => [...prev, selectItemCadTiss])
+                setSelectItemCadTiss(null)
+              }}
+              disabled={selectItemCadTiss === null}
+            >
+              <ArrowLeft2 size="28" color="#3E3E3E" />
+            </button>
           </div>
           <div className="flex flex-1 flex-col">
             <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
-              <spam className={`${Outfit400.className} text-[#494949]`}>
+              <span className={`${Outfit400.className} text-[#494949]`}>
                 CAMPOS <strong>OBRIGATÓRIOS</strong>
-              </spam>
-              <spam
+              </span>
+              <span
                 className={`${Outfit400.className} text-[#057B64] underline`}
               >
                 Todos opcionais
-              </spam>
+              </span>
             </div>
             <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
-              <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
-                <span
-                  className={`${Outfit400.className} text-[#737373] uppercase`}
-                >
-                  ipsun loren
-                </span>
-              </div>
+              {cadTissObrigatorios?.map((item, index) => {
+                return (
+                  <div
+                    className={`mx-2 flex h-[40px] items-center rounded-[8px] p-2 ${item === selectItemCadTiss ? 'bg-[#0F9B7F]' : 'bg-white'}`}
+                    key={index.toString()}
+                    onClick={() => setSelectItemCadTiss(item)}
+                  >
+                    <span
+                      className={`${Outfit400.className} text-[#737373] uppercase ${item === selectItemCadTiss ? 'text-white' : 'text-[#737373]'}`}
+                    >
+                      {item}
+                    </span>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex flex-col gap-[16px]">
+      {/* <div className="flex flex-col gap-[16px]">
         <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
           Tratamemnto ambulatorial
         </span>
@@ -228,14 +354,14 @@ const Atendimento = () => {
         <div className="flex gap-[32px]">
           <div className="flex flex-1 flex-col">
             <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
-              <spam className={`${Outfit400.className} text-[#494949]`}>
+              <span className={`${Outfit400.className} text-[#494949]`}>
                 CAMPOS <strong>OPCIONAIS</strong>
-              </spam>
-              <spam
+              </span>
+              <span
                 className={`${Outfit400.className} text-[#057B64] underline`}
               >
                 Todos opcionais
-              </spam>
+              </span>
             </div>
             <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
               <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
@@ -257,14 +383,14 @@ const Atendimento = () => {
           </div>
           <div className="flex flex-1 flex-col">
             <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
-              <spam className={`${Outfit400.className} text-[#494949]`}>
+              <span className={`${Outfit400.className} text-[#494949]`}>
                 CAMPOS <strong>OBRIGATÓRIOS</strong>
-              </spam>
-              <spam
+              </span>
+              <span
                 className={`${Outfit400.className} text-[#057B64] underline`}
               >
                 Todos opcionais
-              </spam>
+              </span>
             </div>
             <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
               <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
@@ -277,8 +403,8 @@ const Atendimento = () => {
             </div>
           </div>
         </div>
-      </div>
-
+      </div> */}
+      {/* 
       <div className="flex flex-col gap-[16px]">
         <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
           Internamento
@@ -287,14 +413,14 @@ const Atendimento = () => {
         <div className="flex gap-[32px]">
           <div className="flex flex-1 flex-col">
             <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
-              <spam className={`${Outfit400.className} text-[#494949]`}>
+              <span className={`${Outfit400.className} text-[#494949]`}>
                 CAMPOS <strong>OPCIONAIS</strong>
-              </spam>
-              <spam
+              </span>
+              <span
                 className={`${Outfit400.className} text-[#057B64] underline`}
               >
                 Todos opcionais
-              </spam>
+              </span>
             </div>
             <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
               <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
@@ -316,14 +442,14 @@ const Atendimento = () => {
           </div>
           <div className="flex flex-1 flex-col">
             <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
-              <spam className={`${Outfit400.className} text-[#494949]`}>
+              <span className={`${Outfit400.className} text-[#494949]`}>
                 CAMPOS <strong>OBRIGATÓRIOS</strong>
-              </spam>
-              <spam
+              </span>
+              <span
                 className={`${Outfit400.className} text-[#057B64] underline`}
               >
                 Todos opcionais
-              </spam>
+              </span>
             </div>
             <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
               <div className="mx-2 flex h-[40px] items-center rounded-[8px] bg-white p-2">
@@ -336,7 +462,7 @@ const Atendimento = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

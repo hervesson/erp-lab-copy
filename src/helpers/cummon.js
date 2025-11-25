@@ -178,3 +178,107 @@ export async function SearchCities(UF) {
     }
   }
 }
+
+//
+
+export async function SearchCadastroPaciente(UF) {
+  console.log(UF)
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const auth = await api.get(
+      '/api/v1/configuracoes-campos/campos-disponiveis/cadastro_paciente',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token.value,
+        },
+      },
+    )
+
+    return {
+      success: true,
+      data: auth.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: error.response.data,
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    return {
+      success: false,
+      error: fallback,
+    }
+  }
+}
+
+export async function SearchOrdemDeServico(UF) {
+  console.log(UF)
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const auth = await api.get(
+      '/api/v1/configuracoes-campos/campos-disponiveis/ordem_servico',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token.value,
+        },
+      },
+    )
+
+    return {
+      success: true,
+      data: auth.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: error.response.data,
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    return {
+      success: false,
+      error: fallback,
+    }
+  }
+}
+
+export async function SearchTiss(UF) {
+  console.log(UF)
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const auth = await api.get(
+      '/api/v1/configuracoes-campos/campos-disponiveis/tiss',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token.value,
+        },
+      },
+    )
+
+    return {
+      success: true,
+      data: auth.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: error.response.data,
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    return {
+      success: false,
+      error: fallback,
+    }
+  }
+}

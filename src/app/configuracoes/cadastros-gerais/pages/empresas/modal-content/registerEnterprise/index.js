@@ -1,7 +1,11 @@
 import CustomSelect from '@/components/CustomSelect'
 import ModalFramer from '@/components/ModalFramer'
 import { Outfit400, Outfit500 } from '@/fonts'
-import { SearchStates } from '@/helpers'
+import {
+  listAllFormField,
+  SearchCadastroPaciente,
+  SearchStates,
+} from '@/helpers'
 import { useFormik } from 'formik'
 import { useEffect, useRef, useState } from 'react'
 import Convenios from './components/convenios'
@@ -22,6 +26,8 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
   const [isFormValid, setIsFormValid] = useState(false)
   const [loading, setLoading] = useState(false)
 
+  const [fields, setFields] = useState([])
+
   const childFormConveniosRef = useRef()
   const childFormTelemedicinaRef = useRef()
   const childFormLaboratorioDeApoioRef = useRef()
@@ -29,19 +35,30 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
   const childFormPrestadoresDeServicoRef = useRef()
 
   useEffect(() => {
-    const findData = async () => {
-      const states = await SearchStates()
-      const stt = states.data.map((item) => {
-        return {
-          id: item.id,
-          label: item.nome,
-          item,
-        }
-      })
-      setStates(stt)
+    const findUsersByFilters = async () => {
+      try {
+        const [fields, states] = await Promise.all([
+          listAllFormField('', 1, 10000),
+          SearchStates(),
+          SearchCadastroPaciente(),
+        ])
+
+        const stt = states.data.map((item) => {
+          return {
+            id: item.id,
+            label: item.nome,
+            item,
+          }
+        })
+
+        setFields(fields.data.data)
+        setStates(stt)
+      } catch (error) {
+        console.error(error)
+      }
     }
 
-    findData()
+    findUsersByFilters()
   }, [])
 
   const formRegister = useFormik({
@@ -116,6 +133,7 @@ const RegisterEnterprise = ({ onClose, setPage, findData }) => {
       <Convenios
         formRegister={formRegister}
         states={states}
+        fields={fields}
         onClose={() => onClose()}
         onValidationChange={handleValidationChange}
         setLoading={(value) => setLoading(value)}
