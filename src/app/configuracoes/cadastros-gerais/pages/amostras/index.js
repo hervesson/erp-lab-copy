@@ -19,7 +19,7 @@ import { Status } from './components/status'
 import EditMethod from './modal-content/editMethod'
 import RegisterMethod from './modal-content/registerMethod'
 
-const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
+const Methods = ({ modalRegisterAmostras, setModalRegisterAmostras }) => {
   const [selectedMethod, setSelectedMethod] = useState({})
 
   // focus
@@ -103,11 +103,11 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-[32px]">
-      <div className="flex h-[84px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
-        <div className="mx-[10px] flex h-[64px] w-full items-center rounded-[8px] bg-white">
-          <div className="flex gap-3 rounded-[8px] px-[8px]">
-            <div className="flex h-[48px] w-[48px] items-center justify-center rounded-[8px] bg-[#F9F9F9]">
+    <div className="flex flex-1 flex-col gap-8">
+      <div className="flex h-[84px] items-center justify-between rounded-2xl bg-[#F9F9F9]">
+        <div className="mx-2.5 flex h-16 w-full items-center rounded-lg bg-white">
+          <div className="flex gap-3 rounded-lg px-2">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F9F9F9]">
               <ChemicalGlass size="28" variant="twoTone" color="#A1A1A1" />
             </div>
             <div className="flex flex-col justify-around">
@@ -138,16 +138,16 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
           className={'bg-[#F9F9F9]'}
         />
         <div
-          className={`flex h-[40px] flex-2 items-center rounded-[8px] px-2 ${
+          className={`flex h-10 flex-2 items-center rounded-lg px-2 ${
             isFocusedSearch
-              ? 'border-[1px] border-[#0F9B7F]'
+              ? 'border border-[#0F9B7F]'
               : 'border border-[#BBBBBB]'
           }`}
         >
           <input
             placeholder="Pesquisar"
             onChange={handleChangeMethod}
-            className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
+            className={`h-full w-full rounded-lg ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
             onFocus={() => setIsFocusedSearch(true)}
             onBlur={() => setIsFocusedSearch(false)}
           />
@@ -157,7 +157,7 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
 
       <table className="w-full">
         <thead className="sticky top-0">
-          <tr className="h-[48px] bg-[#D4D4D4]">
+          <tr className="h-12 bg-[#D4D4D4]">
             <th
               className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
             >
@@ -199,7 +199,7 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
           {listMethods?.map((item, index) => {
             return (
               <tr
-                className="h-[64px] border-b border-[#D9D9D9] bg-white py-[5px]"
+                className="h-16 border-b border-[#D9D9D9] bg-white py-[5px]"
                 key={index.toString()}
               >
                 <td
@@ -262,7 +262,7 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
         </tbody>
       </table>
       <div className="flex items-center gap-3">
-        <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
+        <div className="flex h-10 w-[61px] items-center rounded-lg bg-[#F9F9F9]">
           <span
             className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
           >
@@ -281,11 +281,11 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
         currentPage={currentPage} // Pass the current page state
       />
       <ModalUp
-        isOpen={modalRegisterMethods}
-        onClose={() => setModalRegisterMethods(false)}
+        isOpen={modalRegisterAmostras}
+        onClose={() => setModalRegisterAmostras(false)}
       >
         <RegisterMethod
-          onClose={() => setModalRegisterMethods(false)}
+          onClose={() => setModalRegisterAmostras(false)}
           findData={() => fetchMethods()}
         />
       </ModalUp>

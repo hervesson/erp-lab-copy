@@ -48,7 +48,7 @@ export async function SearchCNAE(term) {
   } catch (error) {
     console.log(error)
     const fallback = {
-      message: 'Erro ao tentar logar',
+      message: 'Erro ao tentar buscar CNAEs',
       statusCode: 500,
       error: 'UnknownError',
     }
@@ -149,7 +149,6 @@ export async function SearchStates() {
 }
 
 export async function SearchCities(UF) {
-  console.log(UF)
   try {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
@@ -181,8 +180,7 @@ export async function SearchCities(UF) {
 
 //
 
-export async function SearchCadastroPaciente(UF) {
-  console.log(UF)
+export async function SearchCadastroPaciente() {
   try {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
@@ -215,8 +213,7 @@ export async function SearchCadastroPaciente(UF) {
   }
 }
 
-export async function SearchOrdemDeServico(UF) {
-  console.log(UF)
+export async function SearchOrdemDeServico() {
   try {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
@@ -249,8 +246,7 @@ export async function SearchOrdemDeServico(UF) {
   }
 }
 
-export async function SearchTiss(UF) {
-  console.log(UF)
+export async function SearchTiss() {
   try {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)

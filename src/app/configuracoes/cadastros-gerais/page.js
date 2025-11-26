@@ -52,6 +52,7 @@ const RootLayout = () => {
   const [modalRegisterExamMatrix, setModalRegisterExamMatrix] = useState(false)
   const [modalRegisterUser, setModalRegisterUser] = useState(false)
   const [modalRegisterMethods, setModalRegisterMethods] = useState(false)
+  const [modalRegisterAmostras, setModalRegisterAmostras] = useState(false)
 
   // Modal Emporesas
   const [openModalRegisterCompanies, setModalRegisterCompanies] =
@@ -104,7 +105,12 @@ const RootLayout = () => {
         setModalRegisterMethods={(e) => setModalRegisterMethods(e)}
       />
     ),
-    amostras: <Amostras />,
+    amostras: (
+      <Amostras
+        modalRegisterAmostras={modalRegisterAmostras}
+        setModalRegisterAmostras={(e) => setModalRegisterAmostras(e)}
+      />
+    ),
     kits: <Kits />,
     tabelaDePrecos: <TabelaDePrecos />,
     salasSetores: <SalasSetores />,
@@ -201,6 +207,11 @@ const RootLayout = () => {
               setPage('metodos')
               setOpenModalRegister(false)
               setModalRegisterMethods(true)
+            }}
+            setModalRegisterAmostras={() => {
+              setPage('amostras')
+              setOpenModalRegister(false)
+              setModalRegisterAmostras(true)
             }}
             setModalRegisterExamMatrix={(e) => {
               setPage('matriz-de-exames')
