@@ -63,6 +63,7 @@ const RootLayout = () => {
 
   // Modal outros
   const [openModalFormFiels, setOpenModalFormFiels] = useState(false)
+  const [openModalIntegracoes, setOpenModalIntegracoes] = useState(false)
 
   const ALLOWED_PAGES = [
     'convenios',
@@ -127,7 +128,12 @@ const RootLayout = () => {
     adquirentes: <Adquirentes />,
     hierarquiaCFO: <HierarquiaCFO />,
     importacaoDeTabelas: <ImportacaoDeTabelas />,
-    integracoes: <Integracoes />,
+    integracoes: (
+      <Integracoes
+        openModalIntegracoes={openModalIntegracoes}
+        setOpenModalIntegracoes={(e) => setOpenModalIntegracoes(e)}
+      />
+    ),
     'campos-de-fomulario': (
       <CamposDeFormulario
         modalRegisterFormField={openModalFormFiels}
@@ -231,6 +237,11 @@ const RootLayout = () => {
               setPage('bancos')
               setOpenModalRegister(false)
               setModalRegisterBanks(true)
+            }}
+            setModalIntegrations={() => {
+              setPage('integracoes')
+              setOpenModalRegister(false)
+              setOpenModalIntegracoes(true)
             }}
             setModalFormFiels={() => {
               setPage('campos-de-fomulario')

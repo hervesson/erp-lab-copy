@@ -329,9 +329,9 @@ const CamposDeFormulario = ({
           })}
         </tbody>
       </table>
-      <div className="flex h-[40px] items-center justify-between">
+      <div className="flex h-10 items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
+          <div className="flex h-10 w-[61px] items-center rounded-lg bg-[#F9F9F9]">
             <span
               className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
             >

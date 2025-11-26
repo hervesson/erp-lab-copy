@@ -2,6 +2,12 @@ import CustomSelect from '@/components/CustomSelect'
 import ModalUp from '@/components/ModalUp'
 import { Outfit300, Outfit400, Outfit700 } from '@/fonts'
 import {
+  DeleteIntegracao,
+  ListIntegrations,
+  ToggleStatusIntegration,
+} from '@/helpers'
+import { Dropdown, DropdownItem } from 'flowbite-react'
+import {
   ArrowLeft2,
   ArrowRight2,
   Book,
@@ -9,24 +15,66 @@ import {
   Heart,
   More,
   SearchStatus,
-  TickCircle,
 } from 'iconsax-reactjs'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IsActive } from '../../../../../components/IsActive'
 
 // Components
-import RegisterExams from './modal-content/registerExam'
+import { toast } from 'react-toastify'
+import EditIntegrations from './modal-content/editiIntegrations'
+import RegisterIntegrations from './modal-content/registerIntegrations'
 
-const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
-  const [exams] = useState([])
-  const [setSelectedUnit] = useState({})
+const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
+  const [integrations, setIntegrations] = useState([])
+  const [selectedIntegration, setSelectedIntegrations] = useState({})
+  const [openModalEditIntegrations, setOpenModalEditIntegrations] =
+    useState(false)
+
+  useEffect(() => {
+    const fecthIntegrations = async () => {
+      const result = await ListIntegrations()
+      setIntegrations(result.data)
+    }
+
+    fecthIntegrations()
+  }, [])
+
+  const fecthIntegrations = async () => {
+    const result = await ListIntegrations()
+    setIntegrations(result.data)
+  }
+
+  const deleteIntegration = async (item) => {
+    const result = await DeleteIntegracao(item.id)
+
+    if (result.success) {
+      fecthIntegrations()
+    } else {
+      toast.error('Ocorreu um erro ao deletar integração', {
+        position: 'top-right',
+      })
+    }
+  }
+
+  const toggleStatus = async (item) => {
+    const result = await ToggleStatusIntegration(item.id)
+
+    if (result.success) {
+      fecthIntegrations()
+    } else {
+      toast.error('Ocorreu um erro ao deletar integração', {
+        position: 'top-right',
+      })
+    }
+    fecthIntegrations()
+  }
 
   return (
-    <div className="flex flex-1 flex-col gap-[32px]">
-      <div className="flex h-[84px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
-        <div className="mx-[10px] flex h-16 w-full items-center rounded-[8px] bg-white">
-          <div className="flex gap-3 rounded-[8px] px-2">
-            <div className="flex h-[48px] w-[48px] items-center justify-center rounded-[8px] bg-[#F9F9F9]">
+    <div className="flex flex-1 flex-col gap-8">
+      <div className="flex h-[84px] items-center justify-between rounded-2xl bg-[#F9F9F9]">
+        <div className="mx-2.5 flex h-16 w-full items-center rounded-lg bg-white">
+          <div className="flex gap-3 rounded-lg px-2">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F9F9F9]">
               <Heart size="28" color="#A1A1A1" />
             </div>
             <div className="flex flex-col justify-around">
@@ -54,10 +102,10 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
           placeholder={'Status'}
           className={'bg-[#F9F9F9]'}
         />
-        <div className="flex h-[40px] flex-2 items-center rounded-[8px] border border-[#BBBBBB] px-2">
+        <div className="flex h-10 flex-2 items-center rounded-lg border border-[#BBBBBB] px-2">
           <input
             placeholder="Pesquisar"
-            className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
+            className={`h-full w-full rounded-lg ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
           />
           <SearchStatus size="24" color="#A1A1A1" variant="Bulk" />
         </div>
@@ -65,7 +113,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
 
       <table className="w-full">
         <thead className="sticky top-0">
-          <tr className="h-[48px] bg-[#D4D4D4]">
+          <tr className="h-12 bg-[#D4D4D4]">
             <th
               className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
             >
@@ -104,7 +152,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100 overflow-y-hidden">
-          {exams?.map((item, index) => {
+          {integrations?.map((item, index) => {
             return (
               <tr
                 className="h-16 border-b border-[#D9D9D9] bg-white py-[5px]"
@@ -113,27 +161,19 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
                 <td
                   className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                 >
-                  {item.codigoInterno}
+                  {Array.isArray(item.tiposContexto)
+                    ? item.tiposContexto.join(', ')
+                    : item.tiposContexto}
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-start text-[#383838]`}
                 >
-                  {item.nomeUnidade}
+                  {item.descricao}
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
-                  {item.cnpj}
-                </td>
-                <td
-                  className={`text-[14px] ${Outfit300.className} text-[#383838]`}
-                >
-                  {item.nomeResponsavel}
-                </td>
-                <td
-                  className={`text-[14px] ${Outfit300.className} text-[#383838]`}
-                >
-                  {item.cidade}
+                  {item.codigoIdentificacao}
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
@@ -142,15 +182,17 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
                     <IsActive active={item.ativo} />
                   </div>
                 </td>
-                <td>
-                  <div className="flex h-full items-center justify-center">
-                    <TickCircle size="28" color="#2CB04B" variant="Bulk" />
-                  </div>
-                </td>
+
                 <td
                   className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                 >
-                  <div className="flex h-full items-center justify-center">
+                  <div
+                    className="flex h-full items-center justify-center"
+                    onClick={() => {
+                      setSelectedIntegrations(item)
+                      setOpenModalEditIntegrations(true)
+                    }}
+                  >
                     <Edit2 size="28" color="#737373" />
                   </div>
                 </td>
@@ -161,7 +203,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
                     className="flex h-full items-center justify-center"
                     onClick={() => {
                       // setOpenModalProfileuUnit(true)
-                      setSelectedUnit(item)
+                      setSelectedIntegrations(item)
                     }}
                   >
                     <Book size="28" color="#737373" />
@@ -171,7 +213,26 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
                   className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                 >
                   <div className="flex h-full items-center justify-center">
-                    <More size="28" color="#737373" />
+                    <Dropdown
+                      label=""
+                      dismissOnClick={true}
+                      renderTrigger={() => <More size="28" color="#737373" />}
+                      placement="left-start"
+                      className="bg-white"
+                    >
+                      <DropdownItem
+                        className={`${Outfit300.className} text-[16px] text-[#8A8A8A]`}
+                        onClick={() => toggleStatus(item)}
+                      >
+                        Ativar/Desativar
+                      </DropdownItem>
+                      <DropdownItem
+                        className={`${Outfit300.className} text-[16px] text-[#8A8A8A]`}
+                        onClick={() => deleteIntegration(item)}
+                      >
+                        Excluir
+                      </DropdownItem>
+                    </Dropdown>
                   </div>
                 </td>
               </tr>
@@ -179,9 +240,9 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
           })}
         </tbody>
       </table>
-      <div className="flex h-[40px] items-center justify-between">
+      <div className="flex h-10 items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
+          <div className="flex h-10 w-[61px] items-center rounded-lg bg-[#F9F9F9]">
             <span
               className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
             >
@@ -195,7 +256,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
 
         <div className="flex items-center">
           <ArrowLeft2 size="28" color="#D9D9D9" />
-          <div className="flex h-[40px] items-center justify-center rounded-[8px] bg-[#E0FFF9]">
+          <div className="flex h-10 items-center justify-center rounded-lg bg-[#E0FFF9]">
             <span className={`${Outfit400.className} flex px-4 text-[#0F9B7F]`}>
               01
             </span>
@@ -204,10 +265,23 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
         </div>
       </div>
       <ModalUp
-        isOpen={openModalRegisterExams}
-        onClose={() => setModalRegisterExams(false)}
+        isOpen={openModalIntegracoes}
+        onClose={() => setOpenModalIntegracoes(false)}
       >
-        <RegisterExams onClose={() => setModalRegisterExams(false)} />
+        <RegisterIntegrations
+          onClose={() => setOpenModalIntegracoes(false)}
+          findData={() => fecthIntegrations()}
+        />
+      </ModalUp>
+      <ModalUp
+        isOpen={openModalEditIntegrations}
+        onClose={() => setOpenModalEditIntegrations(false)}
+      >
+        <EditIntegrations
+          selectedIntegration={selectedIntegration}
+          onClose={() => setOpenModalEditIntegrations(false)}
+          findData={() => fecthIntegrations()}
+        />
       </ModalUp>
       {/* <ModalLeft
         isOpen={openModalProfileuUnit}
@@ -219,4 +293,4 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
   )
 }
 
-export default UnitOfHealth
+export default Integrations

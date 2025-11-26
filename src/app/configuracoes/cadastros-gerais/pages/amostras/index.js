@@ -16,8 +16,8 @@ import { useEffect, useState } from 'react'
 import { Status } from './components/status'
 
 // Components
-import EditMethod from './modal-content/editMethod'
-import RegisterMethod from './modal-content/registerMethod'
+import EditMethod from './modal-content/editSamples'
+import RegisterMethod from './modal-content/registerSamples'
 
 const Methods = ({ modalRegisterAmostras, setModalRegisterAmostras }) => {
   const [selectedMethod, setSelectedMethod] = useState({})

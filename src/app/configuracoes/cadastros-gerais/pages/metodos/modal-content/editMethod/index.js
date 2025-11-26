@@ -12,7 +12,6 @@ import { toast, ToastContainer } from 'react-toastify'
 import { validationSchemaMethod } from './components/schema'
 
 const EditMethod = ({ onClose, selectedMethod, findData }) => {
-  // Informações básicas
   const [allLabs, setAllLabs] = useState([])
 
   const status = {
@@ -57,7 +56,7 @@ const EditMethod = ({ onClose, selectedMethod, findData }) => {
             return {
               laboratorio: {
                 id: i.laboratorioId,
-                label: 'Faltando o nome do laboratório',
+                label: i.laboratorio.empresa.nomeFantasia,
               },
               readOnly: true,
             }
