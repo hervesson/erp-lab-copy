@@ -78,11 +78,17 @@ const Atendimento = ({
                     (item) => item !== selectItemCadPaciente,
                   ),
                 )
-                setCadPacientesObrigatorio((prev) => [
-                  ...prev,
+
+                const inc = cadPacientesObrigatorio.includes(
                   selectItemCadPaciente,
-                ])
-                setSelectItemCadPaciente(null)
+                )
+                if (!inc) {
+                  setCadPacientesObrigatorio((prev) => [
+                    ...prev,
+                    selectItemCadPaciente,
+                  ])
+                  setSelectItemCadPaciente(null)
+                }
               }}
               disabled={selectItemCadPaciente === null}
             >
@@ -97,11 +103,16 @@ const Atendimento = ({
                     (item) => item !== selectItemCadPaciente,
                   ),
                 )
-                setCadPacientesOpcionais((prev) => [
-                  ...prev,
+                const inc = cadPacientesOpcionais.includes(
                   selectItemCadPaciente,
-                ])
-                setSelectItemCadPaciente(null)
+                )
+                if (!inc) {
+                  setCadPacientesOpcionais((prev) => [
+                    ...prev,
+                    selectItemCadPaciente,
+                  ])
+                  setSelectItemCadPaciente(null)
+                }
               }}
               disabled={selectItemCadPaciente === null}
             >
@@ -145,9 +156,9 @@ const Atendimento = ({
           Ordem de serviço
         </span>
 
-        <div className="flex gap-[32px]">
+        <div className="flex gap-8">
           <div className="flex flex-1 flex-col">
-            <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
+            <div className="flex h-10 items-center justify-between rounded-tl-lg rounded-tr-lg bg-[#F9F9F9] px-2">
               <span className={`${Outfit400.className} text-[#494949]`}>
                 CAMPOS <strong>OPCIONAIS</strong>
               </span>
@@ -157,11 +168,11 @@ const Atendimento = ({
                 Todos opcionais
               </span>
             </div>
-            <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
+            <div className="flex h-[300px] flex-col gap-1 overflow-auto bg-[#F9F9F9]">
               {cadOrdemServicoOpcionais?.map((item, index) => {
                 return (
                   <div
-                    className={`mx-2 flex h-[40px] items-center rounded-[8px] p-2 ${item === selectItemCadOrdemServico ? 'bg-[#0F9B7F]' : 'bg-white'}`}
+                    className={`mx-2 flex h-10 items-center rounded-lg p-2 ${item === selectItemCadOrdemServico ? 'bg-[#0F9B7F]' : 'bg-white'}`}
                     key={index.toString()}
                     onClick={() => setSelectItemCadOrdemServico(item)}
                   >
@@ -175,21 +186,28 @@ const Atendimento = ({
               })}
             </div>
           </div>
-          <div className="flex flex-col justify-center gap-[4px]">
+          <div className="flex flex-col justify-center gap-1">
             <button
               type="button"
-              className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]"
+              className="flex h-11 w-[52px] items-center justify-center rounded-lg bg-[#E7E7E7]"
               onClick={() => {
                 setCadOrdemServicoOpcionais(
                   cadOrdemServicoOpcionais.filter(
                     (item) => item !== selectItemCadOrdemServico,
                   ),
                 )
-                setCadOrdemServicoObrigatorio((prev) => [
-                  ...prev,
+
+                const inc = cadOrdemServicoObrigatorio.includes(
                   selectItemCadOrdemServico,
-                ])
-                setSelectItemCadOrdemServico(null)
+                )
+
+                if (!inc) {
+                  setCadOrdemServicoObrigatorio((prev) => [
+                    ...prev,
+                    selectItemCadOrdemServico,
+                  ])
+                  setSelectItemCadOrdemServico(null)
+                }
               }}
               disabled={selectItemCadOrdemServico === null}
             >
@@ -197,18 +215,24 @@ const Atendimento = ({
             </button>
             <button
               type="button"
-              className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]"
+              className="flex h-11 w-[52px] items-center justify-center rounded-lg bg-[#E7E7E7]"
               onClick={() => {
                 setCadOrdemServicoObrigatorio(
                   cadOrdemServicoObrigatorio.filter(
                     (item) => item !== selectItemCadOrdemServico,
                   ),
                 )
-                setCadOrdemServicoOpcionais((prev) => [
-                  ...prev,
+                const inc = cadOrdemServicoOpcionais.includes(
                   selectItemCadOrdemServico,
-                ])
-                setSelectItemCadOrdemServico(null)
+                )
+
+                if (!inc) {
+                  setCadOrdemServicoOpcionais((prev) => [
+                    ...prev,
+                    selectItemCadOrdemServico,
+                  ])
+                  setSelectItemCadOrdemServico(null)
+                }
               }}
               disabled={selectItemCadOrdemServico === null}
             >
@@ -216,7 +240,7 @@ const Atendimento = ({
             </button>
           </div>
           <div className="flex flex-1 flex-col">
-            <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
+            <div className="flex h-10 items-center justify-between rounded-tl-lg rounded-tr-lg bg-[#F9F9F9] px-2">
               <span className={`${Outfit400.className} text-[#494949]`}>
                 CAMPOS <strong>OBRIGATÓRIOS</strong>
               </span>
@@ -226,11 +250,11 @@ const Atendimento = ({
                 Todos opcionais
               </span>
             </div>
-            <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
+            <div className="flex h-[300px] flex-col gap-1 overflow-auto bg-[#F9F9F9]">
               {cadOrdemServicoObrigatorio?.map((item, index) => {
                 return (
                   <div
-                    className={`mx-2 flex h-[40px] items-center rounded-[8px] p-2 ${item === selectItemCadOrdemServico ? 'bg-[#0F9B7F]' : 'bg-white'}`}
+                    className={`mx-2 flex h-10 items-center rounded-lg p-2 ${item === selectItemCadOrdemServico ? 'bg-[#0F9B7F]' : 'bg-white'}`}
                     key={index.toString()}
                     onClick={() => setSelectItemCadOrdemServico(item)}
                   >
@@ -252,9 +276,9 @@ const Atendimento = ({
           TISS
         </span>
 
-        <div className="flex gap-[32px]">
+        <div className="flex gap-8">
           <div className="flex flex-1 flex-col">
-            <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
+            <div className="flex h-10 items-center justify-between rounded-tl-lg rounded-tr-lg bg-[#F9F9F9] px-2">
               <span className={`${Outfit400.className} text-[#494949]`}>
                 CAMPOS <strong>OPCIONAIS</strong>
               </span>
@@ -264,11 +288,11 @@ const Atendimento = ({
                 Todos opcionais
               </span>
             </div>
-            <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
+            <div className="flex h-[300px] flex-col gap-1 overflow-auto bg-[#F9F9F9]">
               {cadTissOpcionais?.map((item, index) => {
                 return (
                   <div
-                    className={`mx-2 flex h-[40px] items-center rounded-[8px] p-2 ${item === selectItemCadTiss ? 'bg-[#0F9B7F]' : 'bg-white'}`}
+                    className={`mx-2 flex h-10 items-center rounded-lg p-2 ${item === selectItemCadTiss ? 'bg-[#0F9B7F]' : 'bg-white'}`}
                     key={index.toString()}
                     onClick={() => setSelectItemCadTiss(item)}
                   >
@@ -282,16 +306,20 @@ const Atendimento = ({
               })}
             </div>
           </div>
-          <div className="flex flex-col justify-center gap-[4px]">
+          <div className="flex flex-col justify-center gap-1">
             <button
               type="button"
-              className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]"
+              className="flex h-11 w-[52px] items-center justify-center rounded-lg bg-[#E7E7E7]"
               onClick={() => {
                 setCadTissOpcionais(
                   cadTissOpcionais.filter((item) => item !== selectItemCadTiss),
                 )
-                setCadTissObrigatorios((prev) => [...prev, selectItemCadTiss])
-                setSelectItemCadTiss(null)
+
+                const inc = cadTissObrigatorios.includes(selectItemCadTiss)
+                if (!inc) {
+                  setCadTissObrigatorios((prev) => [...prev, selectItemCadTiss])
+                  setSelectItemCadTiss(null)
+                }
               }}
               disabled={selectItemCadTiss === null}
             >
@@ -299,15 +327,20 @@ const Atendimento = ({
             </button>
             <button
               type="button"
-              className="flex h-[44px] w-[52px] items-center justify-center rounded-[8px] bg-[#E7E7E7]"
+              className="flex h-11 w-[52px] items-center justify-center rounded-lg bg-[#E7E7E7]"
               onClick={() => {
                 setCadTissObrigatorios(
                   cadTissObrigatorios.filter(
                     (item) => item !== selectItemCadTiss,
                   ),
                 )
-                setCadTissOpcionais((prev) => [...prev, selectItemCadTiss])
-                setSelectItemCadTiss(null)
+
+                const inc = cadTissOpcionais.includes(selectItemCadTiss)
+
+                if (!inc) {
+                  setCadTissOpcionais((prev) => [...prev, selectItemCadTiss])
+                  setSelectItemCadTiss(null)
+                }
               }}
               disabled={selectItemCadTiss === null}
             >
@@ -315,7 +348,7 @@ const Atendimento = ({
             </button>
           </div>
           <div className="flex flex-1 flex-col">
-            <div className="flex h-[40px] items-center justify-between rounded-tl-[8px] rounded-tr-[8px] bg-[#F9F9F9] px-2">
+            <div className="flex h-10 items-center justify-between rounded-tl-lg rounded-tr-lg bg-[#F9F9F9] px-2">
               <span className={`${Outfit400.className} text-[#494949]`}>
                 CAMPOS <strong>OBRIGATÓRIOS</strong>
               </span>
@@ -325,11 +358,11 @@ const Atendimento = ({
                 Todos opcionais
               </span>
             </div>
-            <div className="flex h-[300px] flex-col gap-[4px] overflow-auto bg-[#F9F9F9]">
+            <div className="flex h-[300px] flex-col gap-1 overflow-auto bg-[#F9F9F9]">
               {cadTissObrigatorios?.map((item, index) => {
                 return (
                   <div
-                    className={`mx-2 flex h-[40px] items-center rounded-[8px] p-2 ${item === selectItemCadTiss ? 'bg-[#0F9B7F]' : 'bg-white'}`}
+                    className={`mx-2 flex h-10 items-center rounded-lg p-2 ${item === selectItemCadTiss ? 'bg-[#0F9B7F]' : 'bg-white'}`}
                     key={index.toString()}
                     onClick={() => setSelectItemCadTiss(item)}
                   >

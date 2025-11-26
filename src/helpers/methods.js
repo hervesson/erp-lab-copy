@@ -166,12 +166,47 @@ export async function InactiveStatusMethod(enterpriseId) {
   }
 }
 
-export async function DeleteMethod(enterpriseId) {
+export async function DeleteVinculo(vinculoId) {
   try {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
 
-    const response = await api.delete('/cadastros/empresas/' + enterpriseId, {
+    const response = await api.delete(
+      '/exames/laboratorios-metodos/' + vinculoId,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token.value,
+        },
+      },
+    )
+
+    return {
+      success: true,
+      data: response.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: 'Erro desconhecido ao tentar deletar unidade',
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    const errData = error?.response?.data || fallback
+
+    return {
+      success: false,
+      error: errData,
+    }
+  }
+}
+
+export async function DeleteMethod(methodId) {
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const response = await api.delete('/exames/metodos/' + methodId, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token.value,
@@ -204,7 +239,7 @@ export async function UpdateMethod(enterpriseId, payload) {
     const token = cookie.get(TOKEN_KEY)
 
     const response = await api.patch(
-      '/cadastros/empresas/' + enterpriseId,
+      '/exames/metodos/' + enterpriseId,
       payload,
       {
         headers: {
@@ -239,7 +274,7 @@ export async function LinklaboratoryToMethod(payload) {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
 
-    const response = await api.post('/exames/metodos', payload, {
+    const response = await api.post('/exames/laboratorios-metodos', payload, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token.value,

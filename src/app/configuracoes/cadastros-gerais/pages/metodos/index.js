@@ -3,7 +3,7 @@ import CustomSelect from '@/components/CustomSelect'
 import ModalUp from '@/components/ModalUp'
 import Pagination from '@/components/Pagination'
 import { Outfit300, Outfit400, Outfit700 } from '@/fonts'
-import { ListMethods } from '@/helpers'
+import { DeleteMethod, DeleteVinculo, ListMethods } from '@/helpers'
 import useDebounce from '@/hooks/useDebounce'
 import { Arrow, Book, Edit2, SearchStatus, Trash } from 'iconsax-reactjs'
 import { useEffect, useState } from 'react'
@@ -24,7 +24,7 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
 
   // filters
   const [status, setStatus] = useState({ id: '', label: 'Tipos: Todas' })
-  const [searchTerm, setSearchTerm] = useState()
+  const [searchTerm, setSearchTerm] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [openModalEditMwthod, setOpenModalEditMethod] = useState(false)
 
@@ -93,8 +93,18 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
     }
   }
 
-  const deleteMethod = (method) => {
+  const deleteMethod = async (method) => {
+    // await DeleteVinculo()
     console.log(method)
+
+    if (method.laboratorioMetodos.length > 0) {
+      await Promise.all(
+        method.laboratorioMetodos.map((i) => DeleteVinculo(i.id)),
+      )
+    }
+
+    await DeleteMethod(method.id)
+    fetchMethods(searchTerm, status.id, currentPage)
   }
 
   return (
@@ -221,7 +231,7 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
-                  onClick={() => deleteMethod()}
+                  onClick={() => deleteMethod(item)}
                 >
                   <div className="flex h-full items-center justify-center">
                     <Trash size="28" color="#737373" variant="Outline" />

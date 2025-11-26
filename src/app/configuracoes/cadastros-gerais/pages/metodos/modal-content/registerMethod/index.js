@@ -231,7 +231,7 @@ const RegisterMethod = ({ onClose, findData }) => {
       className="flex h-screen flex-col bg-[#F9F9F9]"
       onSubmit={handleValidateAndSubmit}
     >
-      <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-[#fff] px-[48px]">
+      <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-white px-12">
         <div className="flex flex-col">
           <span
             className={` ${Outfit400.className} text-[16px] text-[#0F9B7F]`}
@@ -244,14 +244,14 @@ const RegisterMethod = ({ onClose, findData }) => {
             MÉTODOS
           </span>
         </div>
-        <div className="flex gap-[16px]">
+        <div className="flex gap-4">
           <button
             type="button"
             onClick={() => {
               setStep('cancel')
               setOpenModalAlerts(true)
             }}
-            className="flex h-[44px] w-[108px] items-center justify-evenly rounded-[8px] border border-[#F23434] hover:bg-[#FFE6E6]"
+            className="flex h-11 w-[108px] items-center justify-evenly rounded-lg border border-[#F23434] hover:bg-[#FFE6E6]"
           >
             <span className={`${Outfit400.className} text-[#F23434] uppercase`}>
               Cancelar
@@ -259,7 +259,7 @@ const RegisterMethod = ({ onClose, findData }) => {
           </button>
           <button
             type="submit"
-            className={`flex h-[44px] w-[108px] items-center justify-evenly rounded-[8px] ${
+            className={`flex h-11 w-[108px] items-center justify-evenly rounded-lg ${
               formik.isValid
                 ? 'bg-[#0F9B7F] text-white hover:from-[#3BC1E2] hover:to-[#1D6F87]'
                 : 'bg-[#A9A9A9] text-[#494949]'
@@ -271,18 +271,18 @@ const RegisterMethod = ({ onClose, findData }) => {
         </div>
       </div>
       <div className="flex h-full w-screen gap-x-3 overflow-x-auto">
-        <div className="mx-[48px] my-[28px] flex h-fit flex-1 flex-col gap-[32px] rounded bg-[#fff] p-[48px]">
+        <div className="mx-12 my-7 flex h-fit flex-1 flex-col gap-8 rounded bg-white p-12">
           {/* Informacoes */}
-          <div className="flex flex-col gap-[16px]">
+          <div className="flex flex-col gap-4">
             <span
               className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
             >
               Informações básicas
             </span>
 
-            <div className="flex flex-col gap-[16px]">
-              <div className="flex gap-[16px]">
-                <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex flex-col gap-4">
+              <div className="flex gap-4">
+                <div className="flex flex-1 flex-col gap-1">
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}
                   >
@@ -294,11 +294,11 @@ const RegisterMethod = ({ onClose, findData }) => {
                     type="text"
                     id="nomeMetodo"
                     name="nomeMetodo"
-                    className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                    className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                     placeholder="Digite o nome da unidade"
                   />
                 </div>
-                <div className="flex flex-col gap-[4px]">
+                <div className="flex flex-col gap-1">
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#A9A9A9]`}
                   >
@@ -307,13 +307,13 @@ const RegisterMethod = ({ onClose, findData }) => {
                   </label>
                   <input
                     value={codigoInterno}
-                    className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-dashed border-[#A9A9A9] px-2 text-[#A9A9A9] outline-none`}
+                    className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-dashed border-[#A9A9A9] px-2 text-[#A9A9A9] outline-none`}
                     placeholder="Digite o código interno"
                     disabled
                     readOnly
                   />
                 </div>
-                <div className="flex flex-1 flex-col gap-[4px]">
+                <div className="flex flex-1 flex-col gap-1">
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}
                   >
@@ -324,11 +324,11 @@ const RegisterMethod = ({ onClose, findData }) => {
                     type="text"
                     id="descricao"
                     name="descricao"
-                    className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                    className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                     placeholder="Digite todos os sinônimos"
                   />
                 </div>
-                <div className="flex flex-col gap-[4px]">
+                <div className="flex flex-col gap-1">
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}
                   >
@@ -349,7 +349,7 @@ const RegisterMethod = ({ onClose, findData }) => {
               </div>
               {/* a partir daqui vou ter vários custons selects */}
               {/* LABORATÓRIOS ASSOCIADOS */}
-              <div className="flex flex-col gap-[16px]">
+              <div className="flex flex-col gap-4">
                 <span
                   className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
                 >
@@ -357,9 +357,9 @@ const RegisterMethod = ({ onClose, findData }) => {
                 </span>
 
                 {formik?.values?.laboratoriosAssociados?.map((item, index) => (
-                  <div key={index} className="flex items-end gap-[16px]">
+                  <div key={index} className="flex items-end gap-4">
                     {/* SELECT DO LABORATÓRIO */}
-                    <div className="flex flex-1 flex-col gap-[4px]">
+                    <div className="flex flex-1 flex-col gap-1">
                       <label
                         className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
                       >
@@ -381,10 +381,10 @@ const RegisterMethod = ({ onClose, findData }) => {
                     </div>
 
                     {/* BOTÃO VALIDAR */}
-                    <div className="flex flex-col justify-end gap-[4px]">
+                    <div className="flex flex-col justify-end gap-1">
                       <button
                         type="button"
-                        className={`flex h-[40px] w-[220px] items-center justify-center rounded-[8px] border border-[#0F9B7F] ${Outfit400.className} text-[14px] text-[#0F9B7F]`}
+                        className={`flex h-10 w-[220px] items-center justify-center rounded-lg border border-[#0F9B7F] ${Outfit400.className} text-[14px] text-[#0F9B7F]`}
                         onClick={() => handleValidarLaboratorio(index)}
                       >
                         VALIDAR COM LABORATÓRIO
@@ -396,7 +396,7 @@ const RegisterMethod = ({ onClose, findData }) => {
                 {/* ADICIONAR NOVO LABORATÓRIO */}
                 <button
                   type="button"
-                  className={`mt-[8px] flex h-[40px] w-[279px] items-center justify-center rounded-[8px] border border-[#0F9B7F] ${Outfit400.className} text-[14px] text-[#0F9B7F]`}
+                  className={`mt-2 flex h-10 w-[279px] items-center justify-center rounded-lg border border-[#0F9B7F] ${Outfit400.className} text-[14px] text-[#0F9B7F]`}
                   onClick={handleAddLaboratorio}
                   disabled={
                     formik.values.laboratoriosAssociados.length ===
