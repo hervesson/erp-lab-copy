@@ -98,10 +98,8 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
     }
   }
 
+  // Deletar vinculo
   const deleteMethod = async (method) => {
-    // await DeleteVinculo()
-    console.log(method)
-
     if (method.laboratorioMetodos.length > 0) {
       await Promise.all(
         method.laboratorioMetodos.map((i) => DeleteVinculo(i.id)),
@@ -110,6 +108,19 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
 
     await DeleteMethod(method.id)
     fetchMethods(searchTerm, status.id, currentPage)
+  }
+
+  // Buscar por página
+  const findDataPerPage = async (props) => {
+    setCurrentPage(props)
+
+    try {
+      const response = await ListMethods(searchTerm, status.id, props)
+      setListMethods(response.data.data)
+      setTotal(response.data.total)
+    } catch (error) {
+      console.error('Error fetching banks:', error)
+    }
   }
 
   return (
@@ -287,7 +298,7 @@ const Methods = ({ modalRegisterMethods, setModalRegisterMethods }) => {
       <Pagination
         totalRecords={total}
         recordsPerPage={10}
-        // onPageChange={(value) => findDataPerPage(value)}
+        onPageChange={(value) => findDataPerPage(value)}
         currentPage={currentPage} // Pass the current page state
       />
       <ModalUp

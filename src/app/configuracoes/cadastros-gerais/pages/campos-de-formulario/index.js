@@ -184,18 +184,18 @@ const CamposDeFormulario = ({
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-[32px]">
+    <div className="flex flex-1 flex-col gap-8">
       <div
-        className={`flex h-[40px] items-center rounded-[8px] px-2 ${
+        className={`flex h-10 items-center rounded-lg px-2 ${
           isFocusedSearch
-            ? 'border-[1px] border-[#0F9B7F]'
+            ? 'border border-[#0F9B7F]'
             : 'border border-[#BBBBBB]'
         }`}
       >
         <input
           placeholder="Pesquisar"
           onChange={handleChangeUnit}
-          className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
+          className={`h-full w-full rounded-lg ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
           onFocus={() => setIsFocusedSearch(true)}
           onBlur={() => setIsFocusedSearch(false)}
         />
@@ -204,7 +204,7 @@ const CamposDeFormulario = ({
 
       <table className="w-full">
         <thead className="sticky top-0">
-          <tr className="h-[48px] bg-[#D4D4D4]">
+          <tr className="h-12 bg-[#D4D4D4]">
             <th
               className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
             >
@@ -246,7 +246,7 @@ const CamposDeFormulario = ({
           {formFields?.map((item, index) => {
             return (
               <tr
-                className="h-[64px] border-b border-[#D9D9D9] bg-white py-[5px]"
+                className="h-16 border-b border-[#D9D9D9] bg-white py-[5px]"
                 key={index.toString()}
               >
                 <td

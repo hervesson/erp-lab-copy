@@ -109,6 +109,19 @@ const Methods = ({ modalRegisterAmostras, setModalRegisterAmostras }) => {
     fetchMethods(searchTerm, status.id, currentPage)
   }
 
+  // Filtrar por paginação
+  const findDataPerPage = async (props) => {
+    setCurrentPage(props)
+
+    try {
+      const response = await ListSamples(searchTerm, status.id, props)
+      setListMethods(response.data.data)
+      setTotal(response.data.total)
+    } catch (error) {
+      console.error('Error fetching banks:', error)
+    }
+  }
+
   return (
     <div className="flex flex-1 flex-col gap-8">
       <div className="flex h-[84px] items-center justify-between rounded-2xl bg-[#F9F9F9]">
@@ -284,7 +297,7 @@ const Methods = ({ modalRegisterAmostras, setModalRegisterAmostras }) => {
       <Pagination
         totalRecords={total}
         recordsPerPage={10}
-        // onPageChange={(value) => findDataPerPage(value)}
+        onPageChange={(value) => findDataPerPage(value)}
         currentPage={currentPage} // Pass the current page state
       />
       <ModalUp

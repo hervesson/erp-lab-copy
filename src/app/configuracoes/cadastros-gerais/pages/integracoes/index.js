@@ -4,11 +4,13 @@ import Pagination from '@/components/Pagination'
 import { Outfit300, Outfit400, Outfit700 } from '@/fonts'
 import {
   DeleteIntegracao,
+  GetListTypesIntegrations,
   ListIntegrations,
   ToggleStatusIntegration,
 } from '@/helpers'
+import useDebounce from '@/hooks/useDebounce'
 import { Dropdown, DropdownItem } from 'flowbite-react'
-import { Book, Edit2, Heart, More, SearchStatus } from 'iconsax-reactjs'
+import { Book, Data, Edit2, More, SearchStatus } from 'iconsax-reactjs'
 import { useEffect, useState } from 'react'
 import { IsActive } from '../../../../../components/IsActive'
 
@@ -20,32 +22,72 @@ import RegisterIntegrations from './modal-content/registerIntegrations'
 const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
   const [integrations, setIntegrations] = useState([])
   const [total, setTotal] = useState(0)
+  const [listTypesIntegrations, setListTypesIntegrations] = useState([])
   const [selectedIntegration, setSelectedIntegrations] = useState({})
   const [openModalEditIntegrations, setOpenModalEditIntegrations] =
     useState(false)
-  const [currentPage] = useState(1)
+
+  // focus
+  const [isFocusedSearch, setIsFocusedSearch] = useState(false)
+
+  // filters
+  const [status, setStatus] = useState({
+    id: '',
+    label: 'Tipo de integração: Todas',
+  })
+  const [searchTerm, setSearchTerm] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+
+  useEffect(() => {
+    const fetchListEnterprises = async () => {
+      try {
+        const response = await GetListTypesIntegrations()
+
+        const labs = response?.data?.map((item) => {
+          return {
+            id: item.slug,
+            label: item.nome,
+            item,
+          }
+        })
+
+        setListTypesIntegrations([
+          {
+            id: '',
+            label: 'Todas',
+          },
+          ...labs,
+        ])
+      } catch (error) {
+        console.error('Error fetching banks:', error)
+      }
+    }
+
+    fetchListEnterprises()
+  }, [])
 
   useEffect(() => {
     const fecthIntegrations = async () => {
       const result = await ListIntegrations()
       setIntegrations(result?.data?.data)
-      setTotal(result?.data?.meta?.total)
+      setTotal(result?.data?.total)
     }
 
     fecthIntegrations()
   }, [])
 
-  const fecthIntegrations = async () => {
-    const result = await ListIntegrations()
+  const fecthIntegrations = async (trm = '', stt = '', pg = '') => {
+    const result = await ListIntegrations(trm, stt.id, pg)
     setIntegrations(result?.data?.data)
-    setTotal(result?.data?.meta?.total)
+    setTotal(result?.data?.total)
   }
 
+  // Deletar o método
   const deleteIntegration = async (item) => {
     const result = await DeleteIntegracao(item.id)
 
     if (result.success) {
-      fecthIntegrations()
+      fecthIntegrations(searchTerm, status, currentPage)
     } else {
       toast.error('Ocorreu um erro ao deletar integração', {
         position: 'top-right',
@@ -53,17 +95,53 @@ const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
     }
   }
 
+  // Mudar o status
   const toggleStatus = async (item) => {
     const result = await ToggleStatusIntegration(item.id)
 
     if (result.success) {
-      fecthIntegrations()
+      fecthIntegrations(searchTerm, status, currentPage)
     } else {
       toast.error('Ocorreu um erro ao deletar integração', {
         position: 'top-right',
       })
     }
-    fecthIntegrations()
+  }
+
+  // Pesquisar por termo
+  const handleChangeMethod = (e) => {
+    setSearchTerm(e.target.value)
+    debounceChange(e.target.value)
+  }
+
+  const debounceChange = useDebounce(handler, 800)
+
+  async function handler(props) {
+    setCurrentPage(1)
+
+    fecthIntegrations(props, status, currentPage)
+  }
+
+  // Filtrar por tipo de integração
+  const findDataPerStatus = async (props) => {
+    setCurrentPage(1)
+
+    const find = listTypesIntegrations.find(
+      (element) => element.id === props.id,
+    )
+
+    setStatus({
+      id: find.id,
+      label: `Tipo de integração: ${find.label}`,
+    })
+
+    fecthIntegrations(searchTerm, props.id, currentPage)
+  }
+
+  // Buscar por página
+  const findDataPerPage = async (props) => {
+    setCurrentPage(props)
+    fecthIntegrations(searchTerm, status, props)
   }
 
   return (
@@ -72,7 +150,7 @@ const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
         <div className="mx-2.5 flex h-16 w-full items-center rounded-lg bg-white">
           <div className="flex gap-3 rounded-lg px-2">
             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F9F9F9]">
-              <Heart size="28" color="#A1A1A1" />
+              <Data size="28" color="#A1A1A1" variant="TwoTone" />
             </div>
             <div className="flex flex-col justify-around">
               <span
@@ -90,19 +168,25 @@ const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
 
       <div className="flex gap-2">
         <CustomSelect
-          select={{ id: 1, label: 'Status: Todos' }}
-          setSelect={() => null}
-          options={[
-            { id: 1, label: 'Status: Todos' },
-            { id: 2, label: '2' },
-          ]}
+          select={status}
+          setSelect={(e) => findDataPerStatus(e)}
+          options={listTypesIntegrations}
           placeholder={'Status'}
           className={'bg-[#F9F9F9]'}
         />
-        <div className="flex h-10 flex-2 items-center rounded-lg border border-[#BBBBBB] px-2">
+        <div
+          className={`flex h-10 flex-2 items-center rounded-lg px-2 ${
+            isFocusedSearch
+              ? 'border border-[#0F9B7F]'
+              : 'border border-[#BBBBBB]'
+          }`}
+        >
           <input
             placeholder="Pesquisar"
+            onChange={handleChangeMethod}
             className={`h-full w-full rounded-lg ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
+            onFocus={() => setIsFocusedSearch(true)}
+            onBlur={() => setIsFocusedSearch(false)}
           />
           <SearchStatus size="24" color="#A1A1A1" variant="Bulk" />
         </div>
@@ -237,25 +321,27 @@ const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
           })}
         </tbody>
       </table>
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-[61px] items-center rounded-lg bg-[#F9F9F9]">
-          <span
-            className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
-          >
-            {integrations.length > 10 ? 10 : integrations.length}
+      <div className="flex h-10 items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-[61px] items-center rounded-lg bg-[#F9F9F9]">
+            <span
+              className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
+            >
+              {integrations.length > 10 ? 10 : integrations.length}
+            </span>
+          </div>
+          <span className={`${Outfit300.className} text-[16px] text-[#222]`}>
+            de {total} registros
           </span>
         </div>
-        <span className={`${Outfit300.className} text-[16px] text-[#222]`}>
-          de {total} registros
-        </span>
-      </div>
 
-      <Pagination
-        totalRecords={total}
-        recordsPerPage={10}
-        // onPageChange={(value) => findDataPerPage(value)}
-        currentPage={currentPage} // Pass the current page state
-      />
+        <Pagination
+          totalRecords={total}
+          recordsPerPage={10}
+          onPageChange={(value) => findDataPerPage(value)}
+          currentPage={currentPage} // Pass the current page state
+        />
+      </div>
       <ModalUp
         isOpen={openModalIntegracoes}
         onClose={() => setOpenModalIntegracoes(false)}
@@ -263,6 +349,7 @@ const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
         <RegisterIntegrations
           onClose={() => setOpenModalIntegracoes(false)}
           findData={() => fecthIntegrations()}
+          listTypesIntegrations={listTypesIntegrations}
         />
       </ModalUp>
       <ModalUp

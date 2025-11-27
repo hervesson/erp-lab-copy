@@ -3,40 +3,17 @@ import SuccessRegister from '@/components/Alerts/SuccessRegister'
 import CustomSelect from '@/components/CustomSelect'
 import ModalFramer from '@/components/ModalFramer'
 import { Outfit400, Outfit500 } from '@/fonts'
-import { CreateIntegration, GetListTypesIntegrations } from '@/helpers'
+import { CreateIntegration } from '@/helpers'
 import { useFormik } from 'formik'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import { validationSchema } from './components/schema'
 import { TypeFields } from './components/typeField'
 
-const RegisterIntegrations = ({ onClose, findData }) => {
+const RegisterIntegrations = ({ onClose, findData, listTypesIntegrations }) => {
   // Informações básicas
-  const [listTypesIntegrations, setListTypesIntegrations] = useState([])
   const [openModalAlerts, setOpenModalAlerts] = useState(false)
   const [step, setStep] = useState('')
-
-  useEffect(() => {
-    const fetchListEnterprises = async () => {
-      try {
-        const response = await GetListTypesIntegrations()
-
-        const labs = response?.data?.map((item) => {
-          return {
-            id: item.slug,
-            label: item.slug,
-            item,
-          }
-        })
-
-        setListTypesIntegrations(labs)
-      } catch (error) {
-        console.error('Error fetching banks:', error)
-      }
-    }
-
-    fetchListEnterprises()
-  }, [])
 
   const formik = useFormik({
     validationSchema,

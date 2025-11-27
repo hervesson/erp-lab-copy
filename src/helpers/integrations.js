@@ -119,10 +119,10 @@ export async function ListIntegrations(
     const params = new URLSearchParams()
 
     if (term !== '') {
-      params.append('search', term)
+      params.append('searchTerm', term)
     }
     if (status !== '') {
-      params.append('status', status)
+      params.append('templateSlug', status)
     }
     if (page !== '') {
       params.append('page', page)
@@ -206,6 +206,7 @@ export async function ToggleStatusIntegration(integrationId) {
 
     const response = await api.patch(
       '/atendimento/integracoes/' + integrationId + '/toggle-status',
+      {},
       {
         headers: {
           'Content-Type': 'application/json',
