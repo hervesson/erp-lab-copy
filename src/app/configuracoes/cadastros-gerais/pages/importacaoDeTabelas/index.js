@@ -1,7 +1,5 @@
 'use client'
 import CustomSelect from '@/components/CustomSelect'
-import ModalLeft from '@/components/ModalLeft'
-import ModalUp from '@/components/ModalUp'
 import Pagination from '@/components/Pagination'
 import { Outfit300, Outfit400, Outfit700 } from '@/fonts'
 import { DeleteAccountBank, listBankAccount } from '@/helpers'
@@ -15,16 +13,8 @@ import {
 } from 'iconsax-reactjs'
 import { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
-import { Status } from './components/status'
 
-// Components
-import EditBank from './modal-content/editBank'
-import ProfileBankAccount from './modal-content/profileBankAccount'
-import RegisterBank from './modal-content/registerBank'
-
-const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
-  const [selectedAccount, setSelectedAccount] = useState({})
-
+const Bancos = () => {
   const [banks, setBanks] = useState([])
   const [total, setTotal] = useState(0)
 
@@ -35,9 +25,6 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
   const [type] = useState({ id: '', label: 'Tipos: Todas' })
 
   // modal
-  const [modalEditBank, setModalEditBank] = useState(false)
-  const [openModalProfileBankAccount, setOpenModalProfileBankAccount] =
-    useState(false)
 
   useEffect(() => {
     const fetchBanks = async () => {
@@ -234,9 +221,7 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
-                  <div className="flex h-full items-center justify-center">
-                    <Status active={item?.status} />
-                  </div>
+                  <div className="flex h-full items-center justify-center"></div>
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
@@ -253,26 +238,14 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
                 <td
                   className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                 >
-                  <div
-                    className="flex h-full items-center justify-center"
-                    onClick={() => {
-                      setModalEditBank(true)
-                      setSelectedAccount(item)
-                    }}
-                  >
+                  <div className="flex h-full items-center justify-center">
                     <Edit2 size="28" color="#737373" />
                   </div>
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                 >
-                  <div
-                    className="flex h-full items-center justify-center"
-                    onClick={() => {
-                      setOpenModalProfileBankAccount(true)
-                      setSelectedAccount(item)
-                    }}
-                  >
+                  <div className="flex h-full items-center justify-center">
                     <Book size="28" color="#737373" />
                   </div>
                 </td>
@@ -302,28 +275,7 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
           currentPage={currentPage} // Pass the current page state
         />
       </div>
-      <ModalUp
-        isOpen={modalRegisterBanks}
-        onClose={() => setModalRegisterBanks(false)}
-      >
-        <RegisterBank
-          onClose={() => setModalRegisterBanks(false)}
-          findData={() => fetchBanks()}
-        />
-      </ModalUp>
-      <ModalUp isOpen={modalEditBank} onClose={() => setModalEditBank(false)}>
-        <EditBank
-          onClose={() => setModalEditBank(false)}
-          account={selectedAccount}
-          findData={() => fetchBanks()}
-        />
-      </ModalUp>
-      <ModalLeft
-        isOpen={openModalProfileBankAccount}
-        onClose={() => setOpenModalProfileBankAccount(false)}
-      >
-        <ProfileBankAccount account={selectedAccount} />
-      </ModalLeft>
+
       <ToastContainer />
     </div>
   )

@@ -1,10 +1,10 @@
 import CustomSelect from '@/components/CustomSelect'
 import { Outfit400, Outfit500 } from '@/fonts'
 import {
-  GetMethodPerId,
-  LinklaboratoryToMethod,
+  GetSamplePerId,
+  LinklaboratoryToSample,
   ListAllEnterprisesPerType,
-  UpdateMethod,
+  UpdateSample,
 } from '@/helpers'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
@@ -45,7 +45,7 @@ const EditMethod = ({ onClose, selectedMethod, findData }) => {
   useEffect(() => {
     const fetchMethod = async () => {
       try {
-        const response = await GetMethodPerId(selectedMethod.id)
+        const response = await GetSamplePerId(selectedMethod.id)
         formik.setFieldValue('id', response.data.id)
         formik.setFieldValue('nomeMetodo', response.data.nome)
         formik.setFieldValue('codigoInterno', response.data.codigoInterno)
@@ -97,7 +97,7 @@ const EditMethod = ({ onClose, selectedMethod, findData }) => {
       }
 
       try {
-        const responseMethod = await UpdateMethod(values.id, payload)
+        const responseMethod = await UpdateSample(values.id, payload)
 
         if (!responseMethod?.success) {
           const apiErrors = responseMethod?.error?.erros || [
@@ -121,7 +121,7 @@ const EditMethod = ({ onClose, selectedMethod, findData }) => {
         if (laboratoriosSelecionados.length > 0) {
           await Promise.all(
             laboratoriosSelecionados.map((laboratorioId) =>
-              LinklaboratoryToMethod({
+              LinklaboratoryToSample({
                 laboratorioId,
                 metodoId,
                 validado: false,

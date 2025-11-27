@@ -1,5 +1,6 @@
 import CustomSelect from '@/components/CustomSelect'
 import ModalUp from '@/components/ModalUp'
+import Pagination from '@/components/Pagination'
 import { Outfit300, Outfit400, Outfit700 } from '@/fonts'
 import {
   DeleteIntegracao,
@@ -7,15 +8,7 @@ import {
   ToggleStatusIntegration,
 } from '@/helpers'
 import { Dropdown, DropdownItem } from 'flowbite-react'
-import {
-  ArrowLeft2,
-  ArrowRight2,
-  Book,
-  Edit2,
-  Heart,
-  More,
-  SearchStatus,
-} from 'iconsax-reactjs'
+import { Book, Edit2, Heart, More, SearchStatus } from 'iconsax-reactjs'
 import { useEffect, useState } from 'react'
 import { IsActive } from '../../../../../components/IsActive'
 
@@ -26,14 +19,17 @@ import RegisterIntegrations from './modal-content/registerIntegrations'
 
 const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
   const [integrations, setIntegrations] = useState([])
+  const [total, setTotal] = useState(0)
   const [selectedIntegration, setSelectedIntegrations] = useState({})
   const [openModalEditIntegrations, setOpenModalEditIntegrations] =
     useState(false)
+  const [currentPage] = useState(1)
 
   useEffect(() => {
     const fecthIntegrations = async () => {
       const result = await ListIntegrations()
-      setIntegrations(result.data)
+      setIntegrations(result.data.data)
+      setTotal(result?.data?.meta?.total)
     }
 
     fecthIntegrations()
@@ -41,7 +37,8 @@ const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
 
   const fecthIntegrations = async () => {
     const result = await ListIntegrations()
-    setIntegrations(result.data)
+    setIntegrations(result.data.data)
+    setTotal(result?.data?.meta?.total)
   }
 
   const deleteIntegration = async (item) => {
@@ -81,7 +78,7 @@ const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
               <span
                 className={`${Outfit700.className} text-[16px] text-[#0F9B7F]`}
               >
-                160
+                {total}
               </span>
               <span className={`${Outfit300.className} text-[#737373]`}>
                 Integrações
@@ -130,7 +127,7 @@ const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
               Código de identificação
             </th>
             <th
-              className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
+              className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
             >
               Ativo
             </th>
@@ -240,30 +237,25 @@ const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
           })}
         </tbody>
       </table>
-      <div className="flex h-10 items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-[61px] items-center rounded-lg bg-[#F9F9F9]">
-            <span
-              className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
-            >
-              01
-            </span>
-          </div>
-          <span className={`${Outfit300.className} text-[16px] text-[#222]`}>
-            de 01 registros
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-[61px] items-center rounded-lg bg-[#F9F9F9]">
+          <span
+            className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
+          >
+            {integrations.length > 10 ? 10 : integrations.length}
           </span>
         </div>
-
-        <div className="flex items-center">
-          <ArrowLeft2 size="28" color="#D9D9D9" />
-          <div className="flex h-10 items-center justify-center rounded-lg bg-[#E0FFF9]">
-            <span className={`${Outfit400.className} flex px-4 text-[#0F9B7F]`}>
-              01
-            </span>
-          </div>
-          <ArrowRight2 size="28" color="#D9D9D9" />
-        </div>
+        <span className={`${Outfit300.className} text-[16px] text-[#222]`}>
+          de {total} registros
+        </span>
       </div>
+
+      <Pagination
+        totalRecords={total}
+        recordsPerPage={10}
+        // onPageChange={(value) => findDataPerPage(value)}
+        currentPage={currentPage} // Pass the current page state
+      />
       <ModalUp
         isOpen={openModalIntegracoes}
         onClose={() => setOpenModalIntegracoes(false)}

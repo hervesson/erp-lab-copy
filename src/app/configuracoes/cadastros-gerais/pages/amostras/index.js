@@ -3,7 +3,7 @@ import CustomSelect from '@/components/CustomSelect'
 import ModalUp from '@/components/ModalUp'
 import Pagination from '@/components/Pagination'
 import { Outfit300, Outfit400, Outfit700 } from '@/fonts'
-import { ListMethods } from '@/helpers'
+import { DeleteSample, DeleteVinculoSamples, ListSamples } from '@/helpers'
 import useDebounce from '@/hooks/useDebounce'
 import {
   Book,
@@ -35,21 +35,21 @@ const Methods = ({ modalRegisterAmostras, setModalRegisterAmostras }) => {
   const [openModalEditMwthod, setOpenModalEditMethod] = useState(false)
 
   useEffect(() => {
-    // const fetchMethods = async () => {
-    //   try {
-    //     const response = await ListMethods()
-    //     setListMethods(response.data.data)
-    //     setTotal(response.data.total)
-    //   } catch (error) {
-    //     console.error('Error fetching banks:', error)
-    //   }
-    // }
-    // fetchMethods()
+    const fetchMethods = async () => {
+      try {
+        const response = await ListSamples()
+        setListMethods(response.data.data)
+        setTotal(response.data.total)
+      } catch (error) {
+        console.error('Error fetching banks:', error)
+      }
+    }
+    fetchMethods()
   }, [])
 
   const fetchMethods = async (trm = '', sts = '', pg = 1) => {
     try {
-      const response = await ListMethods(trm, sts, pg, 10)
+      const response = await ListSamples(trm, sts, pg, 10)
       setListMethods(response.data.data)
       setTotal(response.data.total)
     } catch (error) {
@@ -70,7 +70,7 @@ const Methods = ({ modalRegisterAmostras, setModalRegisterAmostras }) => {
     setStatus(sts[props.label])
 
     try {
-      const response = await ListMethods(searchTerm, props.id, currentPage, 10)
+      const response = await ListSamples(searchTerm, props.id, currentPage, 10)
       setListMethods(response.data.data)
       setTotal(response.data.total)
     } catch (error) {
@@ -90,7 +90,7 @@ const Methods = ({ modalRegisterAmostras, setModalRegisterAmostras }) => {
     setCurrentPage(1)
 
     try {
-      const response = await ListMethods(props, status.id, currentPage)
+      const response = await ListSamples(props, status.id, currentPage)
       setListMethods(response.data.data)
       setTotal(response.data.total)
     } catch (error) {
@@ -98,8 +98,15 @@ const Methods = ({ modalRegisterAmostras, setModalRegisterAmostras }) => {
     }
   }
 
-  const deleteMethod = (method) => {
-    console.log(method)
+  const deleteMethod = async (method) => {
+    if (method?.laboratorioMetodos?.length > 0) {
+      await Promise.all(
+        method.laboratorioMetodos.map((i) => DeleteVinculoSamples(i.id)),
+      )
+    }
+
+    await DeleteSample(method.id)
+    fetchMethods(searchTerm, status.id, currentPage)
   }
 
   return (
@@ -226,7 +233,7 @@ const Methods = ({ modalRegisterAmostras, setModalRegisterAmostras }) => {
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
-                  onClick={() => deleteMethod()}
+                  onClick={() => deleteMethod(item)}
                 >
                   <div className="flex h-full items-center justify-center">
                     <Trash size="28" color="#737373" variant="Outline" />

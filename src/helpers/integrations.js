@@ -107,7 +107,6 @@ export async function UpdateIntegration(integrationId, payload) {
 
 export async function ListIntegrations(
   term = '',
-  type = '',
   status = '',
   page = '',
   limit = '',
@@ -121,9 +120,6 @@ export async function ListIntegrations(
 
     if (term !== '') {
       params.append('search', term)
-    }
-    if (type !== '') {
-      params.append('tipo', type)
     }
     if (status !== '') {
       params.append('status', status)

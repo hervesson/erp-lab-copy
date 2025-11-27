@@ -4,8 +4,8 @@ import CustomSelect from '@/components/CustomSelect'
 import ModalFramer from '@/components/ModalFramer'
 import { Outfit400, Outfit500 } from '@/fonts'
 import {
-  CreateMethod,
-  LinklaboratoryToMethod,
+  CreateSample,
+  LinklaboratoryToSample,
   ListAllEnterprisesPerType,
 } from '@/helpers'
 import { useFormik } from 'formik'
@@ -18,7 +18,7 @@ const RegisterMethod = ({ onClose, findData }) => {
   const [allLabs, setAllLabs] = useState([])
   const [openModalAlerts, setOpenModalAlerts] = useState(false)
   const [step, setStep] = useState('')
-  const [codigoInterno] = useState(() => gerarCodigoInterno())
+  const [codigoInterno, setCodigoInterno] = useState(() => gerarCodigoInterno())
 
   useEffect(() => {
     const fetchListEnterprises = async () => {
@@ -42,11 +42,18 @@ const RegisterMethod = ({ onClose, findData }) => {
   }, [])
 
   function gerarCodigoInterno() {
-    const prefixo = 'MET'
+    const prefixo = 'AMO'
     const numero = Math.floor(Math.random() * 1000) // 0 até 999
     const numeroFormatado = String(numero).padStart(3, '0') // sempre 3 dígitos
 
     return `${prefixo}${numeroFormatado}`
+  }
+
+  const regenerarCodigoInterno = () => {
+    const novoCodigo = gerarCodigoInterno()
+    setCodigoInterno(novoCodigo)
+    // se tiver Formik, mantém sincronizado:
+    formik.setFieldValue('codigo', novoCodigo)
   }
 
   const formik = useFormik({
@@ -54,7 +61,7 @@ const RegisterMethod = ({ onClose, findData }) => {
     validateOnBlur: false,
     validateOnChange: true,
     initialValues: {
-      nomeMetodo: '',
+      nomeAmostra: '',
       descricao: '',
       status: '',
       laboratoriosAssociados: [
@@ -65,14 +72,14 @@ const RegisterMethod = ({ onClose, findData }) => {
     },
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       const payload = {
-        nome: values.nomeMetodo,
+        nome: values.nomeAmostra,
         codigoInterno,
         descricao: values.descricao,
         status: values.status.id,
       }
 
       try {
-        const responseMethod = await CreateMethod(payload)
+        const responseMethod = await CreateSample(payload)
 
         if (!responseMethod?.success) {
           const apiErrors = responseMethod?.error?.erros || [
@@ -86,7 +93,7 @@ const RegisterMethod = ({ onClose, findData }) => {
           return
         }
 
-        const metodoId = responseMethod.data?.id
+        const amostraId = responseMethod.data?.id
 
         // pega só os laboratórios válidos
         const laboratoriosSelecionados = values.laboratoriosAssociados
@@ -96,9 +103,9 @@ const RegisterMethod = ({ onClose, findData }) => {
         if (laboratoriosSelecionados.length > 0) {
           await Promise.all(
             laboratoriosSelecionados.map((laboratorioId) =>
-              LinklaboratoryToMethod({
+              LinklaboratoryToSample({
                 laboratorioId,
-                metodoId,
+                amostraId,
                 validado: false,
                 observacoes: '',
               }),
@@ -106,6 +113,7 @@ const RegisterMethod = ({ onClose, findData }) => {
           )
         }
 
+        regenerarCodigoInterno()
         setStep('success')
         setOpenModalAlerts(true)
         findData()
@@ -290,10 +298,10 @@ const RegisterMethod = ({ onClose, findData }) => {
                     <strong className="text-[#F23434]">*</strong>
                   </label>
                   <input
-                    {...formik.getFieldProps('nomeMetodo')}
+                    {...formik.getFieldProps('nomeAmostra')}
                     type="text"
-                    id="nomeMetodo"
-                    name="nomeMetodo"
+                    id="nomeAmostra"
+                    name="nomeAmostra"
                     className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                     placeholder="Digite o nome da unidade"
                   />
@@ -332,7 +340,7 @@ const RegisterMethod = ({ onClose, findData }) => {
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}
                   >
-                    Status do método
+                    Status da amostra
                     <strong className="text-[#F23434]">*</strong>
                   </label>
                   <CustomSelect

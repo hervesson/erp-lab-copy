@@ -18,7 +18,7 @@ const RegisterMethod = ({ onClose, findData }) => {
   const [allLabs, setAllLabs] = useState([])
   const [openModalAlerts, setOpenModalAlerts] = useState(false)
   const [step, setStep] = useState('')
-  const [codigoInterno] = useState(() => gerarCodigoInterno())
+  const [codigoInterno, setCodigoInterno] = useState(() => gerarCodigoInterno())
 
   useEffect(() => {
     const fetchListEnterprises = async () => {
@@ -47,6 +47,13 @@ const RegisterMethod = ({ onClose, findData }) => {
     const numeroFormatado = String(numero).padStart(3, '0') // sempre 3 dígitos
 
     return `${prefixo}${numeroFormatado}`
+  }
+
+  const regenerarCodigoInterno = () => {
+    const novoCodigo = gerarCodigoInterno()
+    setCodigoInterno(novoCodigo)
+    // se tiver Formik, mantém sincronizado:
+    formik.setFieldValue('codigo', novoCodigo)
   }
 
   const formik = useFormik({
@@ -106,6 +113,7 @@ const RegisterMethod = ({ onClose, findData }) => {
           )
         }
 
+        regenerarCodigoInterno()
         setStep('success')
         setOpenModalAlerts(true)
         findData()

@@ -4,7 +4,7 @@ const trimToUndefined = (v) =>
   typeof v === 'string' ? (v.trim() === '' ? undefined : v.trim()) : v
 
 export const validationSchemaMethod = Yup.object({
-  nomeMetodo: Yup.string()
+  nomeAmostra: Yup.string()
     .transform(trimToUndefined)
     .required('Informe o nome do método'),
 
