@@ -242,7 +242,7 @@ const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
           <span
             className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
           >
-            {integrations?.length > 10 ? 10 : integrations?.length}
+            {integrations.length > 10 ? 10 : integrations.length}
           </span>
         </div>
         <span className={`${Outfit300.className} text-[16px] text-[#222]`}>
