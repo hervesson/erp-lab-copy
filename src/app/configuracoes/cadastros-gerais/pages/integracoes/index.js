@@ -51,13 +51,7 @@ const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
           }
         })
 
-        setListTypesIntegrations([
-          {
-            id: '',
-            label: 'Todas',
-          },
-          ...labs,
-        ])
+        setListTypesIntegrations(labs)
       } catch (error) {
         console.error('Error fetching banks:', error)
       }
@@ -170,7 +164,13 @@ const Integrations = ({ openModalIntegracoes, setOpenModalIntegracoes }) => {
         <CustomSelect
           select={status}
           setSelect={(e) => findDataPerStatus(e)}
-          options={listTypesIntegrations}
+          options={[
+            ...listTypesIntegrations,
+            {
+              id: '',
+              label: 'Todas',
+            },
+          ]}
           placeholder={'Status'}
           className={'bg-[#F9F9F9]'}
         />
