@@ -9,25 +9,36 @@ const Endereco = ({ formik }) => {
   const [cities, setCities] = useState({})
 
   useEffect(() => {
+    const estado = formik.values.estado
+
+    // Se ainda não tiver nada selecionado, não faz nada
+    if (!estado || !estado.label) {
+      return
+    }
+
     const findData = async () => {
-      const states = await SearchCities(formik?.values?.estado?.label)
-      const stt = states.data.map((item) => {
-        return {
+      try {
+        const states = await SearchCities(estado.label)
+
+        const stt = states.data.map((item) => ({
           id: item.id,
           label: item.nome,
           item,
-        }
-      })
-      setCities(stt)
+        }))
+
+        setCities(stt)
+      } catch (error) {
+        console.error('Erro ao buscar cidades:', error)
+      }
     }
 
     findData()
-  }, [formik.values.estado])
+  }, [formik.values.estado?.label])
 
   useEffect(() => {
     const findData = async () => {
       const states = await SearchStates()
-      const stt = states.data.map((item) => {
+      const stt = states?.data?.map((item) => {
         return {
           id: item.id,
           label: item.nome,
@@ -40,21 +51,6 @@ const Endereco = ({ formik }) => {
     findData()
   }, [])
 
-  useEffect(() => {
-    const findData = async () => {
-      const states = await SearchStates()
-      const stt = states.data.map((item) => {
-        return {
-          id: item.id,
-          label: item.nome,
-          item,
-        }
-      })
-      setStates(stt)
-    }
-
-    findData()
-  }, [])
   const searchCEP = async () => {
     if (formik.values.cep.length === 9) {
       const result = await SearchCep(formik.values.cep)

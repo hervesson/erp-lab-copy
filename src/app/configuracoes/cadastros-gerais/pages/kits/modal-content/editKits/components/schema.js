@@ -1,7 +1,7 @@
-// schema.js
 import * as Yup from 'yup'
 
-// helper: aceita select como objeto {id,label} ou como id (string/number)
+// ... seus helpers selectRequired, digitsOnly, optionObj
+
 const selectRequired = (label) =>
   Yup.mixed()
     .nullable(true) // <- evita "cannot be null"
@@ -15,7 +15,6 @@ const selectRequired = (label) =>
       return false
     })
 
-// helper: mantém só dígitos (para agência/conta/dígito)
 const digitsOnly = (schema) =>
   schema
     .transform((val) =>
@@ -24,7 +23,13 @@ const digitsOnly = (schema) =>
     .matches(/^\d+$/, 'Use apenas números')
     .required('Campo obrigatório')
 
-const infoItemSchema = Yup.object({
+// valida item de chip: { id, label }
+const optionObj = Yup.object({
+  id: Yup.mixed().required(),
+  label: Yup.string().required(),
+})
+
+export const infoItemSchemaAccountBank = Yup.object({
   banco_id: selectRequired('Banco'),
   description: Yup.string()
     .trim()
@@ -46,10 +51,8 @@ const infoItemSchema = Yup.object({
     .trim()
     .max(140, 'Máximo de 140 caracteres')
     .nullable(),
-})
-
-export const validationSchemaAccountBank = Yup.object({
-  informations: Yup.array()
-    .of(infoItemSchema)
-    .min(1, 'Inclua ao menos uma conta'),
+  unidades_associadas: Yup.array()
+    .ensure()
+    .of(optionObj)
+    .min(1, 'Adicione ao menos uma unidade'),
 })

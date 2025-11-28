@@ -17,6 +17,7 @@ const SelectRegister = ({
   setModalRegisterUser,
   setModalRegisterMethods,
   setModalRegisterAmostras,
+  setModalRegisterKits,
   setModalRegisterExamMatrix,
   setModalRegisterCompanies,
   setModalRegisterBanks,
@@ -47,6 +48,9 @@ const SelectRegister = ({
         }}
         setModalRegisterAmostras={() => {
           setModalRegisterAmostras(true)
+        }}
+        setModalRegisterKits={() => {
+          setModalRegisterKits(true)
         }}
       />
     ),

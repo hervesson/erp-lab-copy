@@ -19,8 +19,7 @@ import InformacoesEspecificas from './components/informacoesEspecificas'
 import InformacoesGerais from './components/informacoesGerais'
 import Instrucoes from './components/instrucoes'
 import Integracao from './components/integracao'
-import Planos from './components/planos'
-import Restricoes from './components/restricoes'
+import PlanoRestricoes from './components/planosRestricoes'
 
 const Convenios = forwardRef(
   (
@@ -334,8 +333,7 @@ const Convenios = forwardRef(
           setCadTissObrigatorios={(e) => setCadTissObrigatorios(e)}
         />
       ),
-      restricoes: <Restricoes formik={formik} />,
-      planos: <Planos formik={formik} />,
+      planosRestricoes: <PlanoRestricoes formik={formik} />,
       instrucoes: <Instrucoes formik={formik} />,
     }
 
@@ -372,17 +370,10 @@ const Convenios = forwardRef(
           </button>
           <button
             type="button"
-            onClick={() => setTab('restricoes')}
-            className={`${Outfit400.className} ${tab === 'restricoes' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
+            onClick={() => setTab('planosRestricoes')}
+            className={`${Outfit400.className} ${tab === 'planosRestricoes' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
           >
-            RESTRIÇÕES
-          </button>
-          <button
-            type="button"
-            onClick={() => setTab('planos')}
-            className={`${Outfit400.className} ${tab === 'planos' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
-          >
-            PLANOS
+            PLANOS & RESTRIÇÕES
           </button>
           <button
             type="button"

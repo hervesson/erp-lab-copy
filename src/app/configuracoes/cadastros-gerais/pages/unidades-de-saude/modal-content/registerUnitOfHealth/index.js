@@ -9,13 +9,13 @@ import { toast } from 'react-toastify'
 import { validationSchemaCreateUnit } from './schema'
 
 // Components
-import CertificadoDigital from './components/certificadoDigital'
 import Endereco from './components/endereco'
 import Financeiro from './components/financeiro'
 import Horarios from './components/horarios'
 import Impostos from './components/impostos'
 import InformacoesBasicas from './components/informacoesBasicas'
 import Responsaveis from './components/responsaveis'
+import CertificadoDigital from './components/vincularCertificado'
 
 const RegisterUnityOfHealth = ({ onClose, findData }) => {
   // Loading
@@ -111,7 +111,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
       numero: '',
       bairro: '',
       complemento: '',
-      estado: '',
+      estado: {},
       cidade: '',
 
       // horarios
@@ -316,7 +316,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
         className="flex h-screen flex-col bg-[#F9F9F9]"
         onSubmit={() => null}
       >
-        <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-[#fff] px-[48px]">
+        <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-white px-12">
           <div className="flex flex-col">
             <span
               className={` ${Outfit400.className} text-[16px] text-[#0F9B7F]`}
@@ -329,14 +329,14 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
               Unidades de saúde
             </span>
           </div>
-          <div className="flex gap-[16px]">
+          <div className="flex gap-4">
             <button
               type="button"
               onClick={() => {
                 setStep('cancel')
                 setOpenModalAlerts(true)
               }}
-              className="flex h-[44px] w-[108px] items-center justify-evenly rounded-[8px] border border-[#F23434]"
+              className="flex h-11 w-[108px] items-center justify-evenly rounded-lg border border-[#F23434]"
             >
               <span
                 className={`${Outfit400.className} text-[#F23434] uppercase`}
@@ -347,7 +347,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
             <button
               type="button"
               onClick={handleValidateAndSubmit}
-              className={`flex h-[44px] w-[128px] items-center justify-evenly rounded-[8px] ${
+              className={`flex h-11 w-32 items-center justify-evenly rounded-lg ${
                 formik.isValid
                   ? 'bg-[#0F9B7F] text-white hover:from-[#3BC1E2] hover:to-[#1D6F87]'
                   : 'bg-[#A9A9A9] text-[#494949]'
@@ -363,7 +363,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
 
         {/* <div className="flex h-full w-full gap-x-3 overflow-x-auto"> */}
         <div className="flex h-full w-screen gap-x-3 overflow-x-auto">
-          <div className="mx-[48px] my-[28px] flex h-fit flex-1 flex-col gap-[32px] rounded bg-[#fff] p-[48px]">
+          <div className="mx-12 my-7 flex h-fit flex-1 flex-col gap-8 rounded bg-white p-12">
             {/* informacoes */}
             <InformacoesBasicas
               formik={formik}

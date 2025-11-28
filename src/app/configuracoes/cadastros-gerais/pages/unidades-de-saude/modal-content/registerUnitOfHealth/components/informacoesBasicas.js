@@ -1,6 +1,6 @@
 import { Outfit300, Outfit400 } from '@/fonts'
 import { SearchCnpj } from '@/helpers'
-import { formatCnpj, formatPhoneNumber } from '@/utils'
+import { formatCNAE, formatCnpj, formatPhoneNumber } from '@/utils'
 
 import CustomSelect from '@/components/CustomSelect'
 import { CloseCircle, InfoCircle } from 'iconsax-reactjs'
@@ -33,20 +33,36 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
       formik.setFieldValue('numero', safe(result.data.numero))
       formik.setFieldValue('cep', safe(result.data.cep))
       formik.setFieldValue('rua', safe(result.data.rua))
+      formik.setFieldValue('cnaePrincipal', {
+        id: formatCNAE(result.data.mainActivity.code),
+        label: `${formatCNAE(result.data.mainActivity.code)} -
+          ${result.data.mainActivity.description}`,
+      })
+      formik.setFieldValue(
+        'cnaesSecundariosSelecionados',
+        result.data.sideActivities.map((e) => {
+          return {
+            id: formatCNAE(e.code),
+            label: `${formatCNAE(e.code)} -
+            ${e.description}`,
+          }
+        }),
+      )
     }
+    console.log(result.data)
   }
 
   return (
-    <div className="flex flex-col gap-[16px]">
+    <div className="flex flex-col gap-4">
       <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
         Informações básicas
       </span>
 
-      <div className="flex h-[144px] gap-[16px]">
-        <div className="h-[144px] w-[144px] rounded border border-[#A9A9A9]"></div>
+      <div className="flex h-36 gap-4">
+        <div className="h-36 w-36 rounded border border-[#A9A9A9]"></div>
         <div className="flex flex-1 flex-col justify-between">
-          <div className="flex gap-[16px]">
-            <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex gap-4">
+            <div className="flex flex-1 flex-col gap-1">
               <label
                 className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
@@ -57,11 +73,11 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
                 {...formik.getFieldProps('nomeUnidade')}
                 id="nomeUnidade"
                 name="nomeUnidade"
-                className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                 placeholder="Digite o nome da unidade"
               />
             </div>
-            <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex flex-1 flex-col gap-1">
               <label
                 className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >

@@ -134,3 +134,17 @@ export function maskPercentBR(value) {
 
   return decPart ? `${intPart},${decPart}` : intPart
 }
+
+export function formatCNAE(cnae) {
+  // mantém só números
+  let digits = String(cnae).replace(/\D/g, '')
+
+  // garante 7 dígitos (se vier menor, completa à esquerda com zero)
+  digits = digits.padStart(7, '0')
+
+  const parte1 = digits.slice(0, 4) // 8610
+  const parte2 = digits.slice(4, 5) // 1
+  const parte3 = digits.slice(5, 7) // 01
+
+  return `${parte1}-${parte2}/${parte3}`
+}

@@ -53,6 +53,7 @@ const RootLayout = () => {
   const [modalRegisterUser, setModalRegisterUser] = useState(false)
   const [modalRegisterMethods, setModalRegisterMethods] = useState(false)
   const [modalRegisterAmostras, setModalRegisterAmostras] = useState(false)
+  const [openModalRegisterKits, setModalRegisterKits] = useState(false)
 
   // Modal Emporesas
   const [openModalRegisterCompanies, setModalRegisterCompanies] =
@@ -112,7 +113,12 @@ const RootLayout = () => {
         setModalRegisterAmostras={(e) => setModalRegisterAmostras(e)}
       />
     ),
-    kits: <Kits />,
+    kits: (
+      <Kits
+        openModalRegisterKits={openModalRegisterKits}
+        setModalRegisterKits={(e) => setModalRegisterKits(e)}
+      />
+    ),
     tabelaDePrecos: <TabelaDePrecos />,
     salasSetores: <SalasSetores />,
     equipamentosImobilizados: <EquipamentosImobilizados />,
@@ -143,17 +149,17 @@ const RootLayout = () => {
   }
 
   return (
-    <div className="m-[8px] flex flex-1 flex-col rounded-[20px] bg-white">
-      <div className="flex h-[84px] w-full items-center justify-between border-b-1 border-[#E7E7E7]">
+    <div className="m-2 flex flex-1 flex-col rounded-[20px] bg-white">
+      <div className="flex h-[84px] w-full items-center justify-between border-b border-[#E7E7E7]">
         <span
-          className={`${Outfit400.className} ml-[32px] text-[20px] text-[#000] uppercase`}
+          className={`${Outfit400.className} ml-8 text-[20px] text-black uppercase`}
         >
           CADASTROS GERAIS
         </span>
         <button
           type="botton"
           onClick={() => setOpenModalCategorie(true)}
-          className={`mr-[32px] flex h-[44px] w-[154px] items-center justify-center gap-2 rounded-[8px] bg-[#0F9B7F]`}
+          className={`mr-8 flex h-11 w-[154px] items-center justify-center gap-2 rounded-lg bg-[#0F9B7F]`}
         >
           <AddSquare size="32" color="#ffffff" variant="Bulk" />
           <span className={`${Outfit400.className} text-[16px] text-white`}>
@@ -161,7 +167,7 @@ const RootLayout = () => {
           </span>
         </button>
       </div>
-      <div className="flex w-full flex-1 gap-3 px-[32px] py-[16px]">
+      <div className="flex w-full flex-1 gap-3 px-8 py-4">
         <SideMenu page={page} setPage={(a) => setPage(a)} />
         {pages[page]}
         {ALLOWED_PAGES.includes(page) && (
@@ -218,6 +224,11 @@ const RootLayout = () => {
               setPage('amostras')
               setOpenModalRegister(false)
               setModalRegisterAmostras(true)
+            }}
+            setModalRegisterKits={() => {
+              setPage('kits')
+              setOpenModalRegister(false)
+              setModalRegisterKits(true)
             }}
             setModalRegisterExamMatrix={(e) => {
               setPage('matriz-de-exames')

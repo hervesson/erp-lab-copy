@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 import { validationSchemaAccountBank } from './components/schema'
 
 import InformacoesGerais from './components/informacoesgerais'
-import Integracao from './components/integracao'
+import Integracao from './components/vincularExames'
 
 const RegisterUser = ({ onClose, findData }) => {
   const [tab, setTab] = useState('informacoesGerais')
@@ -16,19 +16,47 @@ const RegisterUser = ({ onClose, findData }) => {
     validateOnBlur: false,
     validateOnChange: true,
     initialValues: {
-      informations: [
+      codigoInterno: 'KIT-CHECKUP-001',
+      nomeKit: '',
+      descricao: '', // Não tem
+      prazoPadraoEntrega: 3, // Não tem
+      empresaId: 'uuid-da-empresa', // Não tem
+      precoKit: 0,
+      exames: [
         {
-          banco_id: '',
-          description: '',
-          status: '',
-          agencia: '',
-          numero_conta: '',
-          digito_conta: '',
-          tipoConta: '',
-          pix_chave: '',
-          unidadeSelecionada: {},
-          unidades_associadas: [],
+          exameId: 'uuid-hemograma',
+          quantidade: 1,
+          ordemInsercao: 1,
+          observacoes: 'Jejum de 12 horas',
         },
+        {
+          exameId: 'uuid-glicemia',
+          quantidade: 1,
+          ordemInsercao: 2,
+        },
+        {
+          exameId: 'uuid-colesterol',
+          quantidade: 1,
+          ordemInsercao: 3,
+        },
+        {
+          exameId: 'uuid-ureia',
+          quantidade: 1,
+          ordemInsercao: 4,
+        },
+        {
+          exameId: 'uuid-creatinina',
+          quantidade: 1,
+          ordemInsercao: 5,
+        },
+      ],
+      unidades: [
+        { unidadeId: 'uuid-unidade-1' },
+        { unidadeId: 'uuid-unidade-2' },
+      ],
+      convenios: [
+        { convenioId: 'uuid-convenio-1' },
+        { convenioId: 'uuid-convenio-2' },
       ],
     },
     onSubmit: async (values, { setSubmitting }) => {
@@ -184,7 +212,7 @@ const RegisterUser = ({ onClose, findData }) => {
             <span
               className={` ${Outfit500.className} text-[16px] text-[#222222]`}
             >
-              BANCOS
+              Kits
             </span>
           </div>
           <div className="flex gap-4">
@@ -229,7 +257,7 @@ const RegisterUser = ({ onClose, findData }) => {
                 onClick={() => setTab('integracao')}
                 className={`${Outfit400.className} ${tab === 'integracao' && 'border-b-2 border-[#0F9B7F] bg-white'} h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
               >
-                INTEGRAÇÃO
+                VINCULAR EXAMES
               </button>
             </div>
             {steps[tab]}

@@ -40,6 +40,7 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
     const fetchBanks = async () => {
       try {
         const response = await listBankAccount()
+        console.log(response)
         setBanks(response.data.data)
         setTotal(response.data.meta.total)
       } catch (error) {
@@ -170,11 +171,11 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-[32px]">
-      <div className="flex h-[84px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
-        <div className="mx-[10px] flex h-[64px] w-full items-center rounded-[8px] bg-white">
-          <div className="flex gap-3 rounded-[8px] px-[8px]">
-            <div className="flex h-[48px] w-[48px] items-center justify-center rounded-[8px] bg-[#F9F9F9]">
+    <div className="flex flex-1 flex-col gap-8">
+      <div className="flex h-[84px] items-center justify-between rounded-2xl bg-[#F9F9F9]">
+        <div className="mx-2.5 flex h-16 w-full items-center rounded-lg bg-white">
+          <div className="flex gap-3 rounded-lg px-2">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F9F9F9]">
               <Bank size="28" color="#A1A1A1" />
             </div>
             <div className="flex flex-col justify-around">
@@ -215,16 +216,16 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
           className={'bg-[#F9F9F9]'}
         />
         <div
-          className={`flex h-[40px] flex-3 items-center rounded-[8px] px-2 ${
+          className={`flex h-10 flex-3 items-center rounded-lg px-2 ${
             isFocusedSearch
-              ? 'border-[1px] border-[#0F9B7F]'
+              ? 'border border-[#0F9B7F]'
               : 'border border-[#BBBBBB]'
           }`}
         >
           <input
             placeholder="Pesquisar"
             onChange={handleChangeUnit}
-            className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
+            className={`h-full w-full rounded-lg ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
             onFocus={() => setIsFocusedSearch(true)}
             onBlur={() => setIsFocusedSearch(false)}
           />
@@ -234,7 +235,7 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
 
       <table className="w-full">
         <thead className="sticky top-0">
-          <tr className="h-[48px] bg-[#D4D4D4]">
+          <tr className="h-12 bg-[#D4D4D4]">
             <th
               className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
             >
@@ -249,11 +250,6 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
               className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
             >
               Descrição
-            </th>
-            <th
-              className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
-            >
-              Unidade associada
             </th>
             <th
               className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
@@ -281,7 +277,7 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
           {banks?.map((item, index) => {
             return (
               <tr
-                className="h-[64px] border-b border-[#D9D9D9] bg-white py-[5px]"
+                className="h-16 border-b border-[#D9D9D9] bg-white py-[5px]"
                 key={index.toString()}
               >
                 <td
@@ -299,15 +295,6 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
                 >
                   {item.observacoes}
                 </td>
-                <td
-                  className={`text-[14px] ${Outfit300.className} text-[#383838]`}
-                >
-                  {item.unidades_vinculadas
-                    ?.map((u) => u?.unidade_saude?.nomeUnidade)
-                    .filter(Boolean)
-                    .join(', ') || '—'}
-                </td>
-
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
@@ -358,9 +345,9 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
           })}
         </tbody>
       </table>
-      <div className="flex h-[40px] items-center justify-between">
+      <div className="flex h-10 items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
+          <div className="flex h-10 w-[61px] items-center rounded-lg bg-[#F9F9F9]">
             <span
               className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
             >
