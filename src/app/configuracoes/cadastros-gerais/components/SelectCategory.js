@@ -12,10 +12,10 @@ import { Outfit300, Outfit400 } from '@/fonts'
 
 const SelectCategory = ({ setOpenModalCategorie, setSelectCategorie }) => {
   return (
-    <div className="flex w-[791px] flex-col gap-[24px] rounded-[12px] bg-[white] p-[32px]">
+    <div className="flex w-[791px] flex-col gap-6 rounded-xl bg-[white] p-8">
       <div className="flex items-center justify-between">
         <span className={`${Outfit400.className} text-[#222222] uppercase`}>
-          Selecione uma categor
+          Selecione uma categoria
         </span>
         <CloseSquare
           size="28"
@@ -24,10 +24,10 @@ const SelectCategory = ({ setOpenModalCategorie, setSelectCategorie }) => {
           onClick={() => setOpenModalCategorie(false)}
         />
       </div>
-      <div className="flex flex-col gap-[8px]">
+      <div className="flex flex-col gap-2">
         <div className="flex justify-between">
           <div
-            className="flex h-[142px] w-[237px] flex-col justify-between rounded-[8px] bg-[#F9F9F9] p-[12px] hover:bg-[#E0FFF9]"
+            className="flex h-[142px] w-[237px] flex-col justify-between rounded-lg bg-[#F9F9F9] p-3 hover:bg-[#E0FFF9]"
             onClick={() => setSelectCategorie('principais')}
           >
             <Category2 size="28" color="#A1A1A1" />
@@ -42,7 +42,7 @@ const SelectCategory = ({ setOpenModalCategorie, setSelectCategorie }) => {
             </p>
           </div>
           <div
-            className="flex h-[142px] w-[237px] flex-col justify-between rounded-[8px] bg-[#F9F9F9] p-[12px] hover:bg-[#E0FFF9]"
+            className="flex h-[142px] w-[237px] flex-col justify-between rounded-lg bg-[#F9F9F9] p-3 hover:bg-[#E0FFF9]"
             onClick={() => setSelectCategorie('empresas')}
           >
             <Briefcase size="28" color="#A1A1A1" />
@@ -57,7 +57,7 @@ const SelectCategory = ({ setOpenModalCategorie, setSelectCategorie }) => {
             </p>
           </div>
           <div
-            className="flex h-[142px] w-[237px] flex-col justify-between rounded-[8px] bg-[#F9F9F9] p-[12px] hover:bg-[#E0FFF9]"
+            className="flex h-[142px] w-[237px] flex-col justify-between rounded-lg bg-[#F9F9F9] p-3 hover:bg-[#E0FFF9]"
             onClick={() => setSelectCategorie('estrutura')}
           >
             <I3Square size="28" color="#A1A1A1" />
@@ -73,7 +73,7 @@ const SelectCategory = ({ setOpenModalCategorie, setSelectCategorie }) => {
         </div>
         <div className="flex justify-between">
           <div
-            className="flex h-[142px] w-[237px] flex-col justify-between rounded-[8px] bg-[#F9F9F9] p-[12px] hover:bg-[#E0FFF9]"
+            className="flex h-[142px] w-[237px] flex-col justify-between rounded-lg bg-[#F9F9F9] p-3 hover:bg-[#E0FFF9]"
             onClick={() => setSelectCategorie('documentacao')}
           >
             <DirectboxNotif size="28" color="#A1A1A1" />
@@ -87,7 +87,7 @@ const SelectCategory = ({ setOpenModalCategorie, setSelectCategorie }) => {
             </p>
           </div>
           <div
-            className="flex h-[142px] w-[237px] flex-col justify-between rounded-[8px] bg-[#F9F9F9] p-[12px] hover:bg-[#E0FFF9]"
+            className="flex h-[142px] w-[237px] flex-col justify-between rounded-lg bg-[#F9F9F9] p-3 hover:bg-[#E0FFF9]"
             onClick={() => setSelectCategorie('financeiro')}
           >
             <DollarSquare size="28" color="#A1A1A1" />
@@ -101,7 +101,7 @@ const SelectCategory = ({ setOpenModalCategorie, setSelectCategorie }) => {
             </p>
           </div>
           <div
-            className="flex h-[142px] w-[237px] flex-col justify-between rounded-[8px] bg-[#F9F9F9] p-[12px] hover:bg-[#E0FFF9]"
+            className="flex h-[142px] w-[237px] flex-col justify-between rounded-lg bg-[#F9F9F9] p-3 hover:bg-[#E0FFF9]"
             onClick={() => setSelectCategorie('outros')}
           >
             <More2 size="28" color="#A1A1A1" />

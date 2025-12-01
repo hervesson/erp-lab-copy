@@ -51,6 +51,7 @@ const RootLayout = () => {
   const [openModalRegisterExams, setModalRegisterExams] = useState(false)
   const [modalRegisterExamMatrix, setModalRegisterExamMatrix] = useState(false)
   const [modalRegisterUser, setModalRegisterUser] = useState(false)
+  const [modalRegisterAgendas, setModalRegisterAgendas] = useState(false)
   const [modalRegisterMethods, setModalRegisterMethods] = useState(false)
   const [modalRegisterAmostras, setModalRegisterAmostras] = useState(false)
   const [openModalRegisterKits, setModalRegisterKits] = useState(false)
@@ -100,7 +101,12 @@ const RootLayout = () => {
         setModalRegisterUser={(e) => setModalRegisterUser(e)}
       />
     ),
-    agendas: <Agendas />,
+    agendas: (
+      <Agendas
+        modalRegisterAgendas={modalRegisterAgendas}
+        setModalRegisterAgendas={(e) => setModalRegisterAgendas(e)}
+      />
+    ),
     metodos: (
       <Methods
         modalRegisterMethods={modalRegisterMethods}
@@ -214,6 +220,11 @@ const RootLayout = () => {
               setPage('usuarios')
               setOpenModalRegister(false)
               setModalRegisterUser(true)
+            }}
+            setModalRegisterAgendas={() => {
+              setPage('agendas')
+              setOpenModalRegister(false)
+              setModalRegisterAgendas(true)
             }}
             setModalRegisterMethods={() => {
               setPage('metodos')

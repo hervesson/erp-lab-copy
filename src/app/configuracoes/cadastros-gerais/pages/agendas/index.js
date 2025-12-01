@@ -17,11 +17,11 @@ import { toast, ToastContainer } from 'react-toastify'
 import { IsActive } from '../../../../../components/IsActive'
 
 import EditEnterprise from './modal-content/editEnterprise'
-import RegisterEnterprise from './modal-content/registerEnterprise'
+import RegisterEnterprise from './modal-content/registerAgendas'
 
-const Convenios = ({
-  openModalRegisterCompanies,
-  setModalRegisterCompanies,
+const Agendas = ({
+  modalRegisterAgendas,
+  setModalRegisterAgendas,
   page,
   setPage,
 }) => {
@@ -223,11 +223,11 @@ const Convenios = ({
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-[32px]">
-      <div className="flex h-[84px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
-        <div className="mx-[10px] flex h-[64px] w-full items-center rounded-[8px] bg-white">
-          <div className="flex flex-1 gap-3 rounded-[8px] px-[8px]">
-            <div className="flex h-[48px] w-[48px] items-center justify-center rounded-[8px] bg-[#F9F9F9]">
+    <div className="flex flex-1 flex-col gap-8">
+      <div className="flex h-[84px] items-center justify-between rounded-2xl bg-[#F9F9F9]">
+        <div className="mx-2.5 flex h-16 w-full items-center rounded-lg bg-white">
+          <div className="flex flex-1 gap-3 rounded-lg px-2">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F9F9F9]">
               <Calendar size="28" color="#A1A1A1" />
             </div>
             <div className="flex flex-col justify-around">
@@ -241,7 +241,7 @@ const Convenios = ({
               </span>
             </div>
           </div>
-          <div className="flex flex-1 gap-3 rounded-[8px] px-[8px]">
+          <div className="flex flex-1 gap-3 rounded-lg px-2">
             <div className="flex flex-col justify-around">
               <span
                 className={`${Outfit700.className} text-[16px] text-[#0F9B7F]`}
@@ -293,16 +293,16 @@ const Convenios = ({
           className={'bg-[#F9F9F9]'}
         />
         <div
-          className={`flex h-[40px] flex-2 items-center rounded-[8px] px-2 ${
+          className={`flex h-10 flex-2 items-center rounded-lg px-2 ${
             isFocusedSearch
-              ? 'border-[1px] border-[#0F9B7F]'
+              ? 'border border-[#0F9B7F]'
               : 'border border-[#BBBBBB]'
           }`}
         >
           <input
             placeholder="Pesquisar"
             onChange={handleChangeEnterprise}
-            className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
+            className={`h-full w-full rounded-lg ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
             onFocus={() => setIsFocusedSearch(true)}
             onBlur={() => setIsFocusedSearch(false)}
           />
@@ -311,7 +311,7 @@ const Convenios = ({
       </div>
 
       <div>
-        <div className="flex h-[64px] items-end gap-8 bg-[#F9F9F9] px-[48px]">
+        <div className="flex h-[64px] items-end gap-8 bg-[#F9F9F9] px-12">
           <button
             type="button"
             onClick={() => setPage('convenios')}
@@ -397,7 +397,7 @@ const Convenios = ({
             {listEnterprises?.map((item, index) => {
               return (
                 <tr
-                  className="h-[64px] border-b border-[#D9D9D9] bg-white py-[5px]"
+                  className="h-16 border-b border-[#D9D9D9] bg-white py-[5px]"
                   key={index.toString()}
                 >
                   <td
@@ -488,7 +488,7 @@ const Convenios = ({
         </table>
       </div>
       <div className="flex items-center gap-3">
-        <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
+        <div className="flex h-10 w-[61px] items-center rounded-lg bg-[#F9F9F9]">
           <span
             className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
           >
@@ -507,11 +507,11 @@ const Convenios = ({
         currentPage={currentPage} // Pass the current page state
       />
       <ModalUp
-        isOpen={openModalRegisterCompanies}
-        onClose={() => setModalRegisterCompanies(false)}
+        isOpen={modalRegisterAgendas}
+        onClose={() => setModalRegisterAgendas(false)}
       >
         <RegisterEnterprise
-          onClose={() => setModalRegisterCompanies(false)}
+          onClose={() => setModalRegisterAgendas(false)}
           setPage={(e) => setPage(e)}
           findData={() => fetchEnterprises()}
         />
@@ -537,4 +537,4 @@ const Convenios = ({
   )
 }
 
-export default Convenios
+export default Agendas

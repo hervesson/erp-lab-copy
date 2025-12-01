@@ -142,11 +142,11 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-[32px]">
-      <div className="flex h-[84px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
-        <div className="mx-[10px] flex h-[64px] w-full items-center rounded-[8px] bg-white">
-          <div className="flex gap-3 rounded-[8px] px-[8px]">
-            <div className="flex h-[48px] w-[48px] items-center justify-center rounded-[8px] bg-[#F9F9F9]">
+    <div className="flex flex-1 flex-col gap-8">
+      <div className="flex h-[84px] items-center justify-between rounded-2xl bg-[#F9F9F9]">
+        <div className="mx-2.5 flex h-16 w-full items-center rounded-lg bg-white">
+          <div className="flex gap-3 rounded-lg px-2">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F9F9F9]">
               <Buildings size="28" color="#A1A1A1" />
             </div>
             <div className="flex flex-col justify-around">
@@ -164,16 +164,16 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
       </div>
 
       <div
-        className={`flex h-[40px] items-center rounded-[8px] px-2 ${
+        className={`flex h-10 items-center rounded-lg px-2 ${
           isFocusedSearch
-            ? 'border-[1px] border-[#0F9B7F]'
+            ? 'border border-[#0F9B7F]'
             : 'border border-[#BBBBBB]'
         }`}
       >
         <input
           placeholder="Pesquisar"
           onChange={handleChangeUnit}
-          className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
+          className={`h-full w-full rounded-lg ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
           onFocus={() => setIsFocusedSearch(true)}
           onBlur={() => setIsFocusedSearch(false)}
         />
@@ -182,7 +182,7 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
 
       <table className="w-full">
         <thead className="sticky top-0">
-          <tr className="h-[48px] bg-[#D4D4D4]">
+          <tr className="h-12 bg-[#D4D4D4]">
             <th
               className={`text-[14px] ${Outfit400.className} text-center text-[#3E3E3E]`}
             >
@@ -242,7 +242,7 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
           {units?.map((item, index) => {
             return (
               <tr
-                className="h-[64px] border-b border-[#D9D9D9] bg-white py-[5px]"
+                className="h-16 border-b border-[#D9D9D9] bg-white py-[5px]"
                 key={index.toString()}
               >
                 <td
@@ -252,7 +252,7 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
                 </td>
                 <td>
                   <div className="flex items-center gap-3">
-                    <div className="h-[40px] w-[40px] rounded-[8px] bg-[#F7F7F2]" />
+                    <div className="h-10 w-10 rounded-lg bg-[#F7F7F2]" />
                     <span
                       className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                     >
@@ -348,9 +348,9 @@ const UnitOfHealth = ({ openModalRegisteUnits, setModalRegisterUnits }) => {
           })}
         </tbody>
       </table>
-      <div className="flex h-[40px] items-center justify-between">
+      <div className="flex h-10 items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
+          <div className="flex h-10 w-[61px] items-center rounded-lg bg-[#F9F9F9]">
             <span
               className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
             >

@@ -75,7 +75,7 @@ const PlanoRestricoes = ({ formik }) => {
                   type="text"
                   id="nomeFantasia"
                   name="nomeFantasia"
-                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o nome fantasia"
                 />
               </div>
@@ -108,9 +108,9 @@ const PlanoRestricoes = ({ formik }) => {
             >
               Restrições gerais a todos os planos
             </span>
-            <div className="flex gap-[16px]">
+            <div className="flex gap-4">
               <div className="flex flex-1 gap-4">
-                <div className="flex flex-1 flex-col gap-[4px]">
+                <div className="flex flex-1 flex-col gap-1">
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}
                   >
@@ -125,16 +125,16 @@ const PlanoRestricoes = ({ formik }) => {
                     className={'border border-[#BBBBBB]'}
                   />
                 </div>
-                <div className="flex flex-col justify-end gap-[4px]">
+                <div className="flex flex-col justify-end gap-1">
                   <button
-                    className={`${Outfit400.className} flex h-[40px] w-[112px] items-center justify-center rounded-[8px] border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+                    className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
                   >
                     ADICIONAR
                   </button>
                 </div>
               </div>
               <div className="flex flex-1 gap-4">
-                <div className="flex flex-1 flex-col gap-[4px]">
+                <div className="flex flex-1 flex-col gap-1">
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}
                   >
@@ -149,18 +149,18 @@ const PlanoRestricoes = ({ formik }) => {
                     className={'border border-[#BBBBBB]'}
                   />
                 </div>
-                <div className="flex flex-col justify-end gap-[4px]">
+                <div className="flex flex-col justify-end gap-1">
                   <button
-                    className={`${Outfit400.className} flex h-[40px] w-[112px] items-center justify-center rounded-[8px] border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+                    className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
                   >
                     ADICIONAR
                   </button>
                 </div>
               </div>
             </div>
-            <div className="flex gap-[16px]">
+            <div className="flex gap-4">
               <div className="flex flex-1 gap-4">
-                <div className="flex flex-1 flex-col gap-[4px]">
+                <div className="flex flex-1 flex-col gap-1">
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}
                   >
@@ -175,16 +175,16 @@ const PlanoRestricoes = ({ formik }) => {
                     className={'border border-[#BBBBBB]'}
                   />
                 </div>
-                <div className="flex flex-col justify-end gap-[4px]">
+                <div className="flex flex-col justify-end gap-1">
                   <button
-                    className={`${Outfit400.className} flex h-[40px] w-[112px] items-center justify-center rounded-[8px] border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+                    className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
                   >
                     ADICIONAR
                   </button>
                 </div>
               </div>
               <div className="flex flex-1 gap-4">
-                <div className="flex flex-1 flex-col gap-[4px]">
+                <div className="flex flex-1 flex-col gap-1">
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}
                   >
@@ -199,16 +199,16 @@ const PlanoRestricoes = ({ formik }) => {
                     className={'border border-[#BBBBBB]'}
                   />
                 </div>
-                <div className="flex flex-col justify-end gap-[4px]">
+                <div className="flex flex-col justify-end gap-1">
                   <button
-                    className={`${Outfit400.className} flex h-[40px] w-[112px] items-center justify-center rounded-[8px] border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+                    className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
                   >
                     ADICIONAR
                   </button>
                 </div>
               </div>
             </div>
-            <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex flex-1 flex-col gap-1">
               <label
                 className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
@@ -227,9 +227,9 @@ const PlanoRestricoes = ({ formik }) => {
         </div>
       </div>
 
-      <div className="flex flex-col justify-end gap-[4px]">
+      <div className="flex flex-col justify-end gap-1">
         <button
-          className={`${Outfit400.className} flex h-[40px] w-[127px] items-center justify-center rounded-[8px] border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+          className={`${Outfit400.className} flex h-10 w-[127px] items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
         >
           NOVO PLANO
         </button>
@@ -242,9 +242,9 @@ const PlanoRestricoes = ({ formik }) => {
           Restrições gerais a todos os planos
         </span>
 
-        <div className="flex gap-[16px]">
+        <div className="flex gap-4">
           <div className="flex flex-1 gap-4">
-            <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex flex-1 flex-col gap-1">
               <label
                 className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
@@ -261,7 +261,7 @@ const PlanoRestricoes = ({ formik }) => {
             </div>
             <div className="flex flex-col justify-end gap-1">
               <button
-                className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-[8px] border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+                className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
               >
                 ADICIONAR
               </button>
@@ -283,18 +283,18 @@ const PlanoRestricoes = ({ formik }) => {
                 className={'border border-[#BBBBBB]'}
               />
             </div>
-            <div className="flex flex-col justify-end gap-[4px]">
+            <div className="flex flex-col justify-end gap-1">
               <button
-                className={`${Outfit400.className} flex h-[40px] w-[112px] items-center justify-center rounded-[8px] border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+                className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
               >
                 ADICIONAR
               </button>
             </div>
           </div>
         </div>
-        <div className="flex gap-[16px]">
+        <div className="flex gap-4">
           <div className="flex flex-1 gap-4">
-            <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex flex-1 flex-col gap-1">
               <label
                 className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
@@ -309,16 +309,16 @@ const PlanoRestricoes = ({ formik }) => {
                 className={'border border-[#BBBBBB]'}
               />
             </div>
-            <div className="flex flex-col justify-end gap-[4px]">
+            <div className="flex flex-col justify-end gap-1">
               <button
-                className={`${Outfit400.className} flex h-[40px] w-[112px] items-center justify-center rounded-[8px] border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+                className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
               >
                 ADICIONAR
               </button>
             </div>
           </div>
           <div className="flex flex-1 gap-4">
-            <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex flex-1 flex-col gap-1">
               <label
                 className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
@@ -333,16 +333,16 @@ const PlanoRestricoes = ({ formik }) => {
                 className={'border border-[#BBBBBB]'}
               />
             </div>
-            <div className="flex flex-col justify-end gap-[4px]">
+            <div className="flex flex-col justify-end gap-1">
               <button
-                className={`${Outfit400.className} flex h-[40px] w-[112px] items-center justify-center rounded-[8px] border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+                className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
               >
                 ADICIONAR
               </button>
             </div>
           </div>
         </div>
-        <div className="flex flex-1 flex-col gap-[4px]">
+        <div className="flex flex-1 flex-col gap-1">
           <label
             className={`${Outfit400.className} text-[14px] text-[#222222]`}
           >

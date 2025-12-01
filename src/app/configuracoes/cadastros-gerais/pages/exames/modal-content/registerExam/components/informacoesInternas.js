@@ -4,15 +4,15 @@ import { DocumentDownload, InfoCircle } from 'iconsax-reactjs'
 
 const InformacoesInternas = ({ formik, fields }) => {
   return (
-    <div className="flex w-full flex-col gap-[32px] rounded bg-[#FFF] p-[48px]">
+    <div className="flex w-full flex-col gap-8 rounded bg-[#FFF] p-12">
       {/* Configuração */}
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col gap-4">
         <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
           Requisitos para realização do exame
         </span>
 
-        <div className="flex gap-[16px]">
-          <div className="flex flex-1 flex-col gap-[4px]">
+        <div className="flex gap-4">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
