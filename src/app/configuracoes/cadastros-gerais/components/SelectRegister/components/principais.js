@@ -15,6 +15,7 @@ import { Outfit400 } from '@/fonts'
 const Principais = ({
   setModalRegisterUnits,
   setModalRegisterExams,
+  setModalRegisterProfissionais,
   setModalRegisterUser,
   setModalRegisterAgendas,
   setModalRegisterMethods,
@@ -52,7 +53,10 @@ const Principais = ({
             Matrizes
           </span>
         </div>
-        <div className="flex h-[84px] flex-1 flex-col justify-between rounded-lg bg-[#F9F9F9] p-3 hover:bg-[#E0FFF9]">
+        <div
+          className="flex h-[84px] flex-1 flex-col justify-between rounded-lg bg-[#F9F9F9] p-3 hover:bg-[#E0FFF9]"
+          onClick={() => setModalRegisterProfissionais(true)}
+        >
           <Profile2User size="28" color="#737373" variant="TwoTone" />
           <span className={`${Outfit400.className} text-[16px] text-[#494949]`}>
             Profissionais

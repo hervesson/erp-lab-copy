@@ -7,9 +7,8 @@ import { validationSchemaAccountBank } from './components/schema'
 
 import ModalFramer from '@/components/ModalFramer'
 
-import InformacoesDeApoio from './components/informacoesDeApoio'
 import InformacoesGerais from './components/informacoesGerais'
-import InformacoesInternas from './components/informacoesInternas'
+import AgendasVinculadas from './components/agendasVinculadas'
 
 // alerts
 import CancelRegister from '@/components/Alerts/CancelRegister'
@@ -90,10 +89,7 @@ const RegisterExam = ({ onClose }) => {
 
   const steps = {
     informacoesGerais: <InformacoesGerais formik={formik} fields={fields} />,
-    informacoesInternas: (
-      <InformacoesInternas formik={formik} fields={fields} />
-    ),
-    informacoesDeApoio: <InformacoesDeApoio formik={formik} />,
+    agendasVinculadas: <AgendasVinculadas formik={formik} fields={fields} />,
   }
 
   const alerts = {
@@ -119,7 +115,7 @@ const RegisterExam = ({ onClose }) => {
         onSubmit={formik.handleSubmit}
         className="flex h-screen flex-1 flex-col bg-[#F9F9F9]"
       >
-        <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-[#fff] px-[48px]">
+        <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-white px-12">
           <div className="flex flex-col">
             <span
               className={` ${Outfit400.className} text-[16px] text-[#0F9B7F]`}
@@ -129,19 +125,19 @@ const RegisterExam = ({ onClose }) => {
             <span
               className={` ${Outfit500.className} text-[16px] text-[#222222]`}
             >
-              Exames
+              PROFISSIONAIS
             </span>
           </div>
-          <div className="flex gap-[16px]">
-            <button className="flex h-[44px] w-[120px] items-center justify-evenly rounded-[8px] bg-[#F9F9F9] hover:bg-[#E0FFF9]">
+          <div className="flex gap-4">
+            <button className="flex h-11 w-[120px] items-center justify-evenly rounded-lg bg-[#F9F9F9] hover:bg-[#E0FFF9]">
               <span className={`${Outfit300.className} text-[#222222]`}>
                 Baixar planilha
               </span>
             </button>
-            <button className="flex h-[44px] w-[166px] items-center justify-evenly rounded-[8px] bg-[#F9F9F9] hover:bg-[#E0FFF9]">
+            <button className="flex h-11 w-[166px] items-center justify-evenly rounded-lg bg-[#F9F9F9] hover:bg-[#E0FFF9]">
               <DocumentDownload size="28" color="#A9A9A9" variant="Bold" />
               <span className={`${Outfit300.className} text-[#222222]`}>
-                Importar arquivo
+                Importar dados
               </span>
             </button>
             <div className="border border-[#BBBBBB]" />
@@ -151,7 +147,7 @@ const RegisterExam = ({ onClose }) => {
                 setStep('cancel')
                 setOpenModalAlerts(true)
               }}
-              className="flex h-[44px] w-[108px] items-center justify-evenly rounded-[8px] border border-[#F23434] hover:bg-[#FFE6E6]"
+              className="flex h-11 w-[108px] items-center justify-evenly rounded-lg border border-[#F23434] hover:bg-[#FFE6E6]"
             >
               <span
                 className={`${Outfit400.className} text-[#F23434] uppercase`}
@@ -162,7 +158,7 @@ const RegisterExam = ({ onClose }) => {
             <button
               type="button"
               onClick={() => null}
-              className="flex h-[44px] w-[108px] items-center justify-evenly rounded-[8px] bg-[#A9A9A9] hover:bg-[#E0FFF9]"
+              className="flex h-11 w-[108px] items-center justify-evenly rounded-lg bg-[#A9A9A9] hover:bg-[#E0FFF9]"
             >
               <span
                 className={`${Outfit400.className} text-[#494949] uppercase`}
@@ -174,28 +170,21 @@ const RegisterExam = ({ onClose }) => {
         </div>
 
         <div className="flex h-full w-screen gap-x-3 overflow-x-auto">
-          <div className="mx-[48px] my-[28px] flex h-fit flex-1 flex-col rounded">
-            <div className="flex h-[56px] items-center gap-8 px-[48px]">
+          <div className="mx-12 my-7 flex h-fit flex-1 flex-col rounded">
+            <div className="flex h-14 items-center gap-8 px-12">
               <button
                 type="button"
                 onClick={() => setTab('informacoesGerais')}
-                className={`${Outfit400.className} ${tab === 'informacoesGerais' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
+                className={`${Outfit400.className} ${tab === 'informacoesGerais' && 'border-b-2 border-[#0F9B7F] bg-white'} h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
               >
                 INFORMAÇÕES GERAIS
               </button>
               <button
                 type="button"
-                onClick={() => setTab('informacoesInternas')}
-                className={`${Outfit400.className} ${tab === 'informacoesInternas' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
+                onClick={() => setTab('agendasVinculadas')}
+                className={`${Outfit400.className} ${tab === 'agendasVinculadas' && 'border-b-2 border-[#0F9B7F] bg-white'} h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
               >
-                INFORMAÇÕES INTERNAS
-              </button>
-              <button
-                type="button"
-                onClick={() => setTab('informacoesDeApoio')}
-                className={`${Outfit400.className} ${tab === 'informacoesDeApoio' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
-              >
-                INFORMAÇÕES DE APOIO
+                AGENDAS VINCULADAS
               </button>
             </div>
             {steps[tab]}

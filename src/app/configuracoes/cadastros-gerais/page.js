@@ -51,6 +51,8 @@ const RootLayout = () => {
   const [openModalRegisterExams, setModalRegisterExams] = useState(false)
   const [modalRegisterExamMatrix, setModalRegisterExamMatrix] = useState(false)
   const [modalRegisterUser, setModalRegisterUser] = useState(false)
+  const [modalRegisterProfissionais, setModalRegisterProfissionais] =
+    useState(false)
   const [modalRegisterAgendas, setModalRegisterAgendas] = useState(false)
   const [modalRegisterMethods, setModalRegisterMethods] = useState(false)
   const [modalRegisterAmostras, setModalRegisterAmostras] = useState(false)
@@ -94,7 +96,12 @@ const RootLayout = () => {
         setModalRegisterExamMatrix={(e) => setModalRegisterExamMatrix(e)}
       />
     ),
-    profissionais: <Profissionais />,
+    profissionais: (
+      <Profissionais
+        modalRegisterProfissionais={modalRegisterProfissionais}
+        setModalRegisterProfissionais={(e) => setModalRegisterProfissionais(e)}
+      />
+    ),
     usuarios: (
       <Users
         modalRegisterUser={modalRegisterUser}
@@ -216,6 +223,16 @@ const RootLayout = () => {
               setOpenModalRegister(false)
               setModalRegisterExams(true)
             }}
+            setModalRegisterExamMatrix={(e) => {
+              setPage('matriz-de-exames')
+              setOpenModalRegister(false)
+              setModalRegisterExamMatrix(e)
+            }}
+            setModalRegisterProfissionais={() => {
+              setPage('profissionais')
+              setOpenModalRegister(false)
+              setModalRegisterProfissionais(true)
+            }}
             setModalRegisterUser={() => {
               setPage('usuarios')
               setOpenModalRegister(false)
@@ -240,11 +257,6 @@ const RootLayout = () => {
               setPage('kits')
               setOpenModalRegister(false)
               setModalRegisterKits(true)
-            }}
-            setModalRegisterExamMatrix={(e) => {
-              setPage('matriz-de-exames')
-              setOpenModalRegister(false)
-              setModalRegisterExamMatrix(e)
             }}
             setModalRegisterCompanies={(open) => {
               // Se a página atual NÃO está entre as permitidas, força para 'convenios'

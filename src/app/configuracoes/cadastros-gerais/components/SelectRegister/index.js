@@ -14,12 +14,13 @@ import Principais from './components/principais'
 const SelectRegister = ({
   setModalRegisterUnits,
   setModalRegisterExams,
+  setModalRegisterExamMatrix,
+  setModalRegisterProfissionais,
   setModalRegisterUser,
   setModalRegisterAgendas,
   setModalRegisterMethods,
   setModalRegisterAmostras,
   setModalRegisterKits,
-  setModalRegisterExamMatrix,
   setModalRegisterCompanies,
   setModalRegisterBanks,
   setModalIntegrations,
@@ -40,6 +41,9 @@ const SelectRegister = ({
         }}
         setModalRegisterExamMatrix={() => {
           setModalRegisterExamMatrix(true)
+        }}
+        setModalRegisterProfissionais={() => {
+          setModalRegisterProfissionais(true)
         }}
         setModalRegisterUser={() => {
           setModalRegisterUser(true)

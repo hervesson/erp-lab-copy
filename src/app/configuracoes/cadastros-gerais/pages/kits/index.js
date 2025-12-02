@@ -26,7 +26,7 @@ import checkGreen from '../../../../../../public/assets/images/directions.png'
 
 const Kits = ({ openModalRegisterKits, setModalRegisterKits }) => {
   const [units, setUnits] = useState([])
-  const [openModalProfileKits, setOpenModalProfilekits] = useState(true)
+  const [openModalProfileKits, setOpenModalProfilekits] = useState(false)
   const [openModalEditUnit, setModalEditUnit] = useState(false)
   const [selectedUnit, setSelectedUnit] = useState({})
   const [total, setTotal] = useState(0)

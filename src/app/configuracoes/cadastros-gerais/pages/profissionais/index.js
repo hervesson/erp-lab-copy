@@ -16,18 +16,21 @@ import { useState } from 'react'
 import { IsActive } from '../../../../../components/IsActive'
 
 // Components
-import RegisterExams from './modal-content/registerExam'
+import RegisterExams from './modal-content/registerProfissionais'
 
-const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
+const Profissionais = ({
+  modalRegisterProfissionais,
+  setModalRegisterProfissionais,
+}) => {
   const [exams] = useState([])
   const [setSelectedUnit] = useState({})
 
   return (
-    <div className="flex flex-1 flex-col gap-[32px]">
-      <div className="flex h-[84px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
-        <div className="mx-[10px] flex h-[64px] w-full items-center rounded-[8px] bg-white">
-          <div className="flex gap-3 rounded-[8px] px-[8px]">
-            <div className="flex h-[48px] w-[48px] items-center justify-center rounded-[8px] bg-[#F9F9F9]">
+    <div className="flex flex-1 flex-col gap-8">
+      <div className="flex h-[84px] items-center justify-between rounded-2xl bg-[#F9F9F9]">
+        <div className="mx-2.5 flex h-16 w-full items-center rounded-lg bg-white">
+          <div className="flex gap-3 rounded-lg px-2">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F9F9F9]">
               <Profile2User size="28" color="#A1A1A1" />
             </div>
             <div className="flex flex-col justify-around">
@@ -65,10 +68,10 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
           placeholder={'Tipos de exames: todos'}
           className={'bg-[#F9F9F9]'}
         />
-        <div className="flex h-[40px] flex-2 items-center rounded-[8px] border border-[#BBBBBB] px-2">
+        <div className="flex h-10 flex-2 items-center rounded-lg border border-[#BBBBBB] px-2">
           <input
             placeholder="Pesquisar"
-            className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
+            className={`h-full w-full rounded-lg ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
           />
           <SearchStatus size="24" color="#A1A1A1" variant="Bulk" />
         </div>
@@ -76,7 +79,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
 
       <table className="w-full">
         <thead className="sticky top-0">
-          <tr className="h-[48px] bg-[#D4D4D4]">
+          <tr className="h-12 bg-[#D4D4D4]">
             <th
               className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
             >
@@ -128,7 +131,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
           {exams?.map((item, index) => {
             return (
               <tr
-                className="h-[64px] border-b border-[#D9D9D9] bg-white py-[5px]"
+                className="h-16 border-b border-[#D9D9D9] bg-white py-[5px]"
                 key={index.toString()}
               >
                 <td
@@ -200,9 +203,9 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
           })}
         </tbody>
       </table>
-      <div className="flex h-[40px] items-center justify-between">
+      <div className="flex h-10 items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
+          <div className="flex h-10 w-[61px] items-center rounded-lg bg-[#F9F9F9]">
             <span
               className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
             >
@@ -216,7 +219,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
 
         <div className="flex items-center">
           <ArrowLeft2 size="28" color="#D9D9D9" />
-          <div className="flex h-[40px] items-center justify-center rounded-[8px] bg-[#E0FFF9]">
+          <div className="flex h-10 items-center justify-center rounded-lg bg-[#E0FFF9]">
             <span className={`${Outfit400.className} flex px-4 text-[#0F9B7F]`}>
               01
             </span>
@@ -225,10 +228,10 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
         </div>
       </div>
       <ModalUp
-        isOpen={openModalRegisterExams}
-        onClose={() => setModalRegisterExams(false)}
+        isOpen={modalRegisterProfissionais}
+        onClose={() => setModalRegisterProfissionais(false)}
       >
-        <RegisterExams onClose={() => setModalRegisterExams(false)} />
+        <RegisterExams onClose={() => setModalRegisterProfissionais(false)} />
       </ModalUp>
       {/* <ModalLeft
         isOpen={openModalProfileuUnit}
@@ -240,4 +243,4 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
   )
 }
 
-export default UnitOfHealth
+export default Profissionais

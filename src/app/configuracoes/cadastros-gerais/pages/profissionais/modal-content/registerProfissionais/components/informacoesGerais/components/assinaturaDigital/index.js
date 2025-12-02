@@ -9,7 +9,7 @@ import RemoveVinculo from './components/RemoveVinculo'
 import SuccessRemove from './components/SucessRemove'
 import SuccessVinculo from './components/SucessVinculo'
 
-const CertificadoDigital = ({ formik }) => {
+const AssinaturaDigital = ({ formik }) => {
   const [openModalForm, setOpenModalForm] = useState(false)
   const [openModalSuccess, setOpenModalSuccess] = useState(false)
   const [openModalError, setOpenModalError] = useState(false)
@@ -19,7 +19,7 @@ const CertificadoDigital = ({ formik }) => {
   return (
     <div className="flex flex-col gap-4">
       <span className={`${Outfit400.className} h-7 text-[16px] text-[#0F9B7F]`}>
-        Certificado digital
+        Assinatura digital
       </span>
 
       <div className="flex flex-col gap-4">
@@ -35,8 +35,8 @@ const CertificadoDigital = ({ formik }) => {
               variant="TwoTone"
             />
             {formik.values.certificado
-              ? 'REMOVER CERTIFICADO'
-              : 'VINCULAR CERTIFICADO'}
+              ? 'REMOVER ASSINATURA'
+              : 'VINCULAR ASSINATURA'}
           </button>
           {formik.values.certificado ? (
             <div className="flex h-10 items-center gap-2 rounded-lg bg-[#E9FDEE] px-3">
@@ -53,7 +53,7 @@ const CertificadoDigital = ({ formik }) => {
               <label
                 className={`${Outfit300.className} text-[14px] text-[#737373]`}
               >
-                Certificado pendente
+                Assinatura pendente
               </label>
             </div>
           )}
@@ -108,4 +108,4 @@ const CertificadoDigital = ({ formik }) => {
   )
 }
 
-export default CertificadoDigital
+export default AssinaturaDigital
