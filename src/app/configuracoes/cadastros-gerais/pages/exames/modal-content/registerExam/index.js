@@ -24,7 +24,7 @@ const RegisterExam = ({ onClose }) => {
   const [openModalAlerts, setOpenModalAlerts] = useState(false)
 
   useEffect(() => {
-    const findUsersByFilters = async () => {
+    const findFields = async () => {
       try {
         const [fields] = await Promise.all([listAllFields()])
 
@@ -34,7 +34,7 @@ const RegisterExam = ({ onClose }) => {
       }
     }
 
-    findUsersByFilters()
+    findFields()
   }, [])
 
   const formik = useFormik({
@@ -44,7 +44,8 @@ const RegisterExam = ({ onClose }) => {
     initialValues: {
       nomeExame: '',
       codigoInterno: '',
-      sinonimos: '',
+      sinonimos: [],
+      codigoCBHPM: '',
       codigoTuss: '',
       codigoLoinc: '',
       codigoSUS: '',
@@ -77,7 +78,7 @@ const RegisterExam = ({ onClose }) => {
       lembretesRecepcionistaOrdemDeServico: '',
       lembretesDistribuicao: '',
       prazoDeEntrega: '',
-      formatoLaudo: '',
+      formatoLaudo: [],
     },
     onSubmit: async (values, { setSubmitting }) => {
       try {

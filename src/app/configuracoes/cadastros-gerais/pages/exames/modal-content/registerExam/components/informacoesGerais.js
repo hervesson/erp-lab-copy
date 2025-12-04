@@ -46,19 +46,87 @@ const InformacoesGerais = ({ formik, fields }) => {
                   placeholder="Digite o código interno"
                 />
               </div>
+              <div className="flex flex-2 gap-4">
+                <div className="flex flex-1 flex-col gap-1">
+                  <label
+                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                  >
+                    Sinônimos
+                    <strong className="text-[#F23434]">*</strong>
+                  </label>
+                  <input
+                    {...formik.getFieldProps('codigoInterno')}
+                    type="text"
+                    id="codigoInterno"
+                    name="codigoInterno"
+                    className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                    placeholder="Digite todos os sinônimos"
+                  />
+                </div>
+                <div className="flex flex-col justify-end gap-1">
+                  <button
+                    className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+                  >
+                    ADICIONAR
+                  </button>
+                </div>
+                {formik?.values?.unidades?.length > 0 ? (
+                  <div className="flex flex-2 gap-1">
+                    {formik?.values?.unidades?.map((item, index) => {
+                      return (
+                        <div
+                          key={index.toString()}
+                          className={`h-10 self-end bg-[#E0FFF9] ${Outfit400.className} flex items-center gap-3 rounded-[50px] px-3 text-[14px] text-[#0F9B7F]`}
+                        >
+                          {item.unidadeId}
+                          <CloseCircle
+                            size="22"
+                            color="#F23434"
+                            variant="Bold"
+                            onClick={() =>
+                              formik.setFieldValue(
+                                'unidades',
+                                formik.values.unidades.filter(
+                                  (code) => code !== item,
+                                ),
+                              )
+                            }
+                          />
+                        </div>
+                      )
+                    })}
+                  </div>
+                ) : (
+                  <div className="flex flex-2 flex-col justify-end gap-1">
+                    <div className="flex h-10 items-center gap-2 rounded-[50px] bg-[#E7E7E7] px-3">
+                      <InfoCircle size="20" color="#737373" variant="Bulk" />
+                      <label
+                        className={`${Outfit300.className} text-[14px] text-[#737373]`}
+                      >
+                        Nenhuma opção adicionada
+                      </label>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="flex gap-4">
               <div className="flex flex-1 flex-col gap-1">
-                <label
-                  className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                >
-                  Sinônimos para o exame
-                </label>
+                <div className="flex justify-between">
+                  <label
+                    className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
+                  >
+                    Código CBHPM
+                  </label>
+                  <InfoCircle size="20" color="#A1A1A1" />
+                </div>
                 <input
-                  {...formik.getFieldProps('sinonimos')}
+                  {...formik.getFieldProps('codigoCBHPM')}
                   type="text"
-                  id="sinonimos"
-                  name="sinonimos"
+                  id="codigoCBHPM"
+                  name="codigoCBHPM"
                   className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
-                  placeholder="Digite todos os sinônimos"
+                  placeholder="Digite o código CBHPM"
                 />
               </div>
               <div className="flex flex-1 flex-col gap-1">
@@ -400,13 +468,12 @@ const InformacoesGerais = ({ formik, fields }) => {
                 </label>
                 <InfoCircle size="20" color="#A1A1A1" />
               </div>
-              <input
-                {...formik.getFieldProps('codigoAMB')}
-                type="text"
-                id="codigoAMB"
-                name="codigoAMB"
-                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
-                placeholder="Digite o código AMB"
+              <CustomSelect
+                select={formik.values.setor}
+                setSelect={(e) => formik.setFieldValue('setor', e)}
+                options={[]}
+                placeholder={'Selecione os requisitos'}
+                className={'border border-[#BBBBBB]'}
               />
             </div>
           </div>

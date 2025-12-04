@@ -23,12 +23,6 @@ const digitsOnly = (schema) =>
     .matches(/^\d+$/, 'Use apenas números')
     .required('Campo obrigatório')
 
-// valida item de chip: { id, label }
-const optionObj = Yup.object({
-  id: Yup.mixed().required(),
-  label: Yup.string().required(),
-})
-
 export const infoItemSchemaAccountBank = Yup.object({
   banco_id: selectRequired('Banco'),
   description: Yup.string()
@@ -46,13 +40,12 @@ export const infoItemSchemaAccountBank = Yup.object({
   digito_conta: digitsOnly(Yup.string())
     .min(1, 'Muito curto')
     .max(2, 'Máximo 2 dígitos'),
+  digito_agencia: digitsOnly(Yup.string())
+    .min(1, 'Muito curto')
+    .max(2, 'Máximo 2 dígitos'),
   tipoConta: selectRequired('Tipo de conta'),
   pix_chave: Yup.string()
     .trim()
     .max(140, 'Máximo de 140 caracteres')
     .nullable(),
-  unidades_associadas: Yup.array()
-    .ensure()
-    .of(optionObj)
-    .min(1, 'Adicione ao menos uma unidade'),
 })

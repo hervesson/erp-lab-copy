@@ -1,7 +1,7 @@
 import { Outfit400, Outfit500 } from '@/fonts'
-import { listAllActiveBanks, listAllUnits, UpdateBankAccount } from '@/helpers'
+import { UpdateBankAccount } from '@/helpers'
 import { useFormik } from 'formik'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import InformacoesGerais from './components/informacoesgerais'
 import Integracao from './components/integracao'
@@ -10,29 +10,8 @@ import { infoItemSchemaAccountBank } from './components/schema'
 
 const EditUser = ({ onClose, account, findData }) => {
   const [tab, setTab] = useState('informacoesGerais')
-  const [units, setUnits] = useState([])
 
-  useEffect(() => {
-    const findUsersByFilters = async () => {
-      try {
-        const [unts] = await Promise.all([listAllActiveBanks(), listAllUnits()])
-
-        const unt = unts.data.data.map((item) => {
-          return {
-            id: item.id,
-            label: `${item.nomeUnidade}`,
-            item,
-          }
-        })
-
-        setUnits(unt)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-    findUsersByFilters()
-  }, [])
+  console.log(account)
 
   const formik = useFormik({
     validationSchema: infoItemSchemaAccountBank,
@@ -40,29 +19,23 @@ const EditUser = ({ onClose, account, findData }) => {
     validateOnChange: true,
     initialValues: {
       banco_id: {
-        id: account.banco.id,
-        label: `${account.banco.codigo} - ${account.banco.nome}`,
+        id: account?.banco.id,
+        label: `${account?.banco.codigo} - ${account?.banco.nome}`,
       },
       description: account.observacoes ?? '',
       status:
-        account.status === 'ativa'
-          ? { id: 'ativa', label: 'ATIVA' } // <- corrigido
-          : { id: 'inativa', label: 'INATIVA' },
+        account?.status === 'ativo'
+          ? { id: 'ativo', label: 'ATIVA' } // <- corrigido
+          : { id: 'inativo', label: 'INATIVA' },
       agencia: account.agencia ?? '',
-      numero_conta: account.numero_conta ?? '',
-      digito_conta: account.digito_conta ?? '',
+      numero_conta: account?.numero_conta ?? '',
+      digito_conta: account?.digito_conta ?? '',
       tipoConta:
-        account.tipo_conta === 'corrente'
+        account?.tipo_conta === 'corrente'
           ? { id: 'corrente', label: 'CORRENTE' }
           : { id: 'poupanca', label: 'POUPANÇA' },
-      pix_chave: account.pix_chave ?? '',
-      unidadeSelecionada: null, // <- em vez de {}
-      unidades_associadas: account.unidades_vinculadas.map((e) => {
-        return {
-          id: e.unidade_saude.id,
-          label: e.unidade_saude.nomeUnidade,
-        }
-      }),
+      chave_pix: account?.chave_pix ?? '',
+      digito_agencia: account?.digito_agencia ?? '',
     },
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
@@ -94,16 +67,14 @@ const EditUser = ({ onClose, account, findData }) => {
     observacoes: it.description?.trim() || '',
     status: typeof it.status === 'object' ? it.status?.id : it.status || null,
     agencia: digits(it.agencia || ''),
+    digito_agencia: digits(it.digito_agencia || ''),
     numero_conta: digits(it.numero_conta || ''),
     digito_conta: digits(it.digito_conta || ''),
     tipo_conta:
       typeof it.tipoConta === 'object'
         ? it.tipoConta?.id
         : it.tipoConta || null,
-    pix_chave: it.pix_chave?.trim() || null,
-    unidades_ids: (it.unidades_associadas || []).map(
-      (u) => u?.id ?? u?.unidade_saude?.id,
-    ),
+    chave_pix: it.chave_pix?.trim() || null,
   })
 
   // rótulos amigáveis
@@ -198,30 +169,30 @@ const EditUser = ({ onClose, account, findData }) => {
   }
 
   const steps = {
-    informacoesGerais: <InformacoesGerais formik={formik} units={units} />,
+    informacoesGerais: <InformacoesGerais formik={formik} />,
     integracao: <Integracao />,
   }
 
   return (
     <form className="flex h-screen w-full flex-col bg-[#F9F9F9]">
-      <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-[#fff] px-[48px]">
+      <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-white px-12">
         <div className="flex flex-col">
           <span
             className={` ${Outfit400.className} text-[16px] text-[#0F9B7F]`}
           >
-            Cadastrar
+            Editar
           </span>
           <span
             className={` ${Outfit500.className} text-[16px] text-[#222222]`}
           >
-            BANCOS
+            BANCO
           </span>
         </div>
-        <div className="flex gap-[16px]">
+        <div className="flex gap-4">
           <button
             type="button"
             onClick={() => onClose()}
-            className="flex h-[44px] w-[108px] items-center justify-evenly rounded-[8px] border border-[#F23434] hover:bg-[#FFE6E6]"
+            className="flex h-11 w-[108px] items-center justify-evenly rounded-lg border border-[#F23434] hover:bg-[#FFE6E6]"
           >
             <span className={`${Outfit400.className} text-[#F23434] uppercase`}>
               Cancelar
@@ -230,7 +201,7 @@ const EditUser = ({ onClose, account, findData }) => {
           <button
             type="button"
             onClick={handleFinalizeEdit}
-            className={`flex h-[44px] w-[108px] items-center justify-evenly rounded-[8px] ${
+            className={`flex h-11 w-[108px] items-center justify-evenly rounded-lg ${
               formik.isValid
                 ? 'bg-[#0F9B7F] text-white hover:from-[#3BC1E2] hover:to-[#1D6F87]'
                 : 'bg-[#A9A9A9] text-[#494949]'
@@ -243,19 +214,19 @@ const EditUser = ({ onClose, account, findData }) => {
       </div>
 
       <div className="flex h-full w-screen gap-x-3 overflow-x-auto">
-        <div className="mx-[48px] my-[28px] flex h-fit flex-1 flex-col rounded">
-          <div className="flex h-[56px] items-center gap-8 px-[48px]">
+        <div className="mx-12 my-7 flex h-fit flex-1 flex-col rounded">
+          <div className="flex h-14 items-center gap-8 px-12">
             <button
               type="button"
               onClick={() => setTab('informacoesGerais')}
-              className={`${Outfit400.className} ${tab === 'informacoesGerais' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
+              className={`${Outfit400.className} ${tab === 'informacoesGerais' && 'border-b-2 border-[#0F9B7F] bg-white'} h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
             >
               INFORMAÇÕES GERAIS
             </button>
             <button
               type="button"
               onClick={() => setTab('integracao')}
-              className={`${Outfit400.className} ${tab === 'integracao' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
+              className={`${Outfit400.className} ${tab === 'integracao' && 'border-b-2 border-[#0F9B7F] bg-white'} h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
             >
               INTEGRAÇÃO
             </button>

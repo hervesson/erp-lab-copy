@@ -19,15 +19,18 @@ const RegisterUser = ({ onClose, findData }) => {
       informations: [
         {
           banco_id: '',
-          description: '',
-          status: '',
+          tipo_conta: '',
+          observacoes: '',
           agencia: '',
+          digito_agencia: '',
           numero_conta: '',
           digito_conta: '',
           tipoConta: '',
-          pix_chave: '',
-          unidadeSelecionada: {},
-          unidades_associadas: [],
+          chave_pix: '',
+          status: {
+            id: 'ativo',
+            label: 'ATIVO',
+          },
         },
       ],
     },
@@ -35,18 +38,18 @@ const RegisterUser = ({ onClose, findData }) => {
       try {
         const items = values.informations.map(toApiItem)
 
-        // dispara todas paralelamente (se o backend aguentar)
-        const results = await Promise.allSettled(
-          items.map((payload) => CreateBankAccount(payload)),
-        )
+        const result = await CreateBankAccount({ contas: items })
 
-        // caso tudo ok, você pode limpar/fechar/atualizar
-        const allOk = results.every((r) => r.status === 'fulfilled')
-        if (allOk) {
-          // resetar o form se quiser:
+        if (result.success) {
           formik.resetForm()
           findData()
           onClose()
+        } else {
+          result.error.erros.forEach((element) => {
+            toast.error(element, {
+              position: 'top-right',
+            })
+          })
         }
       } finally {
         setSubmitting(false)
@@ -59,19 +62,17 @@ const RegisterUser = ({ onClose, findData }) => {
   const toApiItem = (it) => ({
     banco_id:
       typeof it.banco_id === 'object' ? it.banco_id?.id : it.banco_id || null,
-    observacoes: it.description?.trim() || '',
+    observacoes: it.observacoes?.trim() || '',
     status: typeof it.status === 'object' ? it.status?.id : it.status || null,
     agencia: digits(it.agencia || ''),
+    digito_agencia: digits(it.digito_agencia || ''),
     numero_conta: digits(it.numero_conta || ''),
     digito_conta: digits(it.digito_conta || ''),
     tipo_conta:
       typeof it.tipoConta === 'object'
         ? it.tipoConta?.id
         : it.tipoConta || null,
-    pix_chave: it.pix_chave?.trim() || null,
-    unidades_ids: (it.unidades_associadas || []).map((u) =>
-      typeof u === 'object' ? u.id : u,
-    ),
+    chave_pix: it.chave_pix?.trim() || null,
   })
 
   // mapeia chaves -> rótulos amigáveis

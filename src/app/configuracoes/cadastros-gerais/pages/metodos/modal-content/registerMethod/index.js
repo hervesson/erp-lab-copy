@@ -130,8 +130,6 @@ const RegisterMethod = ({ onClose, findData }) => {
     },
   })
 
-  console.log(formik?.values?.laboratoriosAssociados)
-
   const getFlatErrors = (errors) => {
     const messages = []
 

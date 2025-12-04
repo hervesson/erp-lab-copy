@@ -68,10 +68,10 @@ const InformacoesGerais = ({ formik }) => {
                               <strong className="text-[#F23434]">*</strong>
                             </label>
                             <input
-                              name={`informations.${index}.description`}
+                              name={`informations.${index}.observacoes`}
                               value={
                                 formik.values.informations[index]
-                                  ?.description ?? ''
+                                  ?.observacoes ?? ''
                               }
                               onChange={formik.handleChange}
                               onBlur={formik.handleBlur}
@@ -102,8 +102,8 @@ const InformacoesGerais = ({ formik }) => {
                                 )
                               }}
                               options={[
-                                { id: 'ativa', label: 'ATIVA' },
-                                { id: 'inativa', label: 'INATIVA' },
+                                { id: 'ativo', label: 'ATIVA' },
+                                { id: 'inativo', label: 'INATIVA' },
                               ]}
                               placeholder="Selecione o status"
                               className="border border-[#BBBBBB]"
@@ -133,6 +133,26 @@ const InformacoesGerais = ({ formik }) => {
                           name={`informations.${index}.agencia`}
                           value={
                             formik.values.informations[index]?.agencia ?? ''
+                          }
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                          placeholder="Agência"
+                          inputMode="numeric"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label
+                          className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
+                        >
+                          Digíto da agência
+                          <strong className="text-red-700">*</strong>
+                        </label>
+                        <input
+                          name={`informations.${index}.digito_agencia`}
+                          value={
+                            formik.values.informations[index]?.digito_agencia ??
+                            ''
                           }
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -209,7 +229,7 @@ const InformacoesGerais = ({ formik }) => {
                             { id: 'poupanca', label: 'POUPANÇA' },
                           ]}
                           placeholder="Tipo de conta"
-                          className="border border-[#BBBBBB]"
+                          className="w-[150px] border border-[#BBBBBB]"
                         />
                       </div>
                       <div className="flex flex-1 flex-col gap-1">
@@ -220,9 +240,9 @@ const InformacoesGerais = ({ formik }) => {
                           <strong className="text-red-700">*</strong>
                         </label>
                         <input
-                          name={`informations.${index}.pix_chave`}
+                          name={`informations.${index}.chave_pix`}
                           value={
-                            formik.values.informations[index]?.pix_chave ?? ''
+                            formik.values.informations[index]?.chave_pix ?? ''
                           }
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}

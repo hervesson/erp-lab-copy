@@ -59,12 +59,15 @@ export async function listAllFields() {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
 
-    const response = await api.get('/infraestrutura/campos-formulario/search', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token ? 'Bearer ' + token.value : undefined,
+    const response = await api.get(
+      '/infraestrutura/campos-formulario/search?page=1&limit=10000',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? 'Bearer ' + token.value : undefined,
+        },
       },
-    })
+    )
 
     return {
       success: true,

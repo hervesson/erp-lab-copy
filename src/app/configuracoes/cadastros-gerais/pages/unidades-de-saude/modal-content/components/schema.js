@@ -1,7 +1,5 @@
 import * as Yup from 'yup'
 
-const onlyDigits = (v) => (typeof v === 'string' ? v.replace(/\D+/g, '') : v)
-
 const trimToUndefined = (v) =>
   typeof v === 'string' ? (v.trim() === '' ? undefined : v.trim()) : v
 
@@ -38,53 +36,15 @@ const horarioSchema = Yup.object({
   enabled: Yup.boolean().nullable(), // ignorado na regra
 })
 
-const financialItemSchema = Yup.object({
-  bancoId: Yup.string()
-    .transform(trimToUndefined)
-    .required('Selecione um banco'),
-  // se você guarda também 'codigoBanco'/'banco' e quiser validar, acrescente:
-  // codigoBanco: Yup.string().transform(trimToUndefined).required('Código do banco obrigatório'),
-  // banco: Yup.string().transform(trimToUndefined).required('Nome do banco obrigatório'),
-
-  tipoDeConta: Yup.object({
-    id: Yup.string().required('Selecione o tipo de conta'),
-  }).required('Tipo de conta obrigatório'),
-
-  agencia: Yup.string()
-    .transform((v) => onlyDigits(trimToUndefined(v)))
-    .required('Agência obrigatória')
-    .min(3, 'Agência inválida')
-    .max(6, 'Agência inválida'),
-
-  digitoAgencia: Yup.string()
-    .transform((v) => onlyDigits(trimToUndefined(v)))
-    .required('Dígito da agência obrigatório')
-    .max(2, 'Máximo 2 dígitos'),
-
-  // Se seu form usa "contaCorrente", valide este campo:
-  conta: Yup.string()
-    .transform((v) => onlyDigits(trimToUndefined(v)))
-    .required('Conta obrigatória')
-    .min(3, 'Conta inválida')
-    .max(12, 'Conta inválida'),
-
-  // Caso você padronize para "conta" em vez de "contaCorrente", troque o bloco acima por:
-  // conta: Yup.string()
-  //   .transform((v) => onlyDigits(trimToUndefined(v)))
-  //   .required('Conta obrigatória')
-  //   .min(3, 'Conta inválida')
-  //   .max(12, 'Conta inválida'),
-
-  digitoConta: Yup.string()
-    .transform((v) => onlyDigits(trimToUndefined(v)))
-    .required('Dígito da conta obrigatório')
-    .max(2, 'Máximo 2 dígitos'),
-
-  // Campos opcionais comuns:
-  // pix_tipo: Yup.mixed<'cpf' | 'cnpj' | 'email' | 'telefone' | 'aleatoria'>().nullable(),
-  // pix_chave: Yup.string().transform(trimToUndefined).nullable(),
-  // observacoes: Yup.string().transform(trimToUndefined).max(300, 'Máximo de 300 caracteres').nullable(),
-}).required()
+const financialItemSchema = Yup.object().shape({
+  conta: Yup.object()
+    .shape({
+      id: Yup.mixed().required('Selecione uma conta bancária'),
+      label: Yup.string().required('Selecione uma conta bancária'),
+    })
+    .nullable()
+    .required('Selecione uma conta bancária'),
+})
 
 export const validationSchemaCreateUnit = Yup.object({
   nomeUnidade: Yup.string()
@@ -167,6 +127,10 @@ export const validationSchemaCreateUnit = Yup.object({
 
   financeiro: Yup.array()
     .of(financialItemSchema)
-    .min(1, 'Adicione ao menos uma conta bancária')
+    .test(
+      'at-least-one-account',
+      'Adicione ao menos uma conta bancária',
+      (value) => Array.isArray(value) && value.some((item) => item?.conta?.id), // pelo menos uma conta com id
+    )
     .required('Informe as contas bancárias'),
 })

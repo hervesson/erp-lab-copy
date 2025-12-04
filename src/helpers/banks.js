@@ -105,12 +105,16 @@ export async function CreateBankAccount(payload) {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
 
-    const response = await api.post('/financeiro/contas-bancarias', payload, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token.value,
+    const response = await api.post(
+      '/financeiro/contas-bancarias/batch',
+      payload,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token.value,
+        },
       },
-    })
+    )
 
     return {
       success: true,

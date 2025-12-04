@@ -2,9 +2,10 @@ import { Outfit400, Outfit500 } from '@/fonts'
 import dayjs from 'dayjs'
 
 const ProfileBankAccount = ({ account }) => {
+  console.log(account)
   return (
-    <div className="flex flex-col gap-[24px] p-[24px]">
-      <div className="flex h-[62px] items-center justify-between rounded-[12px] bg-[#F9F9F9] px-[16px]">
+    <div className="flex flex-col gap-6 p-6">
+      <div className="flex h-[62px] items-center justify-between rounded-xl bg-[#F9F9F9] px-4">
         <p
           className={`${Outfit500.className} text-[20px] text-[#057B64] uppercase`}
         >
@@ -12,7 +13,7 @@ const ProfileBankAccount = ({ account }) => {
             ? 'CONTA CORRENTE'
             : 'CONTA POUPANÇA'}
         </p>
-        <div className="flex gap-[24px]">
+        <div className="flex gap-6">
           <div className="">
             <p className={`${Outfit400.className} text-[14px] text-[#494949]`}>
               Cadastrado em
@@ -34,7 +35,7 @@ const ProfileBankAccount = ({ account }) => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-[12px]">
+      <div className="flex flex-col gap-3">
         <p className={`text-[16px] text-[#0F9B7F] ${Outfit400.className}`}>
           Financeiro
         </p>
@@ -86,12 +87,9 @@ const ProfileBankAccount = ({ account }) => {
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}
               >
-                {account?.pix_chave}
+                {account?.chave_pix}
               </label>
             </div>
-            {/* {account !== account?.dadosBancarios.length - 1 && (
-              <div className="mx-3 border border-[#D4D4D4]" />
-            )} */}
           </div>
         </div>
       </div>

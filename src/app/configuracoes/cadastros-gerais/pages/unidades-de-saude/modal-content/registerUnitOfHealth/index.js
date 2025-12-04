@@ -2,11 +2,16 @@ import CancelRegister from '@/components/Alerts/CancelRegister'
 import SuccessRegister from '@/components/Alerts/SuccessRegister'
 import ModalFramer from '@/components/ModalFramer'
 import { Outfit400, Outfit500 } from '@/fonts'
-import { CreateUnit, ListAllCNAEs, listAllServicesOfHealth } from '@/helpers'
+import {
+  CreateUnit,
+  ListAllCNAEs,
+  listAllServicesOfHealth,
+  listBankAccount,
+} from '@/helpers'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { validationSchemaCreateUnit } from './schema'
+import { validationSchemaCreateUnit } from '../components/schema'
 
 // Components
 import Endereco from './components/endereco'
@@ -25,15 +30,18 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
   const [services, setServices] = useState([])
   const [CNAEs, setCNAES] = useState([])
 
+  const [banks, setBanks] = useState([])
+
   const [step, setStep] = useState('')
   const [openModalAlerts, setOpenModalAlerts] = useState(false)
 
   useEffect(() => {
     const findUsersByFilters = async () => {
       try {
-        const [allServices, allCnaes] = await Promise.all([
+        const [allServices, allCnaes, AllAccounts] = await Promise.all([
           listAllServicesOfHealth(),
           ListAllCNAEs(),
+          listBankAccount('', '', '', '', 100000),
         ])
 
         const servcs = allServices.data.map((item) => {
@@ -50,8 +58,16 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
           }
         })
 
+        const acc = AllAccounts.data.data.map((item) => {
+          return {
+            id: item.id,
+            label: `${item.banco.nome} - ${item.observacoes} - ${item.agencia}-${item.digito_agencia}/${item.numero_conta}-${item.digito_conta}`,
+          }
+        })
+
         setServices(servcs)
         setCNAES(cns)
+        setBanks(acc)
       } catch (error) {
         console.error(error)
       }
@@ -147,16 +163,10 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
       optantePeloSimples: false,
 
       // financeiro
+
       financeiro: [
         {
-          banco: '', // label do banco
-          codigoBanco: '', // ex.: "001"
-          bancoId: '', // id interno/opcional
-          agencia: '',
-          tipoDeConta: '',
-          digitoAgencia: '',
-          conta: '',
-          digitoConta: '',
+          conta: null, // objeto vindo do CustomSelect
         },
       ],
 
@@ -221,16 +231,13 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
             semIntervalo: item.enabled,
           })),
         ),
-        contas_bancarias: values.financeiro.map((e) => {
-          return {
-            banco_id: e.bancoId,
-            agencia: e.agencia,
-            digito_agencia: e.digitoAgencia,
-            numero_conta: e.conta,
-            digito_conta: e.digitoConta,
-            tipo_conta: e.tipoDeConta.id,
-          }
-        }),
+        contas_bancarias: values.financeiro
+          .filter((e) => e?.conta) // só entra quem tem conta diferente de null/undefined
+          .map((e) => {
+            return {
+              conta_bancaria_id: e.conta.id,
+            }
+          }),
       }
 
       try {
@@ -379,7 +386,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
             {/* impostos */}
             <Impostos formik={formik} />
             {/* financeiro */}
-            <Financeiro formik={formik} />
+            <Financeiro formik={formik} banks={banks} />
             {/* certificado digital */}
             <CertificadoDigital formik={formik} />
           </div>

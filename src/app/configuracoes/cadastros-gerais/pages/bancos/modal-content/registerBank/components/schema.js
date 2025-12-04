@@ -26,7 +26,7 @@ const digitsOnly = (schema) =>
 
 const infoItemSchema = Yup.object({
   banco_id: selectRequired('Banco'),
-  description: Yup.string()
+  observacoes: Yup.string()
     .trim()
     .required('Descrição é obrigatória')
     .min(3, 'Mínimo de 3 caracteres')
@@ -39,6 +39,9 @@ const infoItemSchema = Yup.object({
     .min(3, 'Muito curto')
     .max(20, 'Muito longo'),
   digito_conta: digitsOnly(Yup.string())
+    .min(1, 'Muito curto')
+    .max(2, 'Máximo 2 dígitos'),
+  digito_agencia: digitsOnly(Yup.string())
     .min(1, 'Muito curto')
     .max(2, 'Máximo 2 dígitos'),
   tipoConta: selectRequired('Tipo de conta'),

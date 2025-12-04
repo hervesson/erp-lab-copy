@@ -1,11 +1,16 @@
 import ModalFramer from '@/components/ModalFramer'
 import { Outfit400, Outfit500 } from '@/fonts'
-import { ListAllCNAEs, listAllServicesOfHealth, UpdateUnit } from '@/helpers'
+import {
+  ListAllCNAEs,
+  listAllServicesOfHealth,
+  listBankAccount,
+  UpdateUnit,
+} from '@/helpers'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
+import { validationSchemaCreateUnit } from '../components/schema'
 import SuccessEdit from './components/SuccessEdit'
-import { validationSchemaCreateUnit } from './schema'
 
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -21,7 +26,6 @@ import Responsaveis from './components/responsaveis'
 dayjs.extend(customParseFormat)
 
 const EditUnityOfHealth = ({ onClose, findData, unit }) => {
-  console.log(unit)
   // Loading
   const [loading, setLoading] = useState(false)
 
@@ -30,6 +34,8 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
   const [CNAEs, setCNAES] = useState([])
 
   const [openModalAlerts, setOpenModalAlerts] = useState(false)
+
+  const [banks, setBanks] = useState([])
 
   // Dias de atendimento
   const [openingHours] = useState(() => {
@@ -72,9 +78,10 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
   useEffect(() => {
     const findUsersByFilters = async () => {
       try {
-        const [allServices, allCnaes] = await Promise.all([
+        const [allServices, allCnaes, AllAccounts] = await Promise.all([
           listAllServicesOfHealth(),
           ListAllCNAEs(),
+          listBankAccount('', '', '', '', 100000),
         ])
 
         const servcs = allServices.data.map((item) => {
@@ -110,10 +117,20 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
           (element) => element.id === unit?.cnaePrincipalId,
         )
 
+        const acc = AllAccounts.data.data.map((item) => {
+          return {
+            id: item.id,
+            label: `${item.banco.nome} - ${item.observacoes} - ${item.agencia}-${item.digito_agencia}/${item.numero_conta}-${item.digito_conta}`,
+          }
+        })
+
+        console.log('contas', acc)
+
         formik.setFieldValue('cnaePrincipal', principalCnae)
 
         setServices(servcs)
         setCNAES(cns)
+        setBanks(acc)
       } catch (error) {
         console.error(error)
       }
@@ -191,25 +208,12 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
       optantePeloSimples: unit?.optanteSimplesNacional,
 
       // financeiro
-      financeiro: unit?.contas_bancarias.map((i) => {
+      financeiro: unit.contas_bancarias.map((item) => {
         return {
-          banco: i.conta_bancaria?.banco?.nome, // não tem
-          codigoBanco: i.conta_bancaria?.banco?.codigo, // não tem
-          bancoId: i.conta_bancaria?.banco_id, // id interno/opcional
-          agencia: i.conta_bancaria?.agencia,
-          tipoDeConta:
-            i.conta_bancaria?.tipo_conta === 'corrente'
-              ? {
-                  id: 'corrente',
-                  label: 'CORRENTE',
-                }
-              : {
-                  id: 'poupanca',
-                  label: 'POUPANÇA',
-                },
-          digitoAgencia: i.conta_bancaria?.digito_agencia,
-          conta: i.conta_bancaria?.numero_conta,
-          digitoConta: i.conta_bancaria?.digito_conta,
+          conta: {
+            id: item?.conta_bancaria?.id,
+            label: `${item?.conta_bancaria?.banco?.nome} - ${item?.conta_bancaria?.observacoes} - ${item?.conta_bancaria?.agencia}-${item?.conta_bancaria?.digito_agencia}/${item?.conta_bancaria?.numero_conta}-${item?.conta_bancaria?.digito_conta}`,
+          },
         }
       }),
 
@@ -274,16 +278,13 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
             semIntervalo: item.enabled,
           })),
         ),
-        contas_bancarias: values.financeiro.map((e) => {
-          return {
-            banco_id: e.bancoId,
-            agencia: e.agencia,
-            numero_conta: e.conta,
-            digito_agencia: e.digitoAgencia,
-            digito_conta: e.digitoConta,
-            tipo_conta: e.tipoDeConta.id,
-          }
-        }),
+        contas_bancarias: values.financeiro
+          .filter((e) => e?.conta) // só entra quem tem conta diferente de null/undefined
+          .map((e) => {
+            return {
+              conta_bancaria_id: e.conta.id,
+            }
+          }),
       }
 
       try {
@@ -413,7 +414,7 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
 
         {/* <div className="flex h-full w-full gap-x-3 overflow-x-auto"> */}
         <div className="flex h-full w-screen gap-x-3 overflow-x-auto">
-          <div className="mx-[48px] my-[28px] flex h-fit flex-1 flex-col gap-[32px] rounded bg-[#fff] p-[48px]">
+          <div className="mx-12 my-7 flex h-fit flex-1 flex-col gap-8 rounded bg-[#fff] p-[48px]">
             {/* informacoes */}
             <InformacoesBasicas
               formik={formik}
@@ -429,7 +430,7 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
             {/* impostos */}
             <Impostos formik={formik} />
             {/* financeiro */}
-            <Financeiro formik={formik} />
+            <Financeiro formik={formik} banks={banks} />
             {/* certificado digital */}
             <CertificadoDigital formik={formik} />
           </div>

@@ -1,3 +1,4 @@
+import CustomMultiSelect from '@/components/CustomMultiSelect'
 import CustomSelect from '@/components/CustomSelect'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { DocumentDownload, InfoCircle } from 'iconsax-reactjs'
@@ -34,7 +35,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               className={'border border-[#BBBBBB]'}
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -55,7 +56,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               className={'border border-[#BBBBBB]'}
             />
           </div>
-          <div className="flex flex-col gap-[4px]">
+          <div className="flex flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -64,21 +65,21 @@ const InformacoesInternas = ({ formik, fields }) => {
             <div className="flex gap-2">
               <button
                 type="button"
-                className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.peso ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.peso ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() => formik.setFieldValue('peso', true)}
               >
                 SIM
               </button>
               <button
                 type="button"
-                className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.peso ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.peso ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() => formik.setFieldValue('peso', false)}
               >
                 NÃO
               </button>
             </div>
           </div>
-          <div className="flex flex-col gap-[4px]">
+          <div className="flex flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -87,21 +88,21 @@ const InformacoesInternas = ({ formik, fields }) => {
             <div className="flex gap-2">
               <button
                 type="button"
-                className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.altura ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.altura ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() => formik.setFieldValue('altura', true)}
               >
                 SIM
               </button>
               <button
                 type="button"
-                className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.altura ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.altura ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() => formik.setFieldValue('altura', false)}
               >
                 NÃO
               </button>
             </div>
           </div>
-          <div className="flex flex-col gap-[4px]">
+          <div className="flex flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -110,14 +111,14 @@ const InformacoesInternas = ({ formik, fields }) => {
             <div className="flex gap-2">
               <button
                 type="button"
-                className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.volume ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.volume ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() => formik.setFieldValue('volume', true)}
               >
                 SIM
               </button>
               <button
                 type="button"
-                className={`flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${formik.values.volume ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.volume ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() => formik.setFieldValue('volume', false)}
               >
                 NÃO
@@ -126,8 +127,8 @@ const InformacoesInternas = ({ formik, fields }) => {
           </div>
         </div>
 
-        <div className="flex gap-[16px]">
-          <div className="flex flex-1 flex-col gap-[4px]">
+        <div className="flex gap-4">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -151,7 +152,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               className={'border border-[#BBBBBB]'}
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -172,7 +173,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               className={'border border-[#BBBBBB]'}
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -196,8 +197,8 @@ const InformacoesInternas = ({ formik, fields }) => {
           </div>
         </div>
 
-        <div className="flex gap-[16px]">
-          <div className="flex flex-1 flex-col gap-[4px]">
+        <div className="flex gap-4">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -218,15 +219,15 @@ const InformacoesInternas = ({ formik, fields }) => {
               className={'border border-[#BBBBBB]'}
             />
           </div>
-          <div className="flex flex-col justify-end gap-[4px]">
+          <div className="flex flex-col justify-end gap-1">
             <button
-              className={`${Outfit400.className} flex h-[40px] w-[112px] items-center justify-center rounded-[8px] border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+              className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
             >
               ADICIONAR
             </button>
           </div>
-          <div className="flex flex-2 flex-col justify-end gap-[4px]">
-            <div className="flex h-[40px] items-center gap-2 rounded-[50px] bg-[#E7E7E7] px-3">
+          <div className="flex flex-2 flex-col justify-end gap-1">
+            <div className="flex h-10 items-center gap-2 rounded-[50px] bg-[#E7E7E7] px-3">
               <InfoCircle size="20" color="#737373" variant="Bulk" />
               <label
                 className={`${Outfit300.className} text-[14px] text-[#737373]`}
@@ -237,8 +238,8 @@ const InformacoesInternas = ({ formik, fields }) => {
           </div>
         </div>
 
-        <div className="flex gap-[16px]">
-          <div className="flex flex-1 flex-col gap-[4px]">
+        <div className="flex gap-4">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -260,7 +261,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               className={'border border-[#BBBBBB]'}
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -285,12 +286,12 @@ const InformacoesInternas = ({ formik, fields }) => {
       </div>
 
       {/* Formulário para atendimento */}
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col gap-4">
         <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
           Formulário para atendimento
         </span>
-        <div className="flex gap-[16px]">
-          <div className="flex h-[52px] w-[557px] items-center justify-center gap-3 rounded-[8px] border-[#A9A9A9] bg-[#F9F9F9]">
+        <div className="flex gap-4">
+          <div className="flex h-[52px] w-[557px] items-center justify-center gap-3 rounded-lg border-[#A9A9A9] bg-[#F9F9F9]">
             <DocumentDownload size="28" color="#737373" />
             <span className={`${Outfit300.className} text-[#222] uppercase`}>
               Anexar formulários de atendimento
@@ -300,13 +301,13 @@ const InformacoesInternas = ({ formik, fields }) => {
       </div>
 
       {/* Prepararo e coleta */}
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col gap-4">
         <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
           Prepararo e coleta
         </span>
 
-        <div className="flex gap-[16px]">
-          <div className="flex flex-1 flex-col gap-[4px]">
+        <div className="flex gap-4">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -318,11 +319,11 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="preparoPublicoGeral"
               name="preparoPublicoGeral"
-              className={`rounded-[8px] border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de preparo"
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -333,11 +334,11 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="preparoFeminino"
               name="preparoFeminino"
-              className={`rounded-[8px] border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de preparo"
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -348,13 +349,13 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="preparoInfantil"
               name="preparoInfantil"
-              className={`rounded-[8px] border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de preparo"
             />
           </div>
         </div>
-        <div className="flex gap-[16px]">
-          <div className="flex flex-1 flex-col gap-[4px]">
+        <div className="flex gap-4">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -366,11 +367,11 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="coletaPublicoGeral"
               name="coletaPublicoGeral"
-              className={`rounded-[8px] border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de coleta"
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -381,11 +382,11 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="coletaFeminino"
               name="coletaFeminino"
-              className={`rounded-[8px] border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de coleta"
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -396,13 +397,13 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="nomeExame"
               name="nomeExame"
-              className={`rounded-[8px] border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de coleta"
             />
           </div>
         </div>
-        <div className="flex gap-[16px]">
-          <div className="flex flex-1 flex-col gap-[4px]">
+        <div className="flex gap-4">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -414,7 +415,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="tecnicaDeColeta"
               name="tecnicaDeColeta"
-              className={`rounded-[8px] border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de coleta"
             />
           </div>
@@ -422,13 +423,13 @@ const InformacoesInternas = ({ formik, fields }) => {
       </div>
 
       {/* Lembretes */}
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col gap-4">
         <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
           Lembretes
         </span>
 
-        <div className="flex gap-[16px]">
-          <div className="flex flex-1 flex-col gap-[4px]">
+        <div className="flex gap-4">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -439,11 +440,11 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="lembretesColetora"
               name="lembretesColetora"
-              className={`rounded-[8px] border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Caso necessário deixe um lembrete pra coletora"
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -454,11 +455,11 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="lembretesRecepcionistaAgendamentos"
               name="lembretesRecepcionistaAgendamentos"
-              className={`rounded-[8px] border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Caso necessário deixe um lembrete para a recepcionista"
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
@@ -469,12 +470,12 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="lembretesRecepcionistaOrdemDeServico"
               name="lembretesRecepcionistaOrdemDeServico"
-              className={`rounded-[8px] border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Caso necessário deixe um lembrete para recepcionista"
             />
           </div>
         </div>
-        <div className="flex flex-1 flex-col gap-[4px]">
+        <div className="flex flex-1 flex-col gap-1">
           <label className={`${Outfit400.className} text-[14px] text-[222222]`}>
             Distribuição
           </label>
@@ -483,21 +484,21 @@ const InformacoesInternas = ({ formik, fields }) => {
             type="text"
             id="tecnicaDeColeta"
             name="tecnicaDeColeta"
-            className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+            className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
             placeholder="Preencha sobre a distribuição"
           />
         </div>
       </div>
 
       {/* Processamento e entrega de laudos */}
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col gap-4">
         <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
           Processamento e entrega de Laudos
         </span>
 
-        <div className="flex flex-col gap-[16px]">
-          <div className="flex gap-[16px]">
-            <div className="flex flex-1 flex-col gap-[4px]">
+        <div className="flex flex-col gap-4">
+          <div className="flex gap-4">
+            <div className="flex flex-1 flex-col gap-1">
               <label
                 className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
@@ -509,27 +510,27 @@ const InformacoesInternas = ({ formik, fields }) => {
                 type="text"
                 id="prazoDeEntrega"
                 name="prazoDeEntrega"
-                className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
                 placeholder="Digite um prazo pra entrega dos resultados"
               />
             </div>
-            <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex flex-1 flex-col gap-1">
               <label
                 className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
                 Formato do laudo
                 <strong className="text-[#F23434]">*</strong>
               </label>
-              <CustomSelect
+              <CustomMultiSelect
                 select={formik.values.formatoLaudo}
                 setSelect={(e) => formik.setFieldValue('formatoLaudo', e)}
                 options={[
-                  { id: 1, label: 'PDF' },
-                  { id: 2, label: 'XML' },
-                  { id: 3, label: 'HTML' },
-                  { id: 4, label: 'TEXTO' },
-                  { id: 5, label: 'FORMULÁRIO' },
-                  { id: 6, label: 'DICOM' },
+                  { id: 'PDF', label: 'PDF' },
+                  { id: 'XML', label: 'XML' },
+                  { id: 'HTML', label: 'HTML' },
+                  { id: 'TEXTO', label: 'TEXTO' },
+                  { id: 'FORMULÁRIO', label: 'FORMULÁRIO' },
+                  { id: 'DICOM', label: 'DICOM' },
                 ]}
                 placeholder={'Selecione um formato'}
                 className={'border border-[#BBBBBB]'}

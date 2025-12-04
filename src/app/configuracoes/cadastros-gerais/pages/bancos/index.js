@@ -40,7 +40,6 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
     const fetchBanks = async () => {
       try {
         const response = await listBankAccount()
-        console.log(response)
         setBanks(response.data.data)
         setTotal(response.data.meta.total)
       } catch (error) {
@@ -198,8 +197,8 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
           setSelect={(e) => findDataPerStatus(e)}
           options={[
             { id: '', label: 'Todos' },
-            { id: 'ativa', label: 'Ativas' },
-            { id: 'inativa', label: 'Inativas' },
+            { id: 'ativas', label: 'Ativas' },
+            { id: 'inativas', label: 'Inativas' },
           ]}
           placeholder={'Status'}
           className={'bg-[#F9F9F9]'}
