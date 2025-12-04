@@ -32,7 +32,9 @@ const InformacoesInternas = ({ formik, fields }) => {
                   }
                 })}
               placeholder={'Selecione uma metodologia'}
-              className={'border border-[#BBBBBB]'}
+              className={
+                'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+              }
             />
           </div>
           <div className="flex flex-1 flex-col gap-1">
@@ -53,7 +55,9 @@ const InformacoesInternas = ({ formik, fields }) => {
                   }
                 })}
               placeholder={'Selecione uma unidade de medida'}
-              className={'border border-[#BBBBBB]'}
+              className={
+                'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+              }
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -149,7 +153,9 @@ const InformacoesInternas = ({ formik, fields }) => {
                   }
                 })}
               placeholder={'Selecione uma amostra'}
-              className={'border border-[#BBBBBB]'}
+              className={
+                'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+              }
             />
           </div>
           <div className="flex flex-1 flex-col gap-1">
@@ -170,7 +176,9 @@ const InformacoesInternas = ({ formik, fields }) => {
                   }
                 })}
               placeholder={'Selecione uma amostra'}
-              className={'border border-[#BBBBBB]'}
+              className={
+                'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+              }
             />
           </div>
           <div className="flex flex-1 flex-col gap-1">
@@ -192,7 +200,9 @@ const InformacoesInternas = ({ formik, fields }) => {
                   }
                 })}
               placeholder={'Selecione um recipiente para coleta'}
-              className={'border border-[#BBBBBB]'}
+              className={
+                'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+              }
             />
           </div>
         </div>
@@ -216,7 +226,9 @@ const InformacoesInternas = ({ formik, fields }) => {
                   }
                 })}
               placeholder={'Selecione uma ou mais regioões de coleta'}
-              className={'border border-[#BBBBBB]'}
+              className={
+                'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+              }
             />
           </div>
           <div className="flex flex-col justify-end gap-1">
@@ -258,7 +270,9 @@ const InformacoesInternas = ({ formik, fields }) => {
                   }
                 })}
               placeholder={'Selecione um volume minímo'}
-              className={'border border-[#BBBBBB]'}
+              className={
+                'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+              }
             />
           </div>
           <div className="flex flex-1 flex-col gap-1">
@@ -279,7 +293,9 @@ const InformacoesInternas = ({ formik, fields }) => {
                   }
                 })}
               placeholder={'Selecione uma estabilidade'}
-              className={'border border-[#BBBBBB]'}
+              className={
+                'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+              }
             />
           </div>
         </div>
@@ -319,7 +335,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="preparoPublicoGeral"
               name="preparoPublicoGeral"
-              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de preparo"
             />
           </div>
@@ -334,7 +350,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="preparoFeminino"
               name="preparoFeminino"
-              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de preparo"
             />
           </div>
@@ -349,7 +365,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="preparoInfantil"
               name="preparoInfantil"
-              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de preparo"
             />
           </div>
@@ -367,7 +383,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="coletaPublicoGeral"
               name="coletaPublicoGeral"
-              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de coleta"
             />
           </div>
@@ -382,7 +398,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="coletaFeminino"
               name="coletaFeminino"
-              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de coleta"
             />
           </div>
@@ -397,7 +413,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="nomeExame"
               name="nomeExame"
-              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de coleta"
             />
           </div>
@@ -415,7 +431,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="tecnicaDeColeta"
               name="tecnicaDeColeta"
-              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de coleta"
             />
           </div>
@@ -440,7 +456,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="lembretesColetora"
               name="lembretesColetora"
-              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Caso necessário deixe um lembrete pra coletora"
             />
           </div>
@@ -455,7 +471,7 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="lembretesRecepcionistaAgendamentos"
               name="lembretesRecepcionistaAgendamentos"
-              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Caso necessário deixe um lembrete para a recepcionista"
             />
           </div>
@@ -470,13 +486,15 @@ const InformacoesInternas = ({ formik, fields }) => {
               type="text"
               id="lembretesRecepcionistaOrdemDeServico"
               name="lembretesRecepcionistaOrdemDeServico"
-              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222]`}
+              className={`rounded-lg border border-[#A9A9A9] ${Outfit400.className} p-2 text-[#222222] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Caso necessário deixe um lembrete para recepcionista"
             />
           </div>
         </div>
         <div className="flex flex-1 flex-col gap-1">
-          <label className={`${Outfit400.className} text-[14px] text-[222222]`}>
+          <label
+            className={`${Outfit400.className} text-[14px] text-[#222222]`}
+          >
             Distribuição
           </label>
           <input
@@ -484,7 +502,7 @@ const InformacoesInternas = ({ formik, fields }) => {
             type="text"
             id="tecnicaDeColeta"
             name="tecnicaDeColeta"
-            className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+            className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
             placeholder="Preencha sobre a distribuição"
           />
         </div>
@@ -510,7 +528,7 @@ const InformacoesInternas = ({ formik, fields }) => {
                 type="text"
                 id="prazoDeEntrega"
                 name="prazoDeEntrega"
-                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                 placeholder="Digite um prazo pra entrega dos resultados"
               />
             </div>
@@ -533,7 +551,9 @@ const InformacoesInternas = ({ formik, fields }) => {
                   { id: 'DICOM', label: 'DICOM' },
                 ]}
                 placeholder={'Selecione um formato'}
-                className={'border border-[#BBBBBB]'}
+                className={
+                  'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                }
               />
             </div>
           </div>

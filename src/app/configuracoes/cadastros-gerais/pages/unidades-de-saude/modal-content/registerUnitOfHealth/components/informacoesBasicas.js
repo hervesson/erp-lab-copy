@@ -46,13 +46,14 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
         'cnaesSecundariosSelecionados',
         result?.data?.cnaesSecundarios?.map((e) => {
           return {
-            id: formatCNAE(e.id),
-            label: `${e.codigo} -
-            ${e.description}`,
+            id: formatCNAE(e?.id),
+            label: `${e?.codigo} -
+            ${e?.descricao}`,
           }
         }),
       )
     }
+    console.log(result.data)
   }
 
   return (
@@ -76,7 +77,7 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
                 {...formik.getFieldProps('nomeUnidade')}
                 id="nomeUnidade"
                 name="nomeUnidade"
-                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                 placeholder="Digite o nome da unidade"
               />
             </div>
@@ -91,7 +92,7 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
                 {...formik.getFieldProps('codigoInterno')}
                 id="codigoInterno"
                 name="codigoInterno"
-                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                 placeholder="Digite o código interno"
               />
             </div>
@@ -241,7 +242,9 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
           setSelect={(e) => formik.setFieldValue('codigoServicoPrincipal', e)}
           options={services}
           placeholder={'Selecione o código do serviço principal'}
-          className={'border border-[#BBBBBB]'}
+          className={
+            'border border-[#BBBBBB] hover:border-[#0F9B7F] active:border-[#0F9B7F]'
+          }
         />
       </div>
       <div className="flex flex-1 flex-col gap-1">
@@ -256,7 +259,9 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
             }
             options={services}
             placeholder={'Selecione o código do serviço secundário'}
-            className={'border border-[#BBBBBB]'}
+            className={
+              'border border-[#BBBBBB] hover:border-[#0F9B7F] active:border-[#0F9B7F]'
+            }
           />
           <button
             type="button"
@@ -333,7 +338,9 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
           setSelect={(e) => formik.setFieldValue('cnaePrincipal', e)}
           options={CNAEs}
           placeholder={`Digite o CNAE`}
-          className={'border border-[#BBBBBB]'}
+          className={
+            'border border-[#BBBBBB] hover:border-[#0F9B7F] active:border-[#0F9B7F]'
+          }
         />
       </div>
       <div className="flex flex-1 flex-col gap-1">
@@ -346,7 +353,9 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
             setSelect={(e) => formik.setFieldValue('cnaeSecundario', e)}
             options={CNAEs}
             placeholder={`Digite o CNAE`}
-            className={'border border-[#BBBBBB]'}
+            className={
+              'border border-[#BBBBBB] hover:border-[#0F9B7F] active:border-[#0F9B7F]'
+            }
           />
           <button
             type="button"

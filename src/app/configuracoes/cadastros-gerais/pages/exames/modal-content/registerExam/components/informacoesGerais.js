@@ -26,7 +26,7 @@ const InformacoesGerais = ({ formik, fields }) => {
                   type="text"
                   id="nomeExame"
                   name="nomeExame"
-                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o nome do exame"
                 />
               </div>
@@ -42,7 +42,7 @@ const InformacoesGerais = ({ formik, fields }) => {
                   type="text"
                   id="codigoInterno"
                   name="codigoInterno"
-                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o código interno"
                 />
               </div>
@@ -59,7 +59,7 @@ const InformacoesGerais = ({ formik, fields }) => {
                     type="text"
                     id="codigoInterno"
                     name="codigoInterno"
-                    className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                    className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                     placeholder="Digite todos os sinônimos"
                   />
                 </div>
@@ -125,7 +125,7 @@ const InformacoesGerais = ({ formik, fields }) => {
                   type="text"
                   id="codigoCBHPM"
                   name="codigoCBHPM"
-                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o código CBHPM"
                 />
               </div>
@@ -143,7 +143,7 @@ const InformacoesGerais = ({ formik, fields }) => {
                   type="text"
                   id="codigoTuss"
                   name="codigoTuss"
-                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o código TUSS"
                 />
               </div>
@@ -160,7 +160,7 @@ const InformacoesGerais = ({ formik, fields }) => {
                     type="text"
                     id="codigoLoinc"
                     name="codigoLoinc"
-                    className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                    className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                     placeholder="Digite o código LOINC"
                   />
                 </div>
@@ -179,7 +179,7 @@ const InformacoesGerais = ({ formik, fields }) => {
                   type="text"
                   id="codigoSUS"
                   name="codigoSUS"
-                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o codigo SUS"
                 />
               </div>
@@ -199,7 +199,7 @@ const InformacoesGerais = ({ formik, fields }) => {
                   type="text"
                   id="codigoAMB"
                   name="codigoAMB"
-                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o código AMB"
                 />
               </div>
@@ -221,7 +221,9 @@ const InformacoesGerais = ({ formik, fields }) => {
                       }
                     })}
                   placeholder={'Selecione o tipo de exame'}
-                  className={'border border-[#BBBBBB]'}
+                  className={
+                    'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                  }
                 />
               </div>
               <div className="flex flex-1 flex-col gap-1">
@@ -245,7 +247,9 @@ const InformacoesGerais = ({ formik, fields }) => {
                       }
                     })}
                   placeholder={'Selecione uma especialidade'}
-                  className={'border border-[#BBBBBB]'}
+                  className={
+                    'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                  }
                 />
               </div>
               <div className="flex flex-1 flex-col gap-1">
@@ -267,7 +271,9 @@ const InformacoesGerais = ({ formik, fields }) => {
                       }
                     })}
                   placeholder={'Selecione um grupo'}
-                  className={'border border-[#BBBBBB]'}
+                  className={
+                    'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                  }
                 />
               </div>
             </div>
@@ -291,7 +297,9 @@ const InformacoesGerais = ({ formik, fields }) => {
                       }
                     })}
                   placeholder={'Selecione um SubGrupo'}
-                  className={'border border-[#BBBBBB]'}
+                  className={
+                    'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                  }
                 />
               </div>
               <div className="flex flex-1 flex-col gap-1">
@@ -312,7 +320,9 @@ const InformacoesGerais = ({ formik, fields }) => {
                       }
                     })}
                   placeholder={'Selecione um setor'}
-                  className={'border border-[#BBBBBB]'}
+                  className={
+                    'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                  }
                 />
               </div>
             </div>
@@ -337,7 +347,9 @@ const InformacoesGerais = ({ formik, fields }) => {
                 setSelect={(e) => formik.setFieldValue('regiaoDeColeta', e)}
                 options={[]}
                 placeholder={'Selecione uma ou mais unidades'}
-                className={'border border-[#BBBBBB]'}
+                className={
+                  'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                }
               />
             </div>
             <div className="flex flex-col justify-end gap-1">
@@ -400,7 +412,9 @@ const InformacoesGerais = ({ formik, fields }) => {
                 setSelect={(e) => formik.setFieldValue('setor', e)}
                 options={[]}
                 placeholder={'Selecione o destino'}
-                className={'border border-[#BBBBBB]'}
+                className={
+                  'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                }
               />
             </div>
             <div className="flex flex-1 flex-col gap-1">
@@ -415,7 +429,9 @@ const InformacoesGerais = ({ formik, fields }) => {
                 setSelect={(e) => formik.setFieldValue('setor', e)}
                 options={[]}
                 placeholder={'Selecione um laboratório de apoio'}
-                className={'border border-[#BBBBBB]'}
+                className={
+                  'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                }
               />
             </div>
             <div className="flex flex-1 flex-col gap-1">
@@ -429,7 +445,9 @@ const InformacoesGerais = ({ formik, fields }) => {
                 setSelect={(e) => formik.setFieldValue('setor', e)}
                 options={[]}
                 placeholder={'Selecione uma opção'}
-                className={'border border-[#BBBBBB]'}
+                className={
+                  'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                }
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -473,7 +491,9 @@ const InformacoesGerais = ({ formik, fields }) => {
                 setSelect={(e) => formik.setFieldValue('setor', e)}
                 options={[]}
                 placeholder={'Selecione os requisitos'}
-                className={'border border-[#BBBBBB]'}
+                className={
+                  'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                }
               />
             </div>
           </div>

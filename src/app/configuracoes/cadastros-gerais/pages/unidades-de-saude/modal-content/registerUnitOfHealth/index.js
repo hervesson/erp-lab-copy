@@ -248,10 +248,13 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
           findData()
           formik.resetForm()
         } else {
-          responseCreateUnity.error.erros.forEach((element) => {
+          responseCreateUnity?.error?.erros?.forEach((element) => {
             toast.error(element, {
               position: 'top-right',
             })
+          })
+          toast.error(responseCreateUnity.error.mensagem, {
+            position: 'top-right',
           })
         }
       } catch (error) {
