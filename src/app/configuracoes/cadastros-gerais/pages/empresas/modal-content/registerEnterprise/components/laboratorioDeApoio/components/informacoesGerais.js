@@ -76,17 +76,17 @@ const InformacoesGerais = ({ formik, states }) => {
   }
 
   return (
-    <div className="flex w-full flex-col gap-[32px] rounded bg-[#FFF] p-[48px]">
+    <div className="flex w-full flex-col gap-8 rounded bg-[#FFF] p-12">
       {/* Informações básicas */}
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col gap-4">
         <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
           Informações básicas
         </span>
-        <div className="flex h-[144px] gap-[16px]">
-          <div className="h-[144px] w-[144px] rounded border border-[#A9A9A9]"></div>
+        <div className="flex h-36 gap-4">
+          <div className="h-36 w-36 rounded border border-[#A9A9A9]"></div>
           <div className="flex flex-1 flex-col justify-between">
-            <div className="flex gap-[16px]">
-              <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex gap-4">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -98,11 +98,11 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="codigoInterno"
                   name="codigoInterno"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o codigo interno"
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -116,11 +116,11 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="cnpj"
                   name="cnpj"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o CNPJ"
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -131,12 +131,12 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="razaoSocial"
                   name="razaoSocial"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite a Razão Social"
                   maxLength={18}
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -148,11 +148,11 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="nomeFantasia"
                   name="nomeFantasia"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o nome fantasia"
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -163,13 +163,13 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="inscricaoMunicipal"
                   name="inscricaoMunicipal"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite a inscrição Municipal"
                 />
               </div>
             </div>
-            <div className="flex gap-[16px]">
-              <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex gap-4">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -180,11 +180,11 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="inscricaoEstadual"
                   name="inscricaoEstadual"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite a inscrição Estadual"
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -196,12 +196,12 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="telefoneFixo"
                   name="telefoneFixo"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o telefone fixo"
                   maxLength={15}
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -213,12 +213,12 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="celular"
                   name="celular"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o celular"
                   maxLength={15}
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -230,11 +230,11 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="emailComercial"
                   name="emailComercial"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o email comercial"
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -245,7 +245,7 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="siteDaEmpresa"
                   name="siteDaEmpresa"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o site da empresa"
                 />
               </div>
@@ -255,15 +255,15 @@ const InformacoesGerais = ({ formik, states }) => {
       </div>
 
       {/* Endereço */}
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col gap-4">
         <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
           Endereço
         </span>
 
-        <div className="flex h-[144px] gap-[16px]">
+        <div className="flex h-36 gap-4">
           <div className="flex flex-1 flex-col justify-between">
-            <div className="flex gap-[16px]">
-              <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex gap-4">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -275,13 +275,13 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="cep"
                   name="cep"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o cep"
                   onBlur={() => searchCEP()}
                   autoComplete="off"
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -292,11 +292,11 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="rua"
                   name="rua"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite a rua"
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -307,11 +307,11 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="numero"
                   name="numero"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o número"
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -323,13 +323,13 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="bairro"
                   name="bairro"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o bairro"
                 />
               </div>
             </div>
-            <div className="flex gap-[16px]">
-              <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex gap-4">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -340,11 +340,11 @@ const InformacoesGerais = ({ formik, states }) => {
                   type="text"
                   id="complemento"
                   name="complemento"
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite um complemento"
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -358,7 +358,7 @@ const InformacoesGerais = ({ formik, states }) => {
                   className="border border-[#BBBBBB]"
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -377,14 +377,14 @@ const InformacoesGerais = ({ formik, states }) => {
         </div>
       </div>
       {/* responsável */}
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col gap-4">
         <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
           Responsável
         </span>
 
-        <div className="flex gap-[16px]">
+        <div className="flex gap-4">
           <div className="flex flex-1 flex-col justify-between">
-            <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex flex-1 flex-col gap-1">
               <label
                 className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
@@ -396,13 +396,13 @@ const InformacoesGerais = ({ formik, states }) => {
                 type="text"
                 id="nomeDoResponsavel"
                 name="nomeDoResponsavel"
-                className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                 placeholder="Digite o nome do responsável"
               />
             </div>
           </div>
           <div className="flex flex-1 flex-col justify-between">
-            <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex flex-1 flex-col gap-1">
               <label
                 className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
@@ -414,13 +414,13 @@ const InformacoesGerais = ({ formik, states }) => {
                 type="text"
                 id="cargoResponsavel"
                 name="cargoResponsavel"
-                className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                 placeholder="Digite o cargo do responsável"
               />
             </div>
           </div>
           <div className="flex flex-1 flex-col justify-between">
-            <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex flex-1 flex-col gap-1">
               <label
                 className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
@@ -433,14 +433,14 @@ const InformacoesGerais = ({ formik, states }) => {
                 type="text"
                 id="contatoResponsavel"
                 name="contatoResponsavel"
-                className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                 placeholder="Digite o contato do responsável"
                 maxLength={15}
               />
             </div>
           </div>
           <div className="flex flex-1 flex-col justify-between">
-            <div className="flex flex-1 flex-col gap-[4px]">
+            <div className="flex flex-1 flex-col gap-1">
               <label
                 className={`${Outfit400.className} text-[14px] text-[#222222]`}
               >
@@ -452,7 +452,7 @@ const InformacoesGerais = ({ formik, states }) => {
                 type="text"
                 id="email"
                 name="email"
-                className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                 placeholder="Digite o email de contato do responsável"
               />
             </div>
@@ -460,13 +460,13 @@ const InformacoesGerais = ({ formik, states }) => {
         </div>
       </div>
       {/* impostos */}
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col gap-4">
         <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
           Impostos
         </span>
 
-        <div className="flex gap-[16px]">
-          <div className="flex flex-1 flex-col gap-[4px]">
+        <div className="flex gap-4">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -478,11 +478,11 @@ const InformacoesGerais = ({ formik, states }) => {
               id="irrf"
               value={formik.values.irrf} // <-- NUMBER (ex: 12.9)
               onChange={(num) => formik.setFieldValue('irrf', num)}
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+              className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -494,11 +494,11 @@ const InformacoesGerais = ({ formik, states }) => {
               id="pis"
               value={formik.values.pis} // <-- NUMBER (ex: 12.9)
               onChange={(num) => formik.setFieldValue('pis', num)}
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+              className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -510,11 +510,11 @@ const InformacoesGerais = ({ formik, states }) => {
               id="cofins"
               value={formik.values.cofins} // <-- NUMBER (ex: 12.9)
               onChange={(num) => formik.setFieldValue('cofins', num)}
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+              className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -527,11 +527,11 @@ const InformacoesGerais = ({ formik, states }) => {
               id="csll"
               value={formik.values.csll} // <-- NUMBER (ex: 12.9)
               onChange={(num) => formik.setFieldValue('csll', num)}
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+              className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -544,11 +544,11 @@ const InformacoesGerais = ({ formik, states }) => {
               id="iss"
               value={formik.values.iss} // <-- NUMBER (ex: 12.9)
               onChange={(num) => formik.setFieldValue('iss', num)}
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+              className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -561,11 +561,11 @@ const InformacoesGerais = ({ formik, states }) => {
               id="ibs"
               value={formik.values.ibs} // <-- NUMBER (ex: 12.9)
               onChange={(num) => formik.setFieldValue('ibs', num)}
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+              className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -578,13 +578,13 @@ const InformacoesGerais = ({ formik, states }) => {
               id="cbs"
               value={formik.values.cbs} // <-- NUMBER (ex: 12.9)
               onChange={(num) => formik.setFieldValue('cbs', num)}
-              className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+              className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
               placeholder="Digite percentual"
             />
           </div>
         </div>
-        <div className="flex gap-[16px]">
-          <div className="flex flex-1 flex-col gap-[4px]">
+        <div className="flex gap-4">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -594,7 +594,7 @@ const InformacoesGerais = ({ formik, states }) => {
             <div className="flex gap-2">
               <button
                 type="button"
-                className={`${!formik.values.reterISS ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`${!formik.values.reterISS ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() =>
                   formik.setFieldValue('reterISS', !formik.values.reterISS)
                 }
@@ -603,7 +603,7 @@ const InformacoesGerais = ({ formik, states }) => {
               </button>
               <button
                 type="button"
-                className={`${formik.values.reterISS ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`${formik.values.reterISS ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() =>
                   formik.setFieldValue('reterISS', !formik.values.reterISS)
                 }
@@ -612,7 +612,7 @@ const InformacoesGerais = ({ formik, states }) => {
               </button>
             </div>
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -622,7 +622,7 @@ const InformacoesGerais = ({ formik, states }) => {
             <div className="flex gap-2">
               <button
                 type="button"
-                className={`${!formik.values.reterIR ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`${!formik.values.reterIR ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() =>
                   formik.setFieldValue('reterIR', !formik.values.reterIR)
                 }
@@ -631,7 +631,7 @@ const InformacoesGerais = ({ formik, states }) => {
               </button>
               <button
                 type="button"
-                className={`${formik.values.reterIR ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`${formik.values.reterIR ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() =>
                   formik.setFieldValue('reterIR', !formik.values.reterIR)
                 }
@@ -640,7 +640,7 @@ const InformacoesGerais = ({ formik, states }) => {
               </button>
             </div>
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -650,7 +650,7 @@ const InformacoesGerais = ({ formik, states }) => {
             <div className="flex gap-2">
               <button
                 type="button"
-                className={`${!formik.values.reterPCC ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`${!formik.values.reterPCC ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() =>
                   formik.setFieldValue('reterPCC', !formik.values.reterPCC)
                 }
@@ -659,7 +659,7 @@ const InformacoesGerais = ({ formik, states }) => {
               </button>
               <button
                 type="button"
-                className={`${formik.values.reterPCC ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`${formik.values.reterPCC ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() =>
                   formik.setFieldValue('reterPCC', !formik.values.reterPCC)
                 }
@@ -668,7 +668,7 @@ const InformacoesGerais = ({ formik, states }) => {
               </button>
             </div>
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -678,7 +678,7 @@ const InformacoesGerais = ({ formik, states }) => {
             <div className="flex gap-2">
               <button
                 type="button"
-                className={`${!formik.values.reterIBS ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`${!formik.values.reterIBS ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() =>
                   formik.setFieldValue('reterIBS', !formik.values.reterIBS)
                 }
@@ -687,7 +687,7 @@ const InformacoesGerais = ({ formik, states }) => {
               </button>
               <button
                 type="button"
-                className={`${formik.values.reterIBS ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`${formik.values.reterIBS ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() =>
                   formik.setFieldValue('reterIBS', !formik.values.reterIBS)
                 }
@@ -696,7 +696,7 @@ const InformacoesGerais = ({ formik, states }) => {
               </button>
             </div>
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -706,7 +706,7 @@ const InformacoesGerais = ({ formik, states }) => {
             <div className="flex gap-2">
               <button
                 type="button"
-                className={`${!formik.values.reterCBS ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`${!formik.values.reterCBS ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() =>
                   formik.setFieldValue('reterCBS', !formik.values.reterCBS)
                 }
@@ -715,7 +715,7 @@ const InformacoesGerais = ({ formik, states }) => {
               </button>
               <button
                 type="button"
-                className={`${formik.values.reterCBS ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`${formik.values.reterCBS ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() =>
                   formik.setFieldValue('reterCBS', !formik.values.reterCBS)
                 }
@@ -724,7 +724,7 @@ const InformacoesGerais = ({ formik, states }) => {
               </button>
             </div>
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]">
+          <div className="flex flex-1 flex-col gap-1">
             <label
               className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
             >
@@ -734,7 +734,7 @@ const InformacoesGerais = ({ formik, states }) => {
             <div className="flex gap-2">
               <button
                 type="button"
-                className={`${!formik.values.optantePeloSimples ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`${!formik.values.optantePeloSimples ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() =>
                   formik.setFieldValue(
                     'optantePeloSimples',
@@ -746,7 +746,7 @@ const InformacoesGerais = ({ formik, states }) => {
               </button>
               <button
                 type="button"
-                className={`${formik.values.optantePeloSimples ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                className={`${formik.values.optantePeloSimples ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
                 onClick={() =>
                   formik.setFieldValue(
                     'optantePeloSimples',
@@ -758,18 +758,18 @@ const InformacoesGerais = ({ formik, states }) => {
               </button>
             </div>
           </div>
-          <div className="flex flex-1 flex-col gap-[4px]" />
+          <div className="flex flex-1 flex-col gap-1" />
         </div>
       </div>
       {/* financeiro */}
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col gap-4">
         <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
           Financeiro e Pagamento
         </span>
         {formik?.values?.financeiro?.map((item, index) => {
           return (
-            <div className="flex gap-[16px]" key={index.toString()}>
-              <div className="flex w-full flex-col gap-[4px]">
+            <div className="flex gap-4" key={index.toString()}>
+              <div className="flex w-full flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -785,7 +785,7 @@ const InformacoesGerais = ({ formik, states }) => {
                 />
               </div>
 
-              <div className="flex w-full flex-col gap-[4px]">
+              <div className="flex w-full flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -795,12 +795,12 @@ const InformacoesGerais = ({ formik, states }) => {
                 <input
                   value={item.agencia}
                   onChange={(e) => setFin(index, 'agencia', e.target.value)}
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite a agência"
                 />
               </div>
 
-              <div className="flex flex-col gap-[4px]">
+              <div className="flex flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -812,11 +812,11 @@ const InformacoesGerais = ({ formik, states }) => {
                   onChange={(e) =>
                     setFin(index, 'digitoAgencia', e.target.value)
                   }
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o dígito da agência"
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-[4px]">
+              <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
                 >
@@ -834,7 +834,7 @@ const InformacoesGerais = ({ formik, states }) => {
                   className="w-[250px] border border-[#BBBBBB]"
                 />
               </div>
-              <div className="flex w-full flex-col gap-[4px]">
+              <div className="flex w-full flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -844,12 +844,12 @@ const InformacoesGerais = ({ formik, states }) => {
                 <input
                   value={item.conta}
                   onChange={(e) => setFin(index, 'conta', e.target.value)}
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite a conta"
                 />
               </div>
 
-              <div className="flex flex-col gap-[4px]">
+              <div className="flex flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -859,13 +859,13 @@ const InformacoesGerais = ({ formik, states }) => {
                 <input
                   value={item.digitoConta}
                   onChange={(e) => setFin(index, 'digitoConta', e.target.value)}
-                  className={`${Outfit400.className} ring-none flex h-[40px] items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                   placeholder="Digite o dígito da agência"
                 />
               </div>
               {formik.values.financeiro.length > 1 && (
                 <div
-                  className="flex flex-col justify-end py-[8px]"
+                  className="flex flex-col justify-end py-2"
                   onClick={() =>
                     formik.setFieldValue(
                       'financeiro',
@@ -882,7 +882,7 @@ const InformacoesGerais = ({ formik, states }) => {
 
         <button
           type="button"
-          className={`${Outfit400.className} h-[40px] w-[150px] rounded-[8px] border border-[#0F9B7F] text-[#0F9B7F] uppercase`}
+          className={`${Outfit400.className} h-10 w-[150px] rounded-lg border border-[#0F9B7F] text-[#0F9B7F] uppercase`}
           onClick={() =>
             formik.setFieldValue('financeiro', [
               ...formik.values.financeiro,
@@ -901,8 +901,8 @@ const InformacoesGerais = ({ formik, states }) => {
           Novo banco
         </button>
 
-        <div className="flex gap-[16px]">
-          <div className="flex w-full flex-col gap-[4px]">
+        <div className="flex gap-4">
+          <div className="flex w-full flex-col gap-1">
             <label
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >

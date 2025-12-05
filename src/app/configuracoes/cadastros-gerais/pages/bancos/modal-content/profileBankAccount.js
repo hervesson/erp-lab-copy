@@ -69,7 +69,19 @@ const ProfileBankAccount = ({ account }) => {
               <label
                 className={`${Outfit400.className} text-[14px] text-[#494949]`}
               >
-                Agência/CC
+                Tipo de conta
+              </label>
+              <label
+                className={`${Outfit400.className} text-[16px] text-[#222222]`}
+              >
+                {account?.tipo_conta === 'poupanca' ? 'Poupança' : 'Corrente'}
+              </label>
+            </div>
+            <div className="flex flex-col">
+              <label
+                className={`${Outfit400.className} text-[14px] text-[#494949]`}
+              >
+                Agência/Conta
               </label>
               <label
                 className={`${Outfit400.className} text-[16px] text-[#222222]`}

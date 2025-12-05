@@ -79,21 +79,22 @@ const RegisterMethod = ({ onClose, findData }) => {
       }
 
       try {
-        const responseMethod = await CreateSample(payload)
+        const responseSamples = await CreateSample(payload)
 
-        if (!responseMethod?.success) {
-          const apiErrors = responseMethod?.error?.erros || [
-            'Erro ao cadastrar método.',
-          ]
-
-          apiErrors.forEach((message) => {
-            toast.error(message, { position: 'top-right' })
+        if (!responseSamples?.success) {
+          responseSamples?.error?.erros?.forEach((element) => {
+            toast.error(element, {
+              position: 'top-right',
+            })
+          })
+          toast.error(responseSamples.error.mensagem, {
+            position: 'top-right',
           })
 
           return
         }
 
-        const amostraId = responseMethod.data?.id
+        const amostraId = responseSamples.data?.id
 
         // pega só os laboratórios válidos
         const laboratoriosSelecionados = values.laboratoriosAssociados
@@ -129,8 +130,6 @@ const RegisterMethod = ({ onClose, findData }) => {
       }
     },
   })
-
-  console.log(formik?.values?.laboratoriosAssociados)
 
   const getFlatErrors = (errors) => {
     const messages = []

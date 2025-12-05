@@ -5,7 +5,7 @@ import { CreateEnterprise } from '@/helpers'
 import { useFormik } from 'formik'
 import { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { toast } from 'react-toastify'
-import { validationSchemaEnterprises } from '../schemas'
+import { validationSchemaEnterprises } from './components/schemas'
 
 // Components
 import InformacoesGerais from './components/informacoesGerais'
@@ -81,8 +81,8 @@ const LaboratorioDeApoio = forwardRef(
           numero: values.numero,
           bairro: values.bairro,
           complemento: values.complemento,
-          estado: values.estado,
-          cidade: values.cidade,
+          estado: values.estado.label,
+          cidade: values.cidade.label,
           nomeResponsavel: values.nomeDoResponsavel,
           cargoResponsavel: values.cargoResponsavel,
           contatoResponsavel: values.contatoResponsavel,
@@ -201,26 +201,26 @@ const LaboratorioDeApoio = forwardRef(
     }
 
     return (
-      <div className="mx-[48px] my-[28px] flex h-fit flex-1 flex-col rounded">
-        <div className="flex h-[56px] items-center gap-8 px-[48px]">
+      <div className="mx-12 my-7 flex h-fit flex-1 flex-col rounded">
+        <div className="flex h-14 items-center gap-8 px-12">
           <button
             type="button"
             onClick={() => setTab('informacoesGerais')}
-            className={`${Outfit400.className} ${tab === 'informacoesGerais' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
+            className={`${Outfit400.className} ${tab === 'informacoesGerais' && 'border-b-2 border-[#0F9B7F] bg-white'} h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
           >
             INFORMAÇÕES GERAIS
           </button>
           <button
             type="button"
             onClick={() => setTab('integracao')}
-            className={`${Outfit400.className} ${tab === 'integracao' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
+            className={`${Outfit400.className} ${tab === 'integracao' && 'border-b-2 border-[#0F9B7F] bg-white'} h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
           >
             INTEGRAÇÃO
           </button>
           <button
             type="button"
             onClick={() => setTab('vincularExames')}
-            className={`${Outfit400.className} ${tab === 'vincularExames' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
+            className={`${Outfit400.className} ${tab === 'vincularExames' && 'border-b-2 border-[#0F9B7F] bg-white'} h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
           >
             VINCULAR EXAMES
           </button>

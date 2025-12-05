@@ -99,12 +99,13 @@ const EditMethod = ({ onClose, selectedMethod, findData }) => {
         const responseMethod = await UpdateMethod(values.id, payload)
 
         if (!responseMethod?.success) {
-          const apiErrors = responseMethod?.error?.erros || [
-            'Erro ao cadastrar método.',
-          ]
-
-          apiErrors.forEach((message) => {
-            toast.error(message, { position: 'top-right' })
+          responseMethod?.error?.erros?.forEach((element) => {
+            toast.error(element, {
+              position: 'top-right',
+            })
+          })
+          toast.error(responseMethod.error.mensagem, {
+            position: 'top-right',
           })
 
           return

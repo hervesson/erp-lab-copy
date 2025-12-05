@@ -23,7 +23,7 @@ export async function CreateSample(payload) {
     }
   } catch (error) {
     const fallback = {
-      message: 'Erro desconhecido ao tentar criar unidade',
+      mensagem: 'Erro desconhecido ao tentar criar Método',
       statusCode: 500,
       error: 'UnknownError',
     }
