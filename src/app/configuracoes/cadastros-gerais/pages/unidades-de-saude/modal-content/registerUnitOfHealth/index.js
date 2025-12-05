@@ -2,15 +2,10 @@ import CancelRegister from '@/components/Alerts/CancelRegister'
 import SuccessRegister from '@/components/Alerts/SuccessRegister'
 import ModalFramer from '@/components/ModalFramer'
 import { Outfit400, Outfit500 } from '@/fonts'
-import {
-  CreateUnit,
-  ListAllCNAEs,
-  listAllServicesOfHealth,
-  listBankAccount,
-} from '@/helpers'
+import { CreateUnit, listAllServicesOfHealth, listBankAccount } from '@/helpers'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import { validationSchemaCreateUnit } from '../components/schema'
 
 // Components
@@ -28,7 +23,6 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
 
   // Coisas
   const [services, setServices] = useState([])
-  const [CNAEs, setCNAES] = useState([])
 
   const [banks, setBanks] = useState([])
 
@@ -38,20 +32,12 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
   useEffect(() => {
     const findUsersByFilters = async () => {
       try {
-        const [allServices, allCnaes, AllAccounts] = await Promise.all([
+        const [allServices, AllAccounts] = await Promise.all([
           listAllServicesOfHealth(),
-          ListAllCNAEs(),
           listBankAccount('', '', '', '', 100000),
         ])
 
         const servcs = allServices.data.map((item) => {
-          return {
-            id: item.id,
-            label: `${item.codigo} - ${item.descricao}`,
-          }
-        })
-
-        const cns = allCnaes.data.map((item) => {
           return {
             id: item.id,
             label: `${item.codigo} - ${item.descricao}`,
@@ -66,7 +52,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
         })
 
         setServices(servcs)
-        setCNAES(cns)
+
         setBanks(acc)
       } catch (error) {
         console.error(error)
@@ -375,11 +361,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
         <div className="flex h-full w-screen gap-x-3 overflow-x-auto">
           <div className="mx-12 my-7 flex h-fit flex-1 flex-col gap-8 rounded bg-white p-12">
             {/* informacoes */}
-            <InformacoesBasicas
-              formik={formik}
-              services={services}
-              CNAEs={CNAEs}
-            />
+            <InformacoesBasicas formik={formik} services={services} />
             {/* endereco */}
             <Endereco formik={formik} />
             {/* horários */}
@@ -403,7 +385,7 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
           {steps[step]}
         </ModalFramer>
       )}
-      {/* <ToastContainer /> */}
+      <ToastContainer />
     </>
   )
 }

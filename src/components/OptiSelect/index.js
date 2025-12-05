@@ -35,7 +35,7 @@ const OptiSelect = ({
 
   useEffect(() => {
     if (options.length > 0 && inputValue.length > 0) {
-      setMostrarBandeja(true)
+      // setMostrarBandeja(true)
     }
   }, [options.length, inputValue])
 
@@ -53,7 +53,7 @@ const OptiSelect = ({
     <div style={{ position: 'relative', flex: 1 }}>
       <input
         placeholder={placeholder}
-        className={`focus:ring-none flex h-[40px] w-full items-center gap-1 rounded-[8px] bg-[#FFF] px-[8px] text-[16px] text-[#222] outline-none ${className} ${Outfit400.className}`}
+        className={`focus:ring-none flex h-10 w-full items-center gap-1 rounded-lg bg-[#FFF] px-2 text-[16px] text-[#222] outline-none ${className} ${Outfit400.className}`}
         ref={inputRef}
         type="text"
         value={inputValue}
@@ -117,7 +117,7 @@ const OptiSelect = ({
               </div>
             ))
           ) : (
-            <div className="flex flex-col items-center p-[8px]">
+            <div className="flex flex-col items-center p-2">
               <p className={`${Outfit400.className} text-[16px] text-[#222]`}>
                 Nenhum resultado encontrato
               </p>

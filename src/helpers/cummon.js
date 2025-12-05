@@ -34,12 +34,15 @@ export async function SearchCep(cep) {
 
 export async function SearchCNAE(term) {
   try {
-    const auth = await api.get('/infraestrutura/cnae/search?q=' + term, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+    const auth = await api.get(
+      '/infraestrutura/cnae?descricao=' + term + '&page=1&limit=20',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
       },
-    })
+    )
 
     return {
       success: true,

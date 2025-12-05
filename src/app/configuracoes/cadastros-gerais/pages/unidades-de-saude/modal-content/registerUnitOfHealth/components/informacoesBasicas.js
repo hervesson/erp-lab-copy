@@ -1,3 +1,4 @@
+import CustonSearchCnaes from '@/components/CutomSearchCnaes'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { SearchCnpj } from '@/helpers'
 import { formatCNAE, formatCnpj, formatPhoneNumber } from '@/utils'
@@ -5,7 +6,7 @@ import { formatCNAE, formatCnpj, formatPhoneNumber } from '@/utils'
 import CustomSelect from '@/components/CustomSelect'
 import { CloseCircle, InfoCircle } from 'iconsax-reactjs'
 
-const InformacoesBasicas = ({ formik, services, CNAEs }) => {
+const InformacoesBasicas = ({ formik, services }) => {
   const safe = (value) => (value == null ? '' : value)
 
   const searchCNPJ = async () => {
@@ -37,8 +38,8 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
         'cnaePrincipal',
         result?.data?.cnaePrincipal
           ? {
-              id: formatCNAE(result?.data?.cnaePrincipal.id),
-              label: `${result?.data?.cnaePrincipal.codigo} - ${result?.data?.cnaePrincipal.descricao}`,
+              id: result?.data?.cnaePrincipal.id,
+              label: `${formatCNAE(result?.data?.cnaePrincipal.codigo)} - ${result?.data?.cnaePrincipal.descricao}`,
             }
           : {}, // ou '' / {} dependendo do que seu form espera
       )
@@ -46,8 +47,8 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
         'cnaesSecundariosSelecionados',
         result?.data?.cnaesSecundarios?.map((e) => {
           return {
-            id: formatCNAE(e?.id),
-            label: `${e?.codigo} -
+            id: e?.id,
+            label: `${formatCNAE(e?.codigo)} -
             ${e?.descricao}`,
           }
         }),
@@ -235,7 +236,6 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
       <div className="flex flex-1 flex-col gap-1">
         <label className={`${Outfit400.className} text-[14px] text-[#222222]`}>
           Código do serviço principal
-          <strong className="text-[#F23434]">*</strong>
         </label>
         <CustomSelect
           select={formik.values.codigoServicoPrincipal}
@@ -333,14 +333,12 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
         <label className={`${Outfit400.className} text-[14px] text-[#222222]`}>
           CNAE principal
         </label>
-        <CustomSelect
-          select={formik.values.cnaePrincipal}
-          setSelect={(e) => formik.setFieldValue('cnaePrincipal', e)}
-          options={CNAEs}
-          placeholder={`Digite o CNAE`}
-          className={
-            'border border-[#BBBBBB] hover:border-[#0F9B7F] active:border-[#0F9B7F]'
-          }
+        <CustonSearchCnaes
+          value={formik.values.cnaePrincipal.label}
+          setValue={(opt) => {
+            formik.setFieldValue(`cnaePrincipal`, opt)
+            formik.setFieldTouched(`cnaePrincipal`, true, false)
+          }}
         />
       </div>
       <div className="flex flex-1 flex-col gap-1">
@@ -348,14 +346,11 @@ const InformacoesBasicas = ({ formik, services, CNAEs }) => {
           CNAE(s) secundários
         </label>
         <div className="flex flex-1 gap-3">
-          <CustomSelect
-            select={formik.values.cnaeSecundario}
-            setSelect={(e) => formik.setFieldValue('cnaeSecundario', e)}
-            options={CNAEs}
-            placeholder={`Digite o CNAE`}
-            className={
-              'border border-[#BBBBBB] hover:border-[#0F9B7F] active:border-[#0F9B7F]'
-            }
+          <CustonSearchCnaes
+            setValue={(opt) => {
+              formik.setFieldValue(`cnaeSecundario`, opt)
+              formik.setFieldTouched(`cnaeSecundario`, true, false)
+            }}
           />
           <button
             type="button"

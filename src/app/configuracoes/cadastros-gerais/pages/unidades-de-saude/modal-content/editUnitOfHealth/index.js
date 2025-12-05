@@ -1,11 +1,6 @@
 import ModalFramer from '@/components/ModalFramer'
 import { Outfit400, Outfit500 } from '@/fonts'
-import {
-  ListAllCNAEs,
-  listAllServicesOfHealth,
-  listBankAccount,
-  UpdateUnit,
-} from '@/helpers'
+import { listAllServicesOfHealth, listBankAccount, UpdateUnit } from '@/helpers'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
@@ -23,6 +18,7 @@ import Horarios from './components/horarios'
 import Impostos from './components/impostos'
 import InformacoesBasicas from './components/informacoesBasicas'
 import Responsaveis from './components/responsaveis'
+import { formatCNAE } from '@/utils'
 dayjs.extend(customParseFormat)
 
 const EditUnityOfHealth = ({ onClose, findData, unit }) => {
@@ -31,7 +27,6 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
 
   // Coisas
   const [services, setServices] = useState([])
-  const [CNAEs, setCNAES] = useState([])
 
   const [openModalAlerts, setOpenModalAlerts] = useState(false)
 
@@ -78,9 +73,8 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
   useEffect(() => {
     const findUsersByFilters = async () => {
       try {
-        const [allServices, allCnaes, AllAccounts] = await Promise.all([
+        const [allServices, AllAccounts] = await Promise.all([
           listAllServicesOfHealth(),
-          ListAllCNAEs(),
           listBankAccount('', '', '', '', 100000),
         ])
 
@@ -106,17 +100,6 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
           csecundarios,
         )
 
-        const cns = allCnaes.data.map((item) => {
-          return {
-            id: item.id,
-            label: `${item.codigo} - ${item.descricao}`,
-          }
-        })
-
-        const principalCnae = cns.find(
-          (element) => element.id === unit?.cnaePrincipalId,
-        )
-
         const acc = AllAccounts.data.data.map((item) => {
           return {
             id: item.id,
@@ -124,12 +107,9 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
           }
         })
 
-        console.log('contas', acc)
-
-        formik.setFieldValue('cnaePrincipal', principalCnae)
+        // formik.setFieldValue('cnaePrincipal', principalCnae)
 
         setServices(servcs)
-        setCNAES(cns)
         setBanks(acc)
       } catch (error) {
         console.error(error)
@@ -139,6 +119,8 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
     findUsersByFilters()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  console.log(unit)
 
   const formik = useFormik({
     validationSchema: validationSchemaCreateUnit,
@@ -166,7 +148,7 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
         unit?.cnaeSecundarios?.map((c) => {
           return {
             id: c?.cnae?.id,
-            label: `${c?.cnae?.codigo} - ${c?.cnae?.descricao}`,
+            label: `${formatCNAE(c?.cnae?.codigo)} - ${c?.cnae?.descricao}`,
           }
         }) || [],
 
@@ -416,11 +398,7 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
         <div className="flex h-full w-screen gap-x-3 overflow-x-auto">
           <div className="mx-12 my-7 flex h-fit flex-1 flex-col gap-8 rounded bg-white p-12">
             {/* informacoes */}
-            <InformacoesBasicas
-              formik={formik}
-              services={services}
-              CNAEs={CNAEs}
-            />
+            <InformacoesBasicas formik={formik} services={services} />
             {/* endereco */}
             <Endereco formik={formik} />
             {/* horários */}
