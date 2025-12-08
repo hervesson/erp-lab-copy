@@ -1,29 +1,21 @@
 'use client'
 import CustomSelect from '@/components/CustomSelect'
-import ModalLeft from '@/components/ModalLeft'
-import ModalUp from '@/components/ModalUp'
+
 import Pagination from '@/components/Pagination'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { listAllUnits } from '@/helpers'
 import useDebounce from '@/hooks/useDebounce'
+import { useFormik } from 'formik'
 import { AddSquare, DocumentDownload, SearchStatus } from 'iconsax-reactjs'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
-import EditUnityOfHealth from './modal-content/editUnitOfHealth'
-import ProfileUnitHealth from './modal-content/profileUnitOfHealth'
-import RegisterUnitOfHealth from './modal-content/registerUnitOfHealth'
 
 import checkGreen from '../../../../../../public/assets/images/directions.png'
 
-const FormularioDeAtendimento = ({
-  openModalRegisteUnits,
-  setModalRegisterUnits,
-}) => {
+const FormularioDeAtendimento = () => {
   const [units, setUnits] = useState([])
-  const [openModalProfileUnit, setOpenModalProfileUnit] = useState(false)
-  const [openModalEditUnit, setModalEditUnit] = useState(false)
-  const [selectedUnit] = useState({})
+
   const [total, setTotal] = useState(0)
 
   // focus
@@ -34,19 +26,40 @@ const FormularioDeAtendimento = ({
   const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
-    // const findData = async () => {
-    //   try {
-    //     const unts = await listAllUnits()
-    //     if (unts.success) {
-    //       setUnits(unts.data.data)
-    //       setTotal(unts.data.total)
-    //     }
-    //   } catch (error) {
-    //     console.log('erro', error)
-    //   }
-    // }
-    // findData()
+    const findData = async () => {
+      try {
+        const [unts] = await Promise.all([listAllUnits(1, '', 100000)])
+
+        if (unts.success) {
+          const valuesUnits = unts?.data?.data?.map((item) => {
+            return {
+              id: item.id,
+              label: item.nomeUnidade,
+            }
+          })
+          setUnits(valuesUnits)
+        }
+      } catch (error) {
+        console.log('erro', error)
+      }
+    }
+    findData()
   }, [])
+
+  const formik = useFormik({
+    // validationSchema: validationSchemaSalasSetores,
+    validateOnBlur: false,
+    validateOnChange: true,
+    initialValues: {
+      unidade: '',
+      sala: '',
+      nomeDoEquipamento: '',
+      numeracao: '',
+    },
+    onSubmit: async (values) => {
+      console.log(values)
+    },
+  })
 
   const findData = async () => {
     try {
@@ -101,20 +114,18 @@ const FormularioDeAtendimento = ({
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-[32px]">
+    <div className="flex flex-1 flex-col gap-8">
       <div className="flex h-[76px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
-        <div className="flex flex-1 gap-3 rounded-[8px] px-[16px]">
+        <div className="flex flex-1 gap-3 rounded-lg px-4">
           <div className="flex flex-1 items-center justify-around gap-[16px]">
             <CustomSelect
-              select={{ id: 'todas', label: 'Status: Todas' }}
-              // setSelect={(e) => findDataPerStatus(e)}
-              options={[
-                { id: '', label: 'Todas' },
-                { id: 'ativas', label: 'Ativas' },
-                { id: 'inativas', label: 'Inativas' },
-              ]}
+              select={formik.values.unidade}
+              setSelect={(e) => formik.setFieldValue('unidade', e)}
+              options={units}
               placeholder={'Selecione uma unidade'}
-              className={'h-[44px] border border-[#BBBBBB] bg-[#FFF]'}
+              className={
+                'flex-1 border border-[#BBBBBB] bg-white hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+              }
             />
             <div className="flex gap-[16px]">
               <div className="flex h-[44px] w-[497px] items-center justify-center gap-3 rounded-[8px] border border-[#A9A9A9] bg-[#FFF]">
@@ -253,31 +264,6 @@ const FormularioDeAtendimento = ({
           currentPage={currentPage} // Pass the current page state
         />
       </div>
-      <ModalUp
-        isOpen={openModalRegisteUnits}
-        onClose={() => setModalRegisterUnits(false)}
-      >
-        <RegisterUnitOfHealth
-          onClose={() => setModalRegisterUnits(false)}
-          findData={() => findData()}
-        />
-      </ModalUp>
-      <ModalUp
-        isOpen={openModalEditUnit}
-        onClose={() => setModalEditUnit(false)}
-      >
-        <EditUnityOfHealth
-          onClose={() => setModalEditUnit(false)}
-          findData={() => findData()}
-          unit={selectedUnit}
-        />
-      </ModalUp>
-      <ModalLeft
-        isOpen={openModalProfileUnit}
-        onClose={() => setOpenModalProfileUnit(false)}
-      >
-        <ProfileUnitHealth unit={selectedUnit} />
-      </ModalLeft>
       <ToastContainer />
     </div>
   )

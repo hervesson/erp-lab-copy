@@ -63,7 +63,9 @@ const SalasSetores = () => {
           setSalasSetores(sls.data.data)
           setTotal(sls.data.meta.total)
         }
-        setFields(fields?.data?.data)
+        if (fields.success) {
+          setFields(fields?.data?.data)
+        }
       } catch (error) {
         console.log('erro', error)
       }
@@ -85,7 +87,7 @@ const SalasSetores = () => {
         const payload = {
           codigoInterno,
           unidadeId: values.unidade.id,
-          setor: values.setor.id,
+          setorId: values.setor.id,
           nome: values.nomeDaSala,
         }
         const response = await CreateSalasSetores(payload)
@@ -355,13 +357,7 @@ const SalasSetores = () => {
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
-                  {
-                    fields
-                      ?.find((element) => element?.nomeCampo === 'setor')
-                      ?.alternativas.find(
-                        (element) => element.id === item.setor,
-                      ).textoAlternativa
-                  }
+                  {item?.setor?.textoAlternativa}
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}

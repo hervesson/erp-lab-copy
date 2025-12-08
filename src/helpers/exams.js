@@ -30,6 +30,8 @@ export async function CreateExam(payload) {
 
     const errData = error?.response?.data || fallback
 
+    console.log(error?.response)
+
     return {
       success: false,
       error: errData,

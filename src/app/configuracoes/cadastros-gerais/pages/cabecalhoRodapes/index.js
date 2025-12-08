@@ -1,29 +1,20 @@
 'use client'
 import CustomSelect from '@/components/CustomSelect'
-import ModalLeft from '@/components/ModalLeft'
-import ModalUp from '@/components/ModalUp'
 import Pagination from '@/components/Pagination'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { listAllUnits } from '@/helpers'
 import useDebounce from '@/hooks/useDebounce'
+import { useFormik } from 'formik'
 import { AddSquare, DocumentDownload, SearchStatus } from 'iconsax-reactjs'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
-import EditUnityOfHealth from './modal-content/editUnitOfHealth'
-import ProfileUnitHealth from './modal-content/profileUnitOfHealth'
-import RegisterUnitOfHealth from './modal-content/registerUnitOfHealth'
 
 import checkGreen from '../../../../../../public/assets/images/directions.png'
 
-const CabecalhosRodapes = ({
-  openModalRegisteUnits,
-  setModalRegisterUnits,
-}) => {
+const CabecalhosRodapes = () => {
   const [units, setUnits] = useState([])
-  const [openModalProfileUnit, setOpenModalProfileUnit] = useState(false)
-  const [openModalEditUnit, setModalEditUnit] = useState(false)
-  const [selectedUnit] = useState({})
+
   const [total, setTotal] = useState(0)
 
   const [selectButton, setSelectButton] = useState('cabecalho')
@@ -36,19 +27,40 @@ const CabecalhosRodapes = ({
   const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
-    // const findData = async () => {
-    //   try {
-    //     const unts = await listAllUnits()
-    //     if (unts.success) {
-    //       setUnits(unts.data.data)
-    //       setTotal(unts.data.total)
-    //     }
-    //   } catch (error) {
-    //     console.log('erro', error)
-    //   }
-    // }
-    // findData()
+    const findData = async () => {
+      try {
+        const [unts] = await Promise.all([listAllUnits(1, '', 100000)])
+
+        if (unts.success) {
+          const valuesUnits = unts?.data?.data?.map((item) => {
+            return {
+              id: item.id,
+              label: item.nomeUnidade,
+            }
+          })
+          setUnits(valuesUnits)
+        }
+      } catch (error) {
+        console.log('erro', error)
+      }
+    }
+    findData()
   }, [])
+
+  const formik = useFormik({
+    // validationSchema: validationSchemaSalasSetores,
+    validateOnBlur: false,
+    validateOnChange: true,
+    initialValues: {
+      unidade: '',
+      sala: '',
+      nomeDoEquipamento: '',
+      numeracao: '',
+    },
+    onSubmit: async (values) => {
+      console.log(values)
+    },
+  })
 
   const findData = async () => {
     try {
@@ -103,38 +115,36 @@ const CabecalhosRodapes = ({
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-[32px]">
-      <div className="flex h-[76px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
-        <div className="flex flex-1 gap-3 rounded-[8px] px-[16px]">
-          <div className="flex flex-1 items-center justify-around gap-[16px]">
+    <div className="flex flex-1 flex-col gap-8">
+      <div className="flex h-[76px] items-center justify-between rounded-2xl bg-[#F9F9F9]">
+        <div className="flex flex-1 gap-3 rounded-lg px-4">
+          <div className="flex flex-1 items-center justify-around gap-4">
             <CustomSelect
-              select={{ id: 'todas', label: 'Status: Todas' }}
-              // setSelect={(e) => findDataPerStatus(e)}
-              options={[
-                { id: '', label: 'Todas' },
-                { id: 'ativas', label: 'Ativas' },
-                { id: 'inativas', label: 'Inativas' },
-              ]}
+              select={formik.values.unidade}
+              setSelect={(e) => formik.setFieldValue('unidade', e)}
+              options={units}
               placeholder={'Selecione uma unidade'}
-              className={'h-[44px] border border-[#BBBBBB] bg-[#FFF]'}
+              className={
+                'flex-1 border border-[#BBBBBB] bg-white hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+              }
             />
-            <div className="flex h-[44px] w-[209px] items-center justify-evenly rounded-[50px] bg-white">
+            <div className="flex h-11 w-[209px] items-center justify-evenly rounded-[50px] bg-white">
               <button
-                className={`${Outfit400.className} h-[40px] w-[109px] rounded-[50px] text-[16px] ${selectButton === 'cabecalho' ? 'bg-[#057B64] text-white' : 'bg-[#F9F9F9] text-[#494949]'}`}
+                className={`${Outfit400.className} h-10 w-[109px] rounded-[50px] text-[16px] ${selectButton === 'cabecalho' ? 'bg-[#057B64] text-white' : 'bg-[#F9F9F9] text-[#494949]'}`}
                 onClick={() => setSelectButton('cabecalho')}
               >
                 Cabeçalho
               </button>
 
               <button
-                className={`${Outfit400.className} h-[40px] w-[88px] rounded-[50px] text-[16px] ${selectButton === 'rodapé' ? 'bg-[#057B64] text-white' : 'bg-[#F9F9F9] text-[#494949]'}`}
+                className={`${Outfit400.className} h-10 w-[88px] rounded-[50px] text-[16px] ${selectButton === 'rodapé' ? 'bg-[#057B64] text-white' : 'bg-[#F9F9F9] text-[#494949]'}`}
                 onClick={() => setSelectButton('rodapé')}
               >
                 Rodapé
               </button>
             </div>
-            <div className="flex gap-[16px]">
-              <div className="flex h-[44px] w-[497px] items-center justify-center gap-3 rounded-[8px] border border-[#A9A9A9] bg-[#FFF]">
+            <div className="flex gap-4">
+              <div className="flex h-11 w-[497px] items-center justify-center gap-3 rounded-lg border border-[#A9A9A9] bg-[#FFF]">
                 <DocumentDownload size="28" color="#737373" />
                 <span
                   className={`${Outfit300.className} text-[#222] uppercase`}
@@ -146,7 +156,7 @@ const CabecalhosRodapes = ({
             <button
               type="botton"
               // onClick={() => setOpenModalCategorie(true)}
-              className={`flex h-[44px] w-[154px] items-center justify-center gap-2 rounded-[8px] bg-[#0F9B7F]`}
+              className={`flex h-11 w-[154px] items-center justify-center gap-2 rounded-lg bg-[#0F9B7F]`}
             >
               <AddSquare size="32" color="#ffffff" variant="Bulk" />
               <span className={`${Outfit400.className} text-[16px] text-white`}>
@@ -158,16 +168,16 @@ const CabecalhosRodapes = ({
       </div>
 
       <div
-        className={`flex h-[40px] items-center rounded-lg px-2 ${
+        className={`flex h-10 items-center rounded-lg px-2 ${
           isFocusedSearch
-            ? 'border-[1px] border-[#0F9B7F]'
+            ? 'border border-[#0F9B7F]'
             : 'border border-[#BBBBBB]'
         }`}
       >
         <input
           placeholder="Pesquisar"
           onChange={handleChangeUnit}
-          className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
+          className={`h-full w-full rounded-lg ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
           onFocus={() => setIsFocusedSearch(true)}
           onBlur={() => setIsFocusedSearch(false)}
         />
@@ -176,7 +186,7 @@ const CabecalhosRodapes = ({
 
       <table className="w-full">
         <thead className="sticky top-0">
-          <tr className="h-[48px] bg-[#D4D4D4]">
+          <tr className="h-12 bg-[#D4D4D4]">
             <th
               className={`text-[14px] ${Outfit400.className} text-center text-[#3E3E3E]`}
             >
@@ -211,7 +221,7 @@ const CabecalhosRodapes = ({
           {units?.map((item, index) => {
             return (
               <tr
-                className="h-[64px] border-b border-[#D9D9D9] bg-white py-[5px]"
+                className="h-16 border-b border-[#D9D9D9] bg-white py-[5px]"
                 key={index.toString()}
               >
                 <td
@@ -239,9 +249,9 @@ const CabecalhosRodapes = ({
           })}
         </tbody>
       </table>
-      <div className="flex h-[40px] items-center justify-between">
+      <div className="flex h-10 items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
+          <div className="flex h-10 w-[61px] items-center rounded-lg bg-[#F9F9F9]">
             <span
               className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
             >
@@ -260,31 +270,6 @@ const CabecalhosRodapes = ({
           currentPage={currentPage} // Pass the current page state
         />
       </div>
-      <ModalUp
-        isOpen={openModalRegisteUnits}
-        onClose={() => setModalRegisterUnits(false)}
-      >
-        <RegisterUnitOfHealth
-          onClose={() => setModalRegisterUnits(false)}
-          findData={() => findData()}
-        />
-      </ModalUp>
-      <ModalUp
-        isOpen={openModalEditUnit}
-        onClose={() => setModalEditUnit(false)}
-      >
-        <EditUnityOfHealth
-          onClose={() => setModalEditUnit(false)}
-          findData={() => findData()}
-          unit={selectedUnit}
-        />
-      </ModalUp>
-      <ModalLeft
-        isOpen={openModalProfileUnit}
-        onClose={() => setOpenModalProfileUnit(false)}
-      >
-        <ProfileUnitHealth unit={selectedUnit} />
-      </ModalLeft>
       <ToastContainer />
     </div>
   )
