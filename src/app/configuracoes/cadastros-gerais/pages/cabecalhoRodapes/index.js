@@ -62,18 +62,18 @@ const CabecalhosRodapes = () => {
     },
   })
 
-  const findData = async () => {
-    try {
-      const unts = await listAllUnits()
+  // const findData = async () => {
+  //   try {
+  //     const unts = await listAllUnits()
 
-      if (unts.success) {
-        setUnits(unts.data.data)
-        setTotal(unts.data.total)
-      }
-    } catch (error) {
-      console.log('erro', error)
-    }
-  }
+  //     if (unts.success) {
+  //       setUnits(unts.data.data)
+  //       setTotal(unts.data.total)
+  //     }
+  //   } catch (error) {
+  //     console.log('erro', error)
+  //   }
+  // }
 
   // Filtrar por paginação
   const findDataPerPage = async (props) => {

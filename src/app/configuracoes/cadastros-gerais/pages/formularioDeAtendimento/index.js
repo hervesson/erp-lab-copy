@@ -61,18 +61,18 @@ const FormularioDeAtendimento = () => {
     },
   })
 
-  const findData = async () => {
-    try {
-      const unts = await listAllUnits()
+  // const findData = async () => {
+  //   try {
+  //     const unts = await listAllUnits()
 
-      if (unts.success) {
-        setUnits(unts.data.data)
-        setTotal(unts.data.total)
-      }
-    } catch (error) {
-      console.log('erro', error)
-    }
-  }
+  //     if (unts.success) {
+  //       setUnits(unts.data.data)
+  //       setTotal(unts.data.total)
+  //     }
+  //   } catch (error) {
+  //     console.log('erro', error)
+  //   }
+  // }
 
   // Filtrar por paginação
   const findDataPerPage = async (props) => {
@@ -115,9 +115,9 @@ const FormularioDeAtendimento = () => {
 
   return (
     <div className="flex flex-1 flex-col gap-8">
-      <div className="flex h-[76px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
+      <div className="flex h-[76px] items-center justify-between rounded-2xl bg-[#F9F9F9]">
         <div className="flex flex-1 gap-3 rounded-lg px-4">
-          <div className="flex flex-1 items-center justify-around gap-[16px]">
+          <div className="flex flex-1 items-center justify-around gap-4">
             <CustomSelect
               select={formik.values.unidade}
               setSelect={(e) => formik.setFieldValue('unidade', e)}
@@ -127,8 +127,8 @@ const FormularioDeAtendimento = () => {
                 'flex-1 border border-[#BBBBBB] bg-white hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
               }
             />
-            <div className="flex gap-[16px]">
-              <div className="flex h-[44px] w-[497px] items-center justify-center gap-3 rounded-[8px] border border-[#A9A9A9] bg-[#FFF]">
+            <div className="flex gap-4">
+              <div className="flex h-11 w-[497px] items-center justify-center gap-3 rounded-lg border border-[#A9A9A9] bg-[#FFF]">
                 <DocumentDownload size="28" color="#737373" />
                 <span
                   className={`${Outfit300.className} text-[#222] uppercase`}
@@ -140,12 +140,12 @@ const FormularioDeAtendimento = () => {
             <input
               placeholder="Observação"
               onChange={handleChangeUnit}
-              className={`h-[44px] rounded-[8px] ${Outfit400.className} border border-[#BBBBBB] bg-[#FFF] px-2 text-[16px] text-[#222] outline-0`}
+              className={`h-11 rounded-lg ${Outfit400.className} border border-[#BBBBBB] bg-[#FFF] px-2 text-[16px] text-[#222] outline-0`}
             />
             <button
               type="botton"
               // onClick={() => setOpenModalCategorie(true)}
-              className={`flex h-[44px] w-[154px] items-center justify-center gap-2 rounded-[8px] bg-[#0F9B7F]`}
+              className={`flex h-11 w-[154px] items-center justify-center gap-2 rounded-lg bg-[#0F9B7F]`}
             >
               <AddSquare size="32" color="#ffffff" variant="Bulk" />
               <span className={`${Outfit400.className} text-[16px] text-white`}>
@@ -157,16 +157,16 @@ const FormularioDeAtendimento = () => {
       </div>
 
       <div
-        className={`flex h-[40px] items-center rounded-lg px-2 ${
+        className={`flex h-10 items-center rounded-lg px-2 ${
           isFocusedSearch
-            ? 'border-[1px] border-[#0F9B7F]'
+            ? 'border border-[#0F9B7F]'
             : 'border border-[#BBBBBB]'
         }`}
       >
         <input
           placeholder="Pesquisar"
           onChange={handleChangeUnit}
-          className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
+          className={`h-full w-full rounded-lg ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
           onFocus={() => setIsFocusedSearch(true)}
           onBlur={() => setIsFocusedSearch(false)}
         />
@@ -175,7 +175,7 @@ const FormularioDeAtendimento = () => {
 
       <table className="w-full">
         <thead className="sticky top-0">
-          <tr className="h-[48px] bg-[#D4D4D4]">
+          <tr className="h-12 bg-[#D4D4D4]">
             <th
               className={`text-[14px] ${Outfit400.className} text-center text-[#3E3E3E]`}
             >
@@ -215,7 +215,7 @@ const FormularioDeAtendimento = () => {
           {units?.map((item, index) => {
             return (
               <tr
-                className="h-[64px] border-b border-[#D9D9D9] bg-white py-[5px]"
+                className="h-16 border-b border-[#D9D9D9] bg-white py-[5px]"
                 key={index.toString()}
               >
                 <td
@@ -243,9 +243,9 @@ const FormularioDeAtendimento = () => {
           })}
         </tbody>
       </table>
-      <div className="flex h-[40px] items-center justify-between">
+      <div className="flex h-10 items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
+          <div className="flex h-10 w-[61px] items-center rounded-lg bg-[#F9F9F9]">
             <span
               className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
             >
