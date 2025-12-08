@@ -27,7 +27,7 @@ const CabecalhosRodapes = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
-    const findData = async () => {
+    const loadInitialUnits = async () => {
       try {
         const [unts] = await Promise.all([listAllUnits(1, '', 100000)])
 
@@ -44,7 +44,7 @@ const CabecalhosRodapes = () => {
         console.log('erro', error)
       }
     }
-    findData()
+    loadInitialUnits()
   }, [])
 
   const formik = useFormik({
@@ -61,19 +61,6 @@ const CabecalhosRodapes = () => {
       console.log(values)
     },
   })
-
-  const findData = async () => {
-    try {
-      const unts = await listAllUnits()
-
-      if (unts.success) {
-        setUnits(unts.data.data)
-        setTotal(unts.data.total)
-      }
-    } catch (error) {
-      console.log('erro', error)
-    }
-  }
 
   // Filtrar por paginação
   const findDataPerPage = async (props) => {
