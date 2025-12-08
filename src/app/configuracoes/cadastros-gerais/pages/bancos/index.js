@@ -40,8 +40,8 @@ const Bancos = ({ modalRegisterBanks, setModalRegisterBanks }) => {
     const fetchBanks = async () => {
       try {
         const response = await listBankAccount()
-        setBanks(response.data.data)
-        setTotal(response.data.meta.total)
+        setBanks(response?.data?.data)
+        setTotal(response?.data?.meta?.total)
       } catch (error) {
         console.error('Error fetching banks:', error)
       }

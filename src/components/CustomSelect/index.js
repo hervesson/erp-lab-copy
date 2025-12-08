@@ -37,7 +37,7 @@ const CustomSelect = ({
   return (
     <div style={{ position: 'relative', flex: 1 }}>
       <div
-        className={`flex h-[40px] items-center justify-between rounded-[8px] px-2 ${className}`}
+        className={`flex h-10 items-center justify-between rounded-[8px] px-2 ${className}`}
         onClick={readOnly ? null : () => setMostrarBandeja(true)}
         ref={inputRef}
       >

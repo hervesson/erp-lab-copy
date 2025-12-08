@@ -11,6 +11,7 @@ import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 // Components
+import { formatCNAE } from '@/utils'
 import CertificadoDigital from './components/certificadoDigital'
 import Endereco from './components/endereco'
 import Financeiro from './components/financeiro'
@@ -18,7 +19,6 @@ import Horarios from './components/horarios'
 import Impostos from './components/impostos'
 import InformacoesBasicas from './components/informacoesBasicas'
 import Responsaveis from './components/responsaveis'
-import { formatCNAE } from '@/utils'
 dayjs.extend(customParseFormat)
 
 const EditUnityOfHealth = ({ onClose, findData, unit }) => {
@@ -142,7 +142,10 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
       codigoServicoPrincipal: {},
       codigoServicoSecundario: {},
       codigoServicoSecundarioSelecionados: [],
-      cnaePrincipal: {},
+      cnaePrincipal: {
+        id: unit?.cnaePrincipal?.id,
+        label: `${formatCNAE(unit?.cnaePrincipal?.codigo)} - ${unit?.cnaePrincipal?.descricao}`,
+      },
       cnaeSecundario: {},
       cnaesSecundariosSelecionados:
         unit?.cnaeSecundarios?.map((c) => {
@@ -190,7 +193,7 @@ const EditUnityOfHealth = ({ onClose, findData, unit }) => {
       optantePeloSimples: unit?.optanteSimplesNacional,
 
       // financeiro
-      financeiro: unit.contas_bancarias.map((item) => {
+      financeiro: unit?.contas_bancarias?.map((item) => {
         return {
           conta: {
             id: item?.conta_bancaria?.id,

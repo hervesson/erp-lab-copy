@@ -22,6 +22,10 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
   const [exams] = useState([])
   const [setSelectedUnit] = useState({})
 
+  const findData = () => {
+    alert('Chegou aqui')
+  }
+
   return (
     <div className="flex flex-1 flex-col gap-8">
       <div className="flex h-[84px] items-center justify-between rounded-2xl bg-[#F9F9F9]">
@@ -243,7 +247,10 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
         isOpen={openModalRegisterExams}
         onClose={() => setModalRegisterExams(false)}
       >
-        <RegisterExams onClose={() => setModalRegisterExams(false)} />
+        <RegisterExams
+          onClose={() => setModalRegisterExams(false)}
+          findData={() => findData()}
+        />
       </ModalUp>
       {/* <ModalLeft
         isOpen={openModalProfileuUnit}

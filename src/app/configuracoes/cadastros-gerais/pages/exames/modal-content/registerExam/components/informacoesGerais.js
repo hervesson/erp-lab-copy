@@ -2,8 +2,7 @@ import CustomSelect from '@/components/CustomSelect'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { CloseCircle, InfoCircle } from 'iconsax-reactjs'
 
-const InformacoesGerais = ({ formik, fields }) => {
-  console.log(fields)
+const InformacoesGerais = ({ formik, fields, units, labs }) => {
   return (
     <div className="flex w-full flex-col gap-8 rounded bg-[#FFF] p-12">
       <div className="flex flex-col gap-8">
@@ -52,41 +51,55 @@ const InformacoesGerais = ({ formik, fields }) => {
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}
                   >
                     Sinônimos
-                    <strong className="text-[#F23434]">*</strong>
                   </label>
                   <input
-                    {...formik.getFieldProps('codigoInterno')}
+                    {...formik.getFieldProps('sinonimo')}
                     type="text"
-                    id="codigoInterno"
-                    name="codigoInterno"
+                    id="sinonimo"
+                    name="sinonimo"
                     className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
-                    placeholder="Digite todos os sinônimos"
+                    placeholder="Digite todos um sinônimos"
                   />
                 </div>
                 <div className="flex flex-col justify-end gap-1">
                   <button
+                    type="button"
                     className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+                    onClick={() => {
+                      if (
+                        !formik?.values?.sinonimos.includes(
+                          formik.values.sinonimo,
+                        ) &&
+                        formik.values.sinonimo.length > 0
+                      ) {
+                        formik.setFieldValue('sinonimos', [
+                          ...formik?.values?.sinonimos,
+                          formik.values.sinonimo,
+                        ])
+                        formik.setFieldValue('sinonimo', '')
+                      }
+                    }}
                   >
                     ADICIONAR
                   </button>
                 </div>
-                {formik?.values?.unidades?.length > 0 ? (
+                {formik?.values?.sinonimos?.length > 0 ? (
                   <div className="flex flex-2 gap-1">
-                    {formik?.values?.unidades?.map((item, index) => {
+                    {formik?.values?.sinonimos?.map((item, index) => {
                       return (
                         <div
                           key={index.toString()}
                           className={`h-10 self-end bg-[#E0FFF9] ${Outfit400.className} flex items-center gap-3 rounded-[50px] px-3 text-[14px] text-[#0F9B7F]`}
                         >
-                          {item.unidadeId}
+                          {item}
                           <CloseCircle
                             size="22"
                             color="#F23434"
                             variant="Bold"
                             onClick={() =>
                               formik.setFieldValue(
-                                'unidades',
-                                formik.values.unidades.filter(
+                                'sinonimos',
+                                formik.values.sinonimos.filter(
                                   (code) => code !== item,
                                 ),
                               )
@@ -117,6 +130,7 @@ const InformacoesGerais = ({ formik, fields }) => {
                     className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
                   >
                     Código CBHPM
+                    <strong className="text-[#F23434]">*</strong>
                   </label>
                   <InfoCircle size="20" color="#A1A1A1" />
                 </div>
@@ -343,9 +357,9 @@ const InformacoesGerais = ({ formik, fields }) => {
                 <strong className="text-[#F23434]">*</strong>
               </label>
               <CustomSelect
-                select={formik.values.regiaoDeColeta}
-                setSelect={(e) => formik.setFieldValue('regiaoDeColeta', e)}
-                options={[]}
+                select={formik.values.unidade}
+                setSelect={(e) => formik.setFieldValue('unidade', e)}
+                options={units}
                 placeholder={'Selecione uma ou mais unidades'}
                 className={
                   'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
@@ -354,28 +368,43 @@ const InformacoesGerais = ({ formik, fields }) => {
             </div>
             <div className="flex flex-col justify-end gap-1">
               <button
+                type="button"
                 className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+                onClick={() => {
+                  if (
+                    !formik?.values?.unidadesSelecionadas?.includes(
+                      formik?.values?.unidade,
+                    ) &&
+                    formik.values.unidade.id
+                  ) {
+                    formik.setFieldValue('unidadesSelecionadas', [
+                      ...formik.values.unidadesSelecionadas,
+                      formik.values.unidade,
+                    ])
+                    formik.setFieldValue('unidade', {})
+                  }
+                }}
               >
                 ADICIONAR
               </button>
             </div>
-            {formik?.values?.unidades?.length > 0 ? (
+            {formik?.values?.unidadesSelecionadas?.length > 0 ? (
               <div className="flex flex-2 gap-1">
-                {formik?.values?.unidades?.map((item, index) => {
+                {formik?.values?.unidadesSelecionadas?.map((item, index) => {
                   return (
                     <div
                       key={index.toString()}
                       className={`h-10 self-end bg-[#E0FFF9] ${Outfit400.className} flex items-center gap-3 rounded-[50px] px-3 text-[14px] text-[#0F9B7F]`}
                     >
-                      {item.unidadeId}
+                      {item.label}
                       <CloseCircle
                         size="22"
                         color="#F23434"
                         variant="Bold"
                         onClick={() =>
                           formik.setFieldValue(
-                            'unidades',
-                            formik.values.unidades.filter(
+                            'unidadesSelecionadas',
+                            formik.values.unidadesSelecionadas.filter(
                               (code) => code !== item,
                             ),
                           )
@@ -408,48 +437,67 @@ const InformacoesGerais = ({ formik, fields }) => {
                 <strong className="text-[#F23434]">*</strong>
               </label>
               <CustomSelect
-                select={formik.values.setor}
-                setSelect={(e) => formik.setFieldValue('setor', e)}
-                options={[]}
+                select={formik.values.destino}
+                setSelect={(e) => formik.setFieldValue('destino', e)}
+                options={[
+                  {
+                    id: 'interno',
+                    label: 'INTERNO',
+                  },
+                  {
+                    id: 'externo',
+                    label: 'EXTERNO',
+                  },
+                ]}
                 placeholder={'Selecione o destino'}
                 className={
                   'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
                 }
               />
             </div>
-            <div className="flex flex-1 flex-col gap-1">
-              <label
-                className={`${Outfit400.className} text-[14px] text-[#222222]`}
-              >
-                Laboratório de apoio
-                <strong className="text-[#F23434]">*</strong>
-              </label>
-              <CustomSelect
-                select={formik.values.setor}
-                setSelect={(e) => formik.setFieldValue('setor', e)}
-                options={[]}
-                placeholder={'Selecione um laboratório de apoio'}
-                className={
-                  'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                }
-              />
-            </div>
-            <div className="flex flex-1 flex-col gap-1">
-              <label
-                className={`${Outfit400.className} text-[14px] text-[#222222]`}
-              >
-                Telemedicina
-              </label>
-              <CustomSelect
-                select={formik.values.setor}
-                setSelect={(e) => formik.setFieldValue('setor', e)}
-                options={[]}
-                placeholder={'Selecione uma opção'}
-                className={
-                  'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                }
-              />
-            </div>
+            {formik?.values?.tipoExame.label === 'Laboratorial' &&
+              formik?.values.destino.id === 'externo' && (
+                <div className="flex flex-1 flex-col gap-1">
+                  <label
+                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                  >
+                    Laboratório de apoio
+                    <strong className="text-[#F23434]">*</strong>
+                  </label>
+                  <CustomSelect
+                    select={formik.values.laboratorioDeApoio}
+                    setSelect={(e) =>
+                      formik.setFieldValue('laboratorioDeApoio', e)
+                    }
+                    options={labs}
+                    placeholder={'Selecione um laboratório de apoio'}
+                    className={
+                      'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                    }
+                  />
+                </div>
+              )}
+
+            {formik?.values?.tipoExame.label === 'Imagem' &&
+              formik?.values.destino.id === 'externo' && (
+                <div className="flex flex-1 flex-col gap-1">
+                  <label
+                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                  >
+                    Telemedicina
+                  </label>
+                  <CustomSelect
+                    select={formik.values.setor}
+                    setSelect={(e) => formik.setFieldValue('setor', e)}
+                    options={[]}
+                    placeholder={'Selecione uma opção'}
+                    className={
+                      'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                    }
+                  />
+                </div>
+              )}
+
             <div className="flex flex-col gap-1">
               <div className="flex justify-between">
                 <label
@@ -462,14 +510,18 @@ const InformacoesGerais = ({ formik, fields }) => {
                 <button
                   type="button"
                   className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.tiss ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
-                  onClick={() => formik.setFieldValue('tiss', true)}
+                  onClick={() =>
+                    formik.setFieldValue('termoConsentimento', true)
+                  }
                 >
                   SIM
                 </button>
                 <button
                   type="button"
                   className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.tiss ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
-                  onClick={() => formik.setFieldValue('tiss', false)}
+                  onClick={() =>
+                    formik.setFieldValue('termoConsentimento', false)
+                  }
                 >
                   NÃO
                 </button>
@@ -483,13 +535,24 @@ const InformacoesGerais = ({ formik, fields }) => {
                   className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
                 >
                   Requisitos da ANVISA/Normas Técnicas
+                  <strong className="text-[#F23434]">*</strong>
                 </label>
+
                 <InfoCircle size="20" color="#A1A1A1" />
               </div>
               <CustomSelect
-                select={formik.values.setor}
-                setSelect={(e) => formik.setFieldValue('setor', e)}
-                options={[]}
+                select={formik.values.requisitos_anvisa}
+                setSelect={(e) => formik.setFieldValue('requisitos_anvisa', e)}
+                options={fields
+                  ?.find(
+                    (element) => element?.nomeCampo === 'requisitos_anvisa',
+                  )
+                  ?.alternativas.map((i) => {
+                    return {
+                      id: i.id,
+                      label: i.textoAlternativa,
+                    }
+                  })}
                 placeholder={'Selecione os requisitos'}
                 className={
                   'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'

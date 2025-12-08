@@ -37,16 +37,16 @@ const Horarios = ({ formik }) => {
   }
 
   return (
-    <div className="flex flex-col gap-[16px]">
+    <div className="flex flex-col gap-4">
       <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
         Horários de atendimento
       </span>
 
       {formik.values.horarios?.map((item, index) => {
         return (
-          <div className="flex flex-col gap-[16px]" key={index.toString()}>
-            <div className="flex gap-[16px]">
-              <div className="flex flex-col gap-[4px]">
+          <div className="flex flex-col gap-4" key={index.toString()}>
+            <div className="flex gap-4">
+              <div className="flex flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
@@ -63,7 +63,7 @@ const Horarios = ({ formik }) => {
                         formik.values.horarios[index].days.includes('SEGUNDA')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
-                      } flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
+                      } flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px]`}
                     >
                       SEG
                     </span>
@@ -73,7 +73,7 @@ const Horarios = ({ formik }) => {
                         formik.values.horarios[index].days.includes('TERCA')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
-                      } flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
+                      } flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px]`}
                     >
                       TER
                     </span>
@@ -85,7 +85,7 @@ const Horarios = ({ formik }) => {
                         formik.values.horarios[index].days.includes('QUARTA')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
-                      } flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
+                      } flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px]`}
                     >
                       QUA
                     </span>
@@ -97,7 +97,7 @@ const Horarios = ({ formik }) => {
                         formik.values.horarios[index].days.includes('QUINTA')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
-                      } flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
+                      } flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px]`}
                     >
                       QUI
                     </span>
@@ -107,7 +107,7 @@ const Horarios = ({ formik }) => {
                         formik.values.horarios[index].days.includes('SEXTA')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
-                      } flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
+                      } flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px]`}
                     >
                       SEX
                     </span>
@@ -119,7 +119,7 @@ const Horarios = ({ formik }) => {
                         formik.values.horarios[index].days.includes('SABADO')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
-                      } flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
+                      } flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px]`}
                     >
                       SAB
                     </span>
@@ -131,7 +131,7 @@ const Horarios = ({ formik }) => {
                         formik.values.horarios[index].days.includes('DOMINGO')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
-                      } flex h-[40px] w-[50px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
+                      } flex h-10 w-[50px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px]`}
                     >
                       DOM
                     </span>
@@ -143,7 +143,7 @@ const Horarios = ({ formik }) => {
                         formik.values.horarios[index].days.includes('FERIADOS')
                           ? 'bg-[#E0FFF9] text-[#0F9B7F]'
                           : 'bg-[#F9F9F9] text-[#BBBBBB]'
-                      } flex h-[40px] w-[90px] items-center justify-center rounded-[8px] ${Outfit400.className} text-[14px]`}
+                      } flex h-10 w-[90px] items-center justify-center rounded-lg ${Outfit400.className} text-[14px]`}
                     >
                       FERIADOS
                     </span>
@@ -151,15 +151,15 @@ const Horarios = ({ formik }) => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-[4px]">
+              <div className="flex flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
                   Período de atendimento
                   <strong className="text-[#F23434]">*</strong>
                 </label>
-                <div className="flex items-center gap-[16px]">
-                  <div className="flex h-[40px] w-[100px] items-center gap-2 rounded-[8px] border border-[#A1A1A1] px-2">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-10 w-[100px] items-center gap-2 rounded-lg border border-[#A1A1A1] px-2">
                     <input
                       value={formik.values.horarios[index].of}
                       onChange={(e) =>
@@ -173,7 +173,7 @@ const Horarios = ({ formik }) => {
                   <span className={`${Outfit400.className} text-[#222]`}>
                     às
                   </span>
-                  <div className="flex h-[40px] w-[100px] items-center gap-2 rounded-[8px] border border-[#A1A1A1] px-2">
+                  <div className="flex h-10 w-[100px] items-center gap-2 rounded-lg border border-[#A1A1A1] px-2">
                     <input
                       value={formik.values.horarios[index].until}
                       onChange={(e) =>
@@ -187,16 +187,16 @@ const Horarios = ({ formik }) => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-[4px]">
+              <div className="flex flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
                 >
                   Período de intervalo
                   <strong className="text-[#F23434]">*</strong>
                 </label>
-                <div className="flex items-center gap-[16px]">
+                <div className="flex items-center gap-4">
                   <div
-                    className={`flex h-[40px] w-[100px] items-center gap-2 rounded-[8px] ${formik.values.horarios[index].enabled ? 'border border-dashed' : 'border'} border-[#A1A1A1] px-2`}
+                    className={`flex h-10 w-[100px] items-center gap-2 rounded-lg ${formik.values.horarios[index].enabled ? 'border border-dashed' : 'border'} border-[#A1A1A1] px-2`}
                   >
                     <input
                       value={formik.values.horarios[index].interval}
@@ -213,7 +213,7 @@ const Horarios = ({ formik }) => {
                     às
                   </span>
                   <div
-                    className={`flex h-[40px] w-[100px] items-center gap-2 rounded-[8px] ${formik.values.horarios[index].enabled ? 'border border-dashed' : 'border'} border-[#A1A1A1] px-2`}
+                    className={`flex h-10 w-[100px] items-center gap-2 rounded-lg ${formik.values.horarios[index].enabled ? 'border border-dashed' : 'border'} border-[#A1A1A1] px-2`}
                   >
                     <input
                       value={formik.values.horarios[index].returnInterval}
@@ -259,7 +259,7 @@ const Horarios = ({ formik }) => {
               </div>
               <div className="flex flex-1 flex-col justify-end">
                 {formik.values.horarios[index].days.length > 0 ? (
-                  <div className="flex h-[40px] items-center gap-2 rounded-[50px] bg-[#E0FFF9] px-3">
+                  <div className="flex h-10 items-center gap-2 rounded-[50px] bg-[#E0FFF9] px-3">
                     <label
                       className={`${Outfit300.className} text-[14px] text-[#0F9B7F]`}
                     >
@@ -273,7 +273,7 @@ const Horarios = ({ formik }) => {
                     </label>
                   </div>
                 ) : (
-                  <div className="flex h-[40px] items-center gap-2 rounded-[50px] bg-[#E7E7E7] px-3">
+                  <div className="flex h-10 items-center gap-2 rounded-[50px] bg-[#E7E7E7] px-3">
                     <InfoCircle size="20" color="#737373" variant="Bulk" />
                     <label
                       className={`${Outfit300.className} text-[14px] text-[#737373]`}
@@ -285,7 +285,7 @@ const Horarios = ({ formik }) => {
               </div>
               {formik.values.horarios.length === 1 ? null : (
                 <div
-                  className="flex flex-col justify-end py-[8px]"
+                  className="flex flex-col justify-end py-2"
                   onClick={() =>
                     formik.setFieldValue(
                       'horarios',
@@ -316,7 +316,7 @@ const Horarios = ({ formik }) => {
             },
           ])
         }
-        className={`${Outfit400.className} h-[40px] w-[235px] rounded-[8px] border border-[#0F9B7F] text-[#0F9B7F]`}
+        className={`${Outfit400.className} h-10 w-[235px] rounded-lg border border-[#0F9B7F] text-[#0F9B7F]`}
       >
         ADICIONAR NOVO PERÍODO
       </button>

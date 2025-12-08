@@ -5,7 +5,7 @@ import { Outfit400, Outfit500 } from '@/fonts'
 import { CreateUnit, listAllServicesOfHealth, listBankAccount } from '@/helpers'
 import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { validationSchemaCreateUnit } from '../components/schema'
 
 // Components
@@ -385,7 +385,6 @@ const RegisterUnityOfHealth = ({ onClose, findData }) => {
           {steps[step]}
         </ModalFramer>
       )}
-      <ToastContainer />
     </>
   )
 }

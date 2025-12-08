@@ -58,7 +58,7 @@ const Financeiro = ({ formik, banks }) => {
         type="button"
         className={`${Outfit400.className} h-10 w-[150px] rounded-lg border border-[#0F9B7F] text-[#0F9B7F] uppercase`}
         onClick={handleAddLaboratorio}
-        disabled={formik.values.financeiro.length === banks.length}
+        disabled={formik.values?.financeiro?.length === banks.length}
       >
         Novo banco
       </button>

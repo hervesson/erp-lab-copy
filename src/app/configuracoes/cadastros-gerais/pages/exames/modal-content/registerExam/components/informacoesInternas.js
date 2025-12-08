@@ -1,7 +1,7 @@
 import CustomMultiSelect from '@/components/CustomMultiSelect'
 import CustomSelect from '@/components/CustomSelect'
 import { Outfit300, Outfit400 } from '@/fonts'
-import { DocumentDownload, InfoCircle } from 'iconsax-reactjs'
+import { CloseCircle, DocumentDownload, InfoCircle } from 'iconsax-reactjs'
 
 const InformacoesInternas = ({ formik, fields }) => {
   return (
@@ -233,21 +233,64 @@ const InformacoesInternas = ({ formik, fields }) => {
           </div>
           <div className="flex flex-col justify-end gap-1">
             <button
+              type="button"
               className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+              onClick={() => {
+                if (
+                  !formik?.values?.regiao_coleta_ids?.includes(
+                    formik?.values?.regiaoDeColeta,
+                  ) &&
+                  formik.values.regiaoDeColeta.id
+                ) {
+                  formik.setFieldValue('regiao_coleta_ids', [
+                    ...formik.values.regiao_coleta_ids,
+                    formik.values.regiaoDeColeta,
+                  ])
+                  formik.setFieldValue('regiaoDeColeta', {})
+                }
+              }}
             >
               ADICIONAR
             </button>
           </div>
-          <div className="flex flex-2 flex-col justify-end gap-1">
-            <div className="flex h-10 items-center gap-2 rounded-[50px] bg-[#E7E7E7] px-3">
-              <InfoCircle size="20" color="#737373" variant="Bulk" />
-              <label
-                className={`${Outfit300.className} text-[14px] text-[#737373]`}
-              >
-                Nenhuma opção adicionada
-              </label>
+          {formik?.values?.regiao_coleta_ids?.length > 0 ? (
+            <div className="flex flex-2 gap-1">
+              {formik?.values?.regiao_coleta_ids?.map((item, index) => {
+                return (
+                  <div
+                    key={index.toString()}
+                    className={`h-10 self-end bg-[#E0FFF9] ${Outfit400.className} flex items-center gap-3 rounded-[50px] px-3 text-[14px] text-[#0F9B7F]`}
+                  >
+                    {item.label}
+                    <CloseCircle
+                      size="22"
+                      color="#F23434"
+                      variant="Bold"
+                      onClick={() =>
+                        formik.setFieldValue(
+                          'regiao_coleta_ids',
+                          formik.values.regiao_coleta_ids.filter(
+                            (code) => code !== item,
+                          ),
+                        )
+                      }
+                    />
+                  </div>
+                )
+              })}
             </div>
-          </div>
+          ) : (
+            <div className="flex flex-2 flex-col justify-end gap-1">
+              <div className="flex h-10 items-center gap-2 rounded-[50px] bg-[#E7E7E7] px-3">
+                <InfoCircle size="20" color="#737373" variant="Bulk" />
+                <label
+                  className={`${Outfit300.className} text-[14px] text-[#737373]`}
+                >
+                  Nenhuma opção adicionada
+                </label>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="flex gap-4">
@@ -411,8 +454,8 @@ const InformacoesInternas = ({ formik, fields }) => {
             <textarea
               {...formik.getFieldProps('coletaInfantil')}
               type="text"
-              id="nomeExame"
-              name="nomeExame"
+              id="coletaInfantil"
+              name="coletaInfantil"
               className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
               placeholder="Preencha com as instruções de coleta"
             />
@@ -500,8 +543,8 @@ const InformacoesInternas = ({ formik, fields }) => {
           <input
             {...formik.getFieldProps('lembretesDistribuicao')}
             type="text"
-            id="tecnicaDeColeta"
-            name="tecnicaDeColeta"
+            id="lembretesDistribuicao"
+            name="lembretesDistribuicao"
             className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
             placeholder="Preencha sobre a distribuição"
           />

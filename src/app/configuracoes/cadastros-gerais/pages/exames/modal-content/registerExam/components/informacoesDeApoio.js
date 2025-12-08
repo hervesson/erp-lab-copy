@@ -2,9 +2,66 @@ import CustomMultiSelect from '@/components/CustomMultiSelect'
 import CustomSelect from '@/components/CustomSelect'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { ArrowUp2, DocumentDownload, InfoCircle } from 'iconsax-reactjs'
+import { useEffect } from 'react'
 
-const InformacoesDeApoio = ({ formik, fields }) => {
-  // Informações básicas
+const InformacoesDeApoio = ({ formik, fields, labs }) => {
+  useEffect(() => {
+    const addField = () => {
+      formik.setFieldValue('informacoesDeApoio', [
+        ...formik.values.informacoesDeApoio,
+        {
+          exame_id: '',
+          laboratorio_apoio_id: formik.values.laboratorioDeApoio,
+          codigo_exame_apoio: '',
+          metodologia_id: '',
+          unidade_medida_id: '',
+          requer_peso: false,
+          requer_altura: false,
+          requer_volume: true,
+          amostra_id: '',
+          amostra_enviar_id: '',
+          tipo_recipiente_id: '',
+          regioes_coleta_ids: [],
+          volume_minimo_id: '',
+          estabilidade_id: '',
+          formularios_atendimento: [],
+          preparo_geral: '',
+          preparo_feminino: '',
+          preparo_infantil: '',
+          coleta_geral: '',
+          coleta_feminino: '',
+          coleta_infantil: '',
+          tecnica_coleta: '',
+          lembrete_coletora: '',
+          lembrete_recepcionista_agendamento: '',
+          lembrete_recepcionista_os: '',
+          distribuicao: '',
+          prazo_entrega_dias: 0,
+          formatos_laudo: [],
+          ativo: true,
+        },
+      ])
+    }
+
+    addField()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // console.log(formik.values.informacoesDeApoio)
+
+  const getLabsOptions = (indexAtual) => {
+    const selectedIds = formik.values.informacoesDeApoio
+      ?.map((item) => {
+        return { laboratorio_apoio_id: item.laboratorio_apoio_id }
+      })
+      .map((item, index) => {
+        if (index === indexAtual) return null // ignora o da própria linha
+        return item.laboratorio_apoio_id?.id || null
+      })
+
+    // retorna só labs que ainda não foram escolhidos em outras linhas
+    return labs.filter((lab) => !selectedIds.includes(lab.id))
+  }
 
   return (
     <div className="flex w-full flex-col gap-8 rounded bg-[#FFF] p-12">
@@ -17,684 +74,744 @@ const InformacoesDeApoio = ({ formik, fields }) => {
 
         <div className="flex gap-4">
           <button
+            type="button"
+            disabled={labs.lenght === formik.values.informacoesDeApoio.lenght}
             className={`${Outfit400.className} h-10 rounded-lg border border-[#0F9B7F] px-2 text-[#0F9B7F]`}
+            onClick={() =>
+              formik.setFieldValue('informacoesDeApoio', [
+                ...formik.values.informacoesDeApoio,
+                {
+                  exame_id: '',
+                  laboratorio_apoio_id: {},
+                  codigo_exame_apoio: '',
+                  metodologia_id: '',
+                  unidade_medida_id: '',
+                  requer_peso: false,
+                  requer_altura: false,
+                  requer_volume: true,
+                  amostra_id: '',
+                  amostra_enviar_id: '',
+                  tipo_recipiente_id: '',
+                  regioes_coleta_ids: [],
+                  volume_minimo_id: '',
+                  estabilidade_id: '',
+                  formularios_atendimento: [],
+                  preparo_geral: '',
+                  preparo_feminino: '',
+                  preparo_infantil: '',
+                  coleta_geral: '',
+                  coleta_feminino: '',
+                  coleta_infantil: '',
+                  tecnica_coleta: '',
+                  lembrete_coletora: '',
+                  lembrete_recepcionista_agendamento: '',
+                  lembrete_recepcionista_os: '',
+                  distribuicao: '',
+                  prazo_entrega_dias: 0,
+                  formatos_laudo: [],
+                  ativo: true,
+                },
+              ])
+            }
           >
             ADICIONAR APOIO
           </button>
         </div>
       </div>
-      <div className="flex rounded border border-[#E7E7E7] p-6 shadow-xl">
-        <div className="flex flex-1 flex-col justify-between">
-          <div className="flex flex-col gap-8">
-            <div className="flex h-[60px] items-center justify-between rounded bg-[#F9F9F9] px-3">
-              <p
-                className={`${Outfit400.className} text-[14px] text-[#0F9B7F]`}
-              >
-                APOIO 1
-              </p>
-              <div className="flex gap-3">
-                <p
-                  className={`${Outfit400.className} text-[14px] text-red-500`}
-                >
-                  Excluir bloco
-                </p>
-                <ArrowUp2 color="#A1A1A1" />
-              </div>
-            </div>
-            <div className="flex flex-col gap-4">
-              <span
-                className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
-              >
-                Laboratório de apoio
-              </span>
-
-              <div className="flex gap-4">
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
+      {formik.values.informacoesDeApoio.map((item, index) => {
+        return (
+          <div
+            key={index.toString()}
+            className="flex rounded border border-[#E7E7E7] p-6 shadow-xl"
+          >
+            <div className="flex flex-1 flex-col justify-between">
+              <div className="flex flex-col gap-8">
+                <div className="flex h-[60px] items-center justify-between rounded bg-[#F9F9F9] px-3">
+                  <p
+                    className={`${Outfit400.className} text-[14px] text-[#0F9B7F]`}
+                  >
+                    APOIO {index + 1}
+                  </p>
+                  <div className="flex gap-3">
+                    <p
+                      className={`${Outfit400.className} text-[14px] text-red-500`}
+                    >
+                      Excluir bloco
+                    </p>
+                    <ArrowUp2 color="#A1A1A1" />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <span
+                    className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
                   >
                     Laboratório de apoio
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <CustomSelect
-                    select={formik.values.metodologiaUtilizada}
-                    setSelect={(e) =>
-                      formik.setFieldValue('metodologiaUtilizada', e)
-                    }
-                    options={fields
-                      ?.find((element) => element?.nomeCampo === 'metodologia')
-                      ?.alternativas.map((i) => {
-                        return {
-                          id: i.id,
-                          label: i.textoAlternativa,
-                        }
-                      })}
-                    placeholder={'Selecione uma metodologia'}
-                    className={
-                      'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                    }
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Código exame apoio
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <CustomSelect
-                    select={formik.values.unidadeDeMedida}
-                    setSelect={(e) =>
-                      formik.setFieldValue('unidadeDeMedida', e)
-                    }
-                    options={fields
-                      ?.find(
-                        (element) => element?.nomeCampo === 'unidade_medida',
-                      )
-                      ?.alternativas.map((i) => {
-                        return {
-                          id: i.id,
-                          label: i.textoAlternativa,
-                        }
-                      })}
-                    placeholder={'Selecione uma unidade de medida'}
-                    className={
-                      'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col gap-4">
-              <span
-                className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
-              >
-                Requisitos para realização do exame
-              </span>
-
-              <div className="flex gap-4">
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Metodologia utilizada
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <CustomSelect
-                    select={formik.values.metodologiaUtilizada}
-                    setSelect={(e) =>
-                      formik.setFieldValue('metodologiaUtilizada', e)
-                    }
-                    options={fields
-                      ?.find((element) => element?.nomeCampo === 'metodologia')
-                      ?.alternativas.map((i) => {
-                        return {
-                          id: i.id,
-                          label: i.textoAlternativa,
-                        }
-                      })}
-                    placeholder={'Selecione uma metodologia'}
-                    className={
-                      'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                    }
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Unidade de medida
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <CustomSelect
-                    select={formik.values.unidadeDeMedida}
-                    setSelect={(e) =>
-                      formik.setFieldValue('unidadeDeMedida', e)
-                    }
-                    options={fields
-                      ?.find(
-                        (element) => element?.nomeCampo === 'unidade_medida',
-                      )
-                      ?.alternativas.map((i) => {
-                        return {
-                          id: i.id,
-                          label: i.textoAlternativa,
-                        }
-                      })}
-                    placeholder={'Selecione uma unidade de medida'}
-                    className={
-                      'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                    }
-                  />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
-                  >
-                    Peso
-                  </label>
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.peso ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
-                      onClick={() => formik.setFieldValue('peso', true)}
-                    >
-                      SIM
-                    </button>
-                    <button
-                      type="button"
-                      className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.peso ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
-                      onClick={() => formik.setFieldValue('peso', false)}
-                    >
-                      NÃO
-                    </button>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
-                  >
-                    Altura
-                  </label>
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.altura ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
-                      onClick={() => formik.setFieldValue('altura', true)}
-                    >
-                      SIM
-                    </button>
-                    <button
-                      type="button"
-                      className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.altura ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
-                      onClick={() => formik.setFieldValue('altura', false)}
-                    >
-                      NÃO
-                    </button>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
-                  >
-                    Volume
-                  </label>
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.volume ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
-                      onClick={() => formik.setFieldValue('volume', true)}
-                    >
-                      SIM
-                    </button>
-                    <button
-                      type="button"
-                      className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.volume ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
-                      onClick={() => formik.setFieldValue('volume', false)}
-                    >
-                      NÃO
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Amostra biológica necessária
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <CustomSelect
-                    select={formik.values.amostraBiologicaNecessaria}
-                    setSelect={(e) =>
-                      formik.setFieldValue('amostraBiologicaNecessaria', e)
-                    }
-                    options={fields
-                      ?.find((element) => element?.nomeCampo === 'amostra')
-                      ?.alternativas.map((i) => {
-                        return {
-                          id: i.id,
-                          label: i.textoAlternativa,
-                        }
-                      })}
-                    placeholder={'Selecione uma amostra'}
-                    className={
-                      'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                    }
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Amostra a enviar
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <CustomSelect
-                    select={formik.values.amostraAEnviar}
-                    setSelect={(e) => formik.setFieldValue('amostraAEnviar', e)}
-                    options={fields
-                      ?.find((element) => element?.nomeCampo === 'amostra')
-                      ?.alternativas.map((i) => {
-                        return {
-                          id: i.id,
-                          label: i.textoAlternativa,
-                        }
-                      })}
-                    placeholder={'Selecione uma amostra'}
-                    className={
-                      'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                    }
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Tipo de recipiente para coleta
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <CustomSelect
-                    select={formik.values.tipoDeRecipiente}
-                    setSelect={(e) =>
-                      formik.setFieldValue('tipoDeRecipiente', e)
-                    }
-                    options={fields
-                      ?.find(
-                        (element) => element?.nomeCampo === 'tipo_recipiente',
-                      )
-                      ?.alternativas.map((i) => {
-                        return {
-                          id: i.id,
-                          label: i.textoAlternativa,
-                        }
-                      })}
-                    placeholder={'Selecione um recipiente para coleta'}
-                    className={
-                      'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                    }
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Região de coleta
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <CustomSelect
-                    select={formik.values.regiaoDeColeta}
-                    setSelect={(e) => formik.setFieldValue('regiaoDeColeta', e)}
-                    options={fields
-                      ?.find(
-                        (element) => element?.nomeCampo === 'regiao_coleta',
-                      )
-                      ?.alternativas.map((i) => {
-                        return {
-                          id: i.id,
-                          label: i.textoAlternativa,
-                        }
-                      })}
-                    placeholder={'Selecione uma ou mais regioões de coleta'}
-                    className={
-                      'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                    }
-                  />
-                </div>
-                <div className="flex flex-col justify-end gap-1">
-                  <button
-                    className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
-                  >
-                    ADICIONAR
-                  </button>
-                </div>
-                <div className="flex flex-2 flex-col justify-end gap-1">
-                  <div className="flex h-10 items-center gap-2 rounded-[50px] bg-[#E7E7E7] px-3">
-                    <InfoCircle size="20" color="#737373" variant="Bulk" />
-                    <label
-                      className={`${Outfit300.className} text-[14px] text-[#737373]`}
-                    >
-                      Nenhuma opção adicionada
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-4">
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Volume minímo requerido
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <CustomSelect
-                    select={formik.values.valorMinimoRequerido}
-                    setSelect={(e) =>
-                      formik.setFieldValue('valorMinimoRequerido', e)
-                    }
-                    options={fields
-                      ?.find(
-                        (element) => element?.nomeCampo === 'volume_minimo',
-                      )
-                      ?.alternativas.map((i) => {
-                        return {
-                          id: i.id,
-                          label: i.textoAlternativa,
-                        }
-                      })}
-                    placeholder={'Selecione um volume minímo'}
-                    className={
-                      'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                    }
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Estabilidade<strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <CustomSelect
-                    select={formik.values.estabilidade}
-                    setSelect={(e) => formik.setFieldValue('estabilidade', e)}
-                    options={fields
-                      ?.find((element) => element?.nomeCampo === 'estabilidade')
-                      ?.alternativas.map((i) => {
-                        return {
-                          id: i.id,
-                          label: i.textoAlternativa,
-                        }
-                      })}
-                    placeholder={'Selecione uma estabilidade'}
-                    className={
-                      'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                    }
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Formulário para atendimento */}
-            <div className="flex flex-col gap-4">
-              <span
-                className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
-              >
-                Formulário para atendimento
-              </span>
-              <div className="flex gap-4">
-                <div className="flex h-[52px] w-[557px] items-center justify-center gap-3 rounded-lg border-[#A9A9A9] bg-[#F9F9F9]">
-                  <DocumentDownload size="28" color="#737373" />
-                  <span
-                    className={`${Outfit300.className} text-[#222] uppercase`}
-                  >
-                    Anexar formulários de atendimento
                   </span>
-                </div>
-              </div>
-            </div>
 
-            {/* Prepararo e coleta */}
-            <div className="flex flex-col gap-4">
-              <span
-                className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
-              >
-                Prepararo e coleta
-              </span>
+                  <div className="flex gap-4">
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Laboratório de apoio
+                        <strong className="text-[#F23434]">*</strong>
+                      </label>
+                      <CustomSelect
+                        select={
+                          formik.values.informacoesDeApoio[index]
+                            ?.laboratorio_apoio_id ?? null
+                        }
+                        setSelect={(e) =>
+                          formik.setFieldValue(
+                            `informacoesDeApoio.${index}.laboratorio_apoio_id`,
+                            e,
+                          )
+                        }
+                        options={getLabsOptions(index)}
+                        placeholder={'Selecione uma metodologia'}
+                        className={
+                          'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Código exame apoio
+                        <strong className="text-[#F23434]">*</strong>
+                      </label>
+                      <CustomSelect
+                        select={formik.values.unidadeDeMedida}
+                        setSelect={(e) =>
+                          formik.setFieldValue('unidadeDeMedida', e)
+                        }
+                        options={fields
+                          ?.find(
+                            (element) =>
+                              element?.nomeCampo === 'unidade_medida',
+                          )
+                          ?.alternativas.map((i) => {
+                            return {
+                              id: i.id,
+                              label: i.textoAlternativa,
+                            }
+                          })}
+                        placeholder={'Selecione uma unidade de medida'}
+                        className={
+                          'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <span
+                    className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
+                  >
+                    Requisitos para realização do exame
+                  </span>
 
-              <div className="flex gap-4">
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Preparo - Público geral
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <textarea
-                    {...formik.getFieldProps('preparoPublicoGeral')}
-                    type="text"
-                    id="preparoPublicoGeral"
-                    name="preparoPublicoGeral"
-                    className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
-                    placeholder="Preencha com as instruções de preparo"
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Preparo - Feminino
-                  </label>
-                  <textarea
-                    {...formik.getFieldProps('preparoFeminino')}
-                    type="text"
-                    id="preparoFeminino"
-                    name="preparoFeminino"
-                    className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
-                    placeholder="Preencha com as instruções de preparo"
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Preparo - Infantil
-                  </label>
-                  <textarea
-                    {...formik.getFieldProps('preparoInfantil')}
-                    type="text"
-                    id="preparoInfantil"
-                    name="preparoInfantil"
-                    className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
-                    placeholder="Preencha com as instruções de preparo"
-                  />
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Coleta - Público geral
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <textarea
-                    {...formik.getFieldProps('coletaPublicoGeral')}
-                    type="text"
-                    id="coletaPublicoGeral"
-                    name="coletaPublicoGeral"
-                    className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
-                    placeholder="Preencha com as instruções de coleta"
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Coleta - Feminino
-                  </label>
-                  <textarea
-                    {...formik.getFieldProps('coletaFeminino')}
-                    type="text"
-                    id="coletaFeminino"
-                    name="coletaFeminino"
-                    className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
-                    placeholder="Preencha com as instruções de coleta"
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Coleta - Infantil
-                  </label>
-                  <textarea
-                    {...formik.getFieldProps('coletaInfantil')}
-                    type="text"
-                    id="nomeExame"
-                    name="nomeExame"
-                    className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
-                    placeholder="Preencha com as instruções de coleta"
-                  />
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Técnica de coleta
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <textarea
-                    {...formik.getFieldProps('tecnicaDeColeta')}
-                    type="text"
-                    id="tecnicaDeColeta"
-                    name="tecnicaDeColeta"
-                    className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
-                    placeholder="Preencha com as instruções de coleta"
-                  />
-                </div>
-              </div>
-            </div>
+                  <div className="flex gap-4">
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Metodologia utilizada
+                        <strong className="text-[#F23434]">*</strong>
+                      </label>
+                      <CustomSelect
+                        select={formik.values.metodologiaUtilizada}
+                        setSelect={(e) =>
+                          formik.setFieldValue('metodologiaUtilizada', e)
+                        }
+                        options={fields
+                          ?.find(
+                            (element) => element?.nomeCampo === 'metodologia',
+                          )
+                          ?.alternativas.map((i) => {
+                            return {
+                              id: i.id,
+                              label: i.textoAlternativa,
+                            }
+                          })}
+                        placeholder={'Selecione uma metodologia'}
+                        className={
+                          'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Unidade de medida
+                        <strong className="text-[#F23434]">*</strong>
+                      </label>
+                      <CustomSelect
+                        select={formik.values.unidadeDeMedida}
+                        setSelect={(e) =>
+                          formik.setFieldValue('unidadeDeMedida', e)
+                        }
+                        options={fields
+                          ?.find(
+                            (element) =>
+                              element?.nomeCampo === 'unidade_medida',
+                          )
+                          ?.alternativas.map((i) => {
+                            return {
+                              id: i.id,
+                              label: i.textoAlternativa,
+                            }
+                          })}
+                        placeholder={'Selecione uma unidade de medida'}
+                        className={
+                          'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
+                      >
+                        Peso
+                      </label>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.peso ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                          onClick={() => formik.setFieldValue('peso', true)}
+                        >
+                          SIM
+                        </button>
+                        <button
+                          type="button"
+                          className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.peso ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                          onClick={() => formik.setFieldValue('peso', false)}
+                        >
+                          NÃO
+                        </button>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
+                      >
+                        Altura
+                      </label>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.altura ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                          onClick={() => formik.setFieldValue('altura', true)}
+                        >
+                          SIM
+                        </button>
+                        <button
+                          type="button"
+                          className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.altura ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                          onClick={() => formik.setFieldValue('altura', false)}
+                        >
+                          NÃO
+                        </button>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} flex justify-between text-[14px] text-[#222222]`}
+                      >
+                        Volume
+                      </label>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.volume ? 'bg-[#E0FFF9]' : 'bg-[#F9F9F9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                          onClick={() => formik.setFieldValue('volume', true)}
+                        >
+                          SIM
+                        </button>
+                        <button
+                          type="button"
+                          className={`flex h-10 w-[50px] items-center justify-center rounded-lg ${formik.values.volume ? 'bg-[#F9F9F9]' : 'bg-[#E0FFF9]'} ${Outfit400.className} text-[14px] text-[#BBBBBB]`}
+                          onClick={() => formik.setFieldValue('volume', false)}
+                        >
+                          NÃO
+                        </button>
+                      </div>
+                    </div>
+                  </div>
 
-            {/* Lembretes */}
-            <div className="flex flex-col gap-4">
-              <span
-                className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
-              >
-                Lembretes
-              </span>
+                  <div className="flex gap-4">
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Amostra biológica necessária
+                        <strong className="text-[#F23434]">*</strong>
+                      </label>
+                      <CustomSelect
+                        select={formik.values.amostraBiologicaNecessaria}
+                        setSelect={(e) =>
+                          formik.setFieldValue('amostraBiologicaNecessaria', e)
+                        }
+                        options={fields
+                          ?.find((element) => element?.nomeCampo === 'amostra')
+                          ?.alternativas.map((i) => {
+                            return {
+                              id: i.id,
+                              label: i.textoAlternativa,
+                            }
+                          })}
+                        placeholder={'Selecione uma amostra'}
+                        className={
+                          'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Amostra a enviar
+                        <strong className="text-[#F23434]">*</strong>
+                      </label>
+                      <CustomSelect
+                        select={formik.values.amostraAEnviar}
+                        setSelect={(e) =>
+                          formik.setFieldValue('amostraAEnviar', e)
+                        }
+                        options={fields
+                          ?.find((element) => element?.nomeCampo === 'amostra')
+                          ?.alternativas.map((i) => {
+                            return {
+                              id: i.id,
+                              label: i.textoAlternativa,
+                            }
+                          })}
+                        placeholder={'Selecione uma amostra'}
+                        className={
+                          'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Tipo de recipiente para coleta
+                        <strong className="text-[#F23434]">*</strong>
+                      </label>
+                      <CustomSelect
+                        select={formik.values.tipoDeRecipiente}
+                        setSelect={(e) =>
+                          formik.setFieldValue('tipoDeRecipiente', e)
+                        }
+                        options={fields
+                          ?.find(
+                            (element) =>
+                              element?.nomeCampo === 'tipo_recipiente',
+                          )
+                          ?.alternativas.map((i) => {
+                            return {
+                              id: i.id,
+                              label: i.textoAlternativa,
+                            }
+                          })}
+                        placeholder={'Selecione um recipiente para coleta'}
+                        className={
+                          'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                        }
+                      />
+                    </div>
+                  </div>
 
-              <div className="flex gap-4">
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Coletora
-                  </label>
-                  <textarea
-                    {...formik.getFieldProps('lembretesColetora')}
-                    type="text"
-                    id="lembretesColetora"
-                    name="lembretesColetora"
-                    className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
-                    placeholder="Caso necessário deixe um lembrete pra coletora"
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Recepcionista - Agendamentos e Orçamentos
-                  </label>
-                  <textarea
-                    {...formik.getFieldProps(
-                      'lembretesRecepcionistaAgendamentos',
-                    )}
-                    type="text"
-                    id="lembretesRecepcionistaAgendamentos"
-                    name="lembretesRecepcionistaAgendamentos"
-                    className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
-                    placeholder="Caso necessário deixe um lembrete para a recepcionista"
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Recepcionista - Ordem de serviço
-                  </label>
-                  <textarea
-                    {...formik.getFieldProps(
-                      'lembretesRecepcionistaOrdemDeServico',
-                    )}
-                    type="text"
-                    id="lembretesRecepcionistaOrdemDeServico"
-                    name="lembretesRecepcionistaOrdemDeServico"
-                    className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
-                    placeholder="Caso necessário deixe um lembrete para recepcionista"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-1 flex-col gap-1">
-                <label
-                  className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                >
-                  Distribuição
-                </label>
-                <input
-                  {...formik.getFieldProps('lembretesDistribuicao')}
-                  type="text"
-                  id="tecnicaDeColeta"
-                  name="tecnicaDeColeta"
-                  className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
-                  placeholder="Preencha sobre a distribuição"
-                />
-              </div>
-            </div>
+                  <div className="flex gap-4">
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Região de coleta
+                        <strong className="text-[#F23434]">*</strong>
+                      </label>
+                      <CustomSelect
+                        select={formik.values.regiaoDeColeta}
+                        setSelect={(e) =>
+                          formik.setFieldValue('regiaoDeColeta', e)
+                        }
+                        options={fields
+                          ?.find(
+                            (element) => element?.nomeCampo === 'regiao_coleta',
+                          )
+                          ?.alternativas.map((i) => {
+                            return {
+                              id: i.id,
+                              label: i.textoAlternativa,
+                            }
+                          })}
+                        placeholder={'Selecione uma ou mais regioões de coleta'}
+                        className={
+                          'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-col justify-end gap-1">
+                      <button
+                        className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+                      >
+                        ADICIONAR
+                      </button>
+                    </div>
+                    <div className="flex flex-2 flex-col justify-end gap-1">
+                      <div className="flex h-10 items-center gap-2 rounded-[50px] bg-[#E7E7E7] px-3">
+                        <InfoCircle size="20" color="#737373" variant="Bulk" />
+                        <label
+                          className={`${Outfit300.className} text-[14px] text-[#737373]`}
+                        >
+                          Nenhuma opção adicionada
+                        </label>
+                      </div>
+                    </div>
+                  </div>
 
-            {/* Processamento e entrega de laudos */}
-            <div className="flex flex-col gap-4">
-              <span
-                className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
-              >
-                Processamento e entrega de Laudos
-              </span>
+                  <div className="flex gap-4">
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Volume minímo requerido
+                        <strong className="text-[#F23434]">*</strong>
+                      </label>
+                      <CustomSelect
+                        select={formik.values.valorMinimoRequerido}
+                        setSelect={(e) =>
+                          formik.setFieldValue('valorMinimoRequerido', e)
+                        }
+                        options={fields
+                          ?.find(
+                            (element) => element?.nomeCampo === 'volume_minimo',
+                          )
+                          ?.alternativas.map((i) => {
+                            return {
+                              id: i.id,
+                              label: i.textoAlternativa,
+                            }
+                          })}
+                        placeholder={'Selecione um volume minímo'}
+                        className={
+                          'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Estabilidade
+                        <strong className="text-[#F23434]">*</strong>
+                      </label>
+                      <CustomSelect
+                        select={formik.values.estabilidade}
+                        setSelect={(e) =>
+                          formik.setFieldValue('estabilidade', e)
+                        }
+                        options={fields
+                          ?.find(
+                            (element) => element?.nomeCampo === 'estabilidade',
+                          )
+                          ?.alternativas.map((i) => {
+                            return {
+                              id: i.id,
+                              label: i.textoAlternativa,
+                            }
+                          })}
+                        placeholder={'Selecione uma estabilidade'}
+                        className={
+                          'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
 
-              <div className="flex flex-col gap-4">
-                <div className="flex gap-4">
+                {/* Formulário para atendimento */}
+                <div className="flex flex-col gap-4">
+                  <span
+                    className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
+                  >
+                    Formulário para atendimento
+                  </span>
+                  <div className="flex gap-4">
+                    <div className="flex h-[52px] w-[557px] items-center justify-center gap-3 rounded-lg border-[#A9A9A9] bg-[#F9F9F9]">
+                      <DocumentDownload size="28" color="#737373" />
+                      <span
+                        className={`${Outfit300.className} text-[#222] uppercase`}
+                      >
+                        Anexar formulários de atendimento
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Prepararo e coleta */}
+                <div className="flex flex-col gap-4">
+                  <span
+                    className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
+                  >
+                    Prepararo e coleta
+                  </span>
+
+                  <div className="flex gap-4">
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Preparo - Público geral
+                        <strong className="text-[#F23434]">*</strong>
+                      </label>
+                      <textarea
+                        {...formik.getFieldProps('preparoPublicoGeral')}
+                        type="text"
+                        id="preparoPublicoGeral"
+                        name="preparoPublicoGeral"
+                        className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
+                        placeholder="Preencha com as instruções de preparo"
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Preparo - Feminino
+                      </label>
+                      <textarea
+                        {...formik.getFieldProps('preparoFeminino')}
+                        type="text"
+                        id="preparoFeminino"
+                        name="preparoFeminino"
+                        className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
+                        placeholder="Preencha com as instruções de preparo"
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Preparo - Infantil
+                      </label>
+                      <textarea
+                        {...formik.getFieldProps('preparoInfantil')}
+                        type="text"
+                        id="preparoInfantil"
+                        name="preparoInfantil"
+                        className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
+                        placeholder="Preencha com as instruções de preparo"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Coleta - Público geral
+                        <strong className="text-[#F23434]">*</strong>
+                      </label>
+                      <textarea
+                        {...formik.getFieldProps('coletaPublicoGeral')}
+                        type="text"
+                        id="coletaPublicoGeral"
+                        name="coletaPublicoGeral"
+                        className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
+                        placeholder="Preencha com as instruções de coleta"
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Coleta - Feminino
+                      </label>
+                      <textarea
+                        {...formik.getFieldProps('coletaFeminino')}
+                        type="text"
+                        id="coletaFeminino"
+                        name="coletaFeminino"
+                        className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
+                        placeholder="Preencha com as instruções de coleta"
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Coleta - Infantil
+                      </label>
+                      <textarea
+                        {...formik.getFieldProps('coletaInfantil')}
+                        type="text"
+                        id="nomeExame"
+                        name="nomeExame"
+                        className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
+                        placeholder="Preencha com as instruções de coleta"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Técnica de coleta
+                        <strong className="text-[#F23434]">*</strong>
+                      </label>
+                      <textarea
+                        {...formik.getFieldProps('tecnicaDeColeta')}
+                        type="text"
+                        id="tecnicaDeColeta"
+                        name="tecnicaDeColeta"
+                        className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
+                        placeholder="Preencha com as instruções de coleta"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Lembretes */}
+                <div className="flex flex-col gap-4">
+                  <span
+                    className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
+                  >
+                    Lembretes
+                  </span>
+
+                  <div className="flex gap-4">
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Coletora
+                      </label>
+                      <textarea
+                        {...formik.getFieldProps('lembretesColetora')}
+                        type="text"
+                        id="lembretesColetora"
+                        name="lembretesColetora"
+                        className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
+                        placeholder="Caso necessário deixe um lembrete pra coletora"
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Recepcionista - Agendamentos e Orçamentos
+                      </label>
+                      <textarea
+                        {...formik.getFieldProps(
+                          'lembretesRecepcionistaAgendamentos',
+                        )}
+                        type="text"
+                        id="lembretesRecepcionistaAgendamentos"
+                        name="lembretesRecepcionistaAgendamentos"
+                        className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
+                        placeholder="Caso necessário deixe um lembrete para a recepcionista"
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1">
+                      <label
+                        className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                      >
+                        Recepcionista - Ordem de serviço
+                      </label>
+                      <textarea
+                        {...formik.getFieldProps(
+                          'lembretesRecepcionistaOrdemDeServico',
+                        )}
+                        type="text"
+                        id="lembretesRecepcionistaOrdemDeServico"
+                        name="lembretesRecepcionistaOrdemDeServico"
+                        className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
+                        placeholder="Caso necessário deixe um lembrete para recepcionista"
+                      />
+                    </div>
+                  </div>
                   <div className="flex flex-1 flex-col gap-1">
                     <label
                       className={`${Outfit400.className} text-[14px] text-[#222222]`}
                     >
-                      Prazo de entrega dos resultados (em dias)
-                      <strong className="text-[#F23434]">*</strong>
+                      Distribuição
                     </label>
                     <input
-                      {...formik.getFieldProps('prazoDeEntrega')}
+                      {...formik.getFieldProps('lembretesDistribuicao')}
                       type="text"
-                      id="prazoDeEntrega"
-                      name="prazoDeEntrega"
-                      className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
-                      placeholder="Digite um prazo pra entrega dos resultados"
+                      id="tecnicaDeColeta"
+                      name="tecnicaDeColeta"
+                      className={`rounded-lg border border-[#A9A9A9] outline-0 hover:border-[#0F9B7F] focus:border-[#0F9B7F] ${Outfit400.className} p-2 text-[#222222]`}
+                      placeholder="Preencha sobre a distribuição"
                     />
                   </div>
-                  <div className="flex flex-1 flex-col gap-1">
-                    <label
-                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                    >
-                      Formato do laudo
-                      <strong className="text-[#F23434]">*</strong>
-                    </label>
-                    <CustomMultiSelect
-                      select={formik.values.formatoLaudo}
-                      setSelect={(e) => formik.setFieldValue('formatoLaudo', e)}
-                      options={[
-                        { id: 'PDF', label: 'PDF' },
-                        { id: 'XML', label: 'XML' },
-                        { id: 'HTML', label: 'HTML' },
-                        { id: 'TEXTO', label: 'TEXTO' },
-                        { id: 'FORMULÁRIO', label: 'FORMULÁRIO' },
-                        { id: 'DICOM', label: 'DICOM' },
-                      ]}
-                      placeholder={'Selecione um formato'}
-                      className={
-                        'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                      }
-                    />
+                </div>
+
+                {/* Processamento e entrega de laudos */}
+                <div className="flex flex-col gap-4">
+                  <span
+                    className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}
+                  >
+                    Processamento e entrega de Laudos
+                  </span>
+
+                  <div className="flex flex-col gap-4">
+                    <div className="flex gap-4">
+                      <div className="flex flex-1 flex-col gap-1">
+                        <label
+                          className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                        >
+                          Prazo de entrega dos resultados (em dias)
+                          <strong className="text-[#F23434]">*</strong>
+                        </label>
+                        <input
+                          {...formik.getFieldProps('prazoDeEntrega')}
+                          type="text"
+                          id="prazoDeEntrega"
+                          name="prazoDeEntrega"
+                          className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                          placeholder="Digite um prazo pra entrega dos resultados"
+                        />
+                      </div>
+                      <div className="flex flex-1 flex-col gap-1">
+                        <label
+                          className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                        >
+                          Formato do laudo
+                          <strong className="text-[#F23434]">*</strong>
+                        </label>
+                        <CustomMultiSelect
+                          select={formik.values.formatoLaudo}
+                          setSelect={(e) =>
+                            formik.setFieldValue('formatoLaudo', e)
+                          }
+                          options={[
+                            { id: 'PDF', label: 'PDF' },
+                            { id: 'XML', label: 'XML' },
+                            { id: 'HTML', label: 'HTML' },
+                            { id: 'TEXTO', label: 'TEXTO' },
+                            { id: 'FORMULÁRIO', label: 'FORMULÁRIO' },
+                            { id: 'DICOM', label: 'DICOM' },
+                          ]}
+                          placeholder={'Selecione um formato'}
+                          className={
+                            'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                          }
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        )
+      })}
     </div>
   )
 }

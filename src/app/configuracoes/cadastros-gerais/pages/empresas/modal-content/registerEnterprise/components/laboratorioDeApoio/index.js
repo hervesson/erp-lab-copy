@@ -217,13 +217,13 @@ const LaboratorioDeApoio = forwardRef(
           >
             INTEGRAÇÃO
           </button>
-          <button
+          {/* <button
             type="button"
             onClick={() => setTab('vincularExames')}
             className={`${Outfit400.className} ${tab === 'vincularExames' && 'border-b-2 border-[#0F9B7F] bg-white'} h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
           >
             VINCULAR EXAMES
-          </button>
+          </button> */}
         </div>
         {steps[tab]}
         {openModalAlerts && (

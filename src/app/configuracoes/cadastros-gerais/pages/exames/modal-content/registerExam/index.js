@@ -1,11 +1,19 @@
 import { Outfit300, Outfit400, Outfit500 } from '@/fonts'
-import { listAllFields } from '@/helpers'
+import {
+  CreateExam,
+  ListAllEnterprisesPerType,
+  listAllFields,
+  listAllUnits,
+} from '@/helpers'
 import { useFormik } from 'formik'
 import { DocumentDownload } from 'iconsax-reactjs'
 import { useEffect, useState } from 'react'
-import { validationSchemaAccountBank } from './components/schema'
+import { toast, ToastContainer } from 'react-toastify'
+import { validationSchema } from './components/schema'
 
 import ModalFramer from '@/components/ModalFramer'
+
+import { getFlatErrors } from '@/utils'
 
 import InformacoesDeApoio from './components/informacoesDeApoio'
 import InformacoesGerais from './components/informacoesGerais'
@@ -16,9 +24,12 @@ import CancelRegister from '@/components/Alerts/CancelRegister'
 import SuccessRegister from '@/components/Alerts/SuccessRegister'
 
 // colocar o findData
-const RegisterExam = ({ onClose }) => {
+const RegisterExam = ({ onClose, findData }) => {
   const [tab, setTab] = useState('informacoesGerais')
   const [fields, setFields] = useState([])
+  const [units, setUnits] = useState([])
+  const [labs, setLabs] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const [step, setStep] = useState('')
   const [openModalAlerts, setOpenModalAlerts] = useState(false)
@@ -26,9 +37,29 @@ const RegisterExam = ({ onClose }) => {
   useEffect(() => {
     const findFields = async () => {
       try {
-        const [fields] = await Promise.all([listAllFields()])
+        const [fields, unts, lbs] = await Promise.all([
+          listAllFields(),
+          listAllUnits(1, '', 100000),
+          ListAllEnterprisesPerType('LABORATORIO_APOIO'),
+        ])
+
+        const valuesUnits = unts.data.data.map((item) => {
+          return {
+            id: item.id,
+            label: item.nomeUnidade,
+          }
+        })
+
+        const labs = lbs?.data?.map((item) => {
+          return {
+            id: item.id,
+            label: item.nomeFantasia,
+          }
+        })
 
         setFields(fields.data.data)
+        setUnits(valuesUnits)
+        setLabs(labs)
       } catch (error) {
         console.error(error)
       }
@@ -38,23 +69,30 @@ const RegisterExam = ({ onClose }) => {
   }, [])
 
   const formik = useFormik({
-    validationSchema: validationSchemaAccountBank,
+    validationSchema,
     validateOnBlur: false,
     validateOnChange: true,
     initialValues: {
       nomeExame: '',
       codigoInterno: '',
+      sinonimo: '',
       sinonimos: [],
       codigoCBHPM: '',
       codigoTuss: '',
       codigoLoinc: '',
       codigoSUS: '',
       codigoAMB: '',
-      tipoExame: '',
+      tipoExame: {},
       especialidadeExame: '',
       grupo: '',
       subGrupo: '',
       setor: '',
+      unidade: {},
+      unidadesSelecionadas: [],
+      destino: {},
+      laboratorioDeApoio: {},
+      termoConsentimento: false,
+      requisitos_anvisa: {},
       metodologiaUtilizada: '',
       unidadeDeMedida: '',
       peso: false,
@@ -63,7 +101,8 @@ const RegisterExam = ({ onClose }) => {
       amostraBiologicaNecessaria: '',
       amostraAEnviar: '',
       tipoDeRecipiente: '',
-      regiaoDeColeta: '',
+      regiaoDeColeta: {},
+      regiao_coleta_ids: [],
       valorMinimoRequerido: '',
       estabilidade: '',
       preparoPublicoGeral: '',
@@ -79,10 +118,89 @@ const RegisterExam = ({ onClose }) => {
       lembretesDistribuicao: '',
       prazoDeEntrega: '',
       formatoLaudo: [],
+      informacoesDeApoio: [],
     },
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        console.log(values)
+        const isExternoLaboratorial =
+          values?.tipoExame?.label === 'Laboratorial' &&
+          values?.destino?.id === 'externo' &&
+          values?.laboratorioDeApoio?.id
+
+        const payload = {
+          codigo_interno: values.codigoInterno,
+          nome: values.nomeExame,
+          sinonimos: values.sinonimos,
+          codigo_cbhpm: values.codigoCBHPM,
+          codigo_tuss: values.codigoTuss,
+          codigo_amb: values.codigoAMB,
+          codigo_loinc: values.codigoLoinc,
+          codigo_sus: values.codigoSUS,
+          tipo_exame_id: values.tipoExame.id,
+          especialidade_id: values.especialidadeExame.id,
+          subgrupo_id: values.subGrupo.id,
+          setor_id: values.setor.id,
+          metodologia_id: values.metodologiaUtilizada.id,
+          grupo_id: values.grupo.id,
+          requer_peso: values.peso,
+          requer_altura: values.altura,
+          requer_volume: values.volume,
+          termo_consentimento: values.termoConsentimento,
+          unidade_medida_id: values.unidadeDeMedida.id,
+          amostra_id: values.amostraBiologicaNecessaria.id,
+          amostra_enviar_id: values.amostraAEnviar.id,
+          tipo_recipiente_id: values.tipoDeRecipiente.id,
+          regiao_coleta_ids: values.regiao_coleta_ids.map((item) => item.id),
+          estabilidade_id: values.estabilidade.id,
+          volume_minimo_id: values.valorMinimoRequerido.id,
+          formatos_laudo: values.formatoLaudo.map((item) => item.id),
+          requisitos_anvisa_id: values.requisitos_anvisa.id,
+          tipo_realizacao: values.destino.id,
+          ...(isExternoLaboratorial && {
+            laboratorio_apoio_id: values.laboratorioDeApoio.id,
+          }),
+          // telemedicina_id: '{{telemedicinaId}}',
+          // unidade_destino_id: '{{unidadeDestinoId}}',
+          prazo_entrega_dias: Number(values.prazoDeEntrega),
+          tecnica_coleta: values.tecnicaDeColeta,
+          distribuicao: values.lembretesDistribuicao,
+          preparo_geral: values.preparoPublicoGeral,
+          preparo_feminino: values.preparoFeminino,
+          preparo_infantil: values.preparoInfantil,
+          coleta_geral: values.coletaPublicoGeral,
+          coleta_feminino: values.coletaFeminino,
+          coleta_infantil: values.coletaInfantil,
+          lembrete_coletora: values.lembretesColetora,
+          lembrete_recepcionista_agendamento:
+            values.lembretesRecepcionistaAgendamentos,
+          lembrete_recepcionista_os:
+            values.lembretesRecepcionistaOrdemDeServico,
+          unidades_ids: values.unidadesSelecionadas.map((item) => item.id),
+          status: 'ativo',
+        }
+
+        try {
+          const responseCreateUnity = await CreateExam(payload)
+          if (responseCreateUnity.success) {
+            setStep('sucess')
+            setOpenModalAlerts(true)
+            findData()
+            formik.resetForm()
+          } else {
+            responseCreateUnity?.error?.erros?.forEach((element) => {
+              toast.error(element, {
+                position: 'top-right',
+              })
+            })
+            toast.error(responseCreateUnity.error.mensagem, {
+              position: 'top-right',
+            })
+          }
+        } catch (error) {
+          console.log('erro', error)
+        } finally {
+          setLoading(false)
+        }
       } finally {
         setSubmitting(false)
       }
@@ -90,11 +208,49 @@ const RegisterExam = ({ onClose }) => {
   })
 
   const steps = {
-    informacoesGerais: <InformacoesGerais formik={formik} fields={fields} />,
+    informacoesGerais: (
+      <InformacoesGerais
+        formik={formik}
+        fields={fields}
+        units={units}
+        labs={labs}
+      />
+    ),
     informacoesInternas: (
       <InformacoesInternas formik={formik} fields={fields} />
     ),
-    informacoesDeApoio: <InformacoesDeApoio formik={formik} />,
+    informacoesDeApoio: (
+      <InformacoesDeApoio formik={formik} fields={fields} labs={labs} />
+    ),
+  }
+
+  const handleValidateAndSubmit = async (e) => {
+    e.preventDefault()
+
+    const errors = await formik.validateForm()
+
+    if (Object.keys(errors).length > 0) {
+      const messages = getFlatErrors(errors)
+
+      toast.error(
+        <div>
+          <p className="font-semibold">Corrija os campos obrigatórios:</p>
+          <ul className="mt-2 list-disc pl-5">
+            {messages.map((msg, index) => (
+              <li key={index}>{msg}</li>
+            ))}
+          </ul>
+        </div>,
+        {
+          autoClose: 6000,
+        },
+      )
+
+      return
+    }
+
+    // se não tiver erro, segue o fluxo normal do formik
+    formik.handleSubmit()
   }
 
   const alerts = {
@@ -117,7 +273,7 @@ const RegisterExam = ({ onClose }) => {
   return (
     <>
       <form
-        onSubmit={formik.handleSubmit}
+        onSubmit={handleValidateAndSubmit}
         className="flex h-screen flex-1 flex-col bg-[#F9F9F9]"
       >
         <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-white px-12">
@@ -162,13 +318,16 @@ const RegisterExam = ({ onClose }) => {
             </button>
             <button
               type="button"
-              onClick={() => null}
-              className="flex h-11 w-[108px] items-center justify-evenly rounded-lg bg-[#A9A9A9] hover:bg-[#E0FFF9]"
+              onClick={handleValidateAndSubmit}
+              className={`flex h-11 w-32 items-center justify-evenly rounded-lg ${
+                formik.isValid
+                  ? 'bg-[#0F9B7F] text-white hover:from-[#3BC1E2] hover:to-[#1D6F87]'
+                  : 'bg-[#A9A9A9] text-[#494949]'
+              } ${Outfit400.className}`}
+              disabled={loading}
             >
-              <span
-                className={`${Outfit400.className} text-[#494949] uppercase`}
-              >
-                Finalizar
+              <span className={`${Outfit400.className} uppercase`}>
+                {loading ? 'Finalizando' : 'Finalizar'}
               </span>
             </button>
           </div>
@@ -191,13 +350,21 @@ const RegisterExam = ({ onClose }) => {
               >
                 INFORMAÇÕES INTERNAS
               </button>
-              <button
-                type="button"
-                onClick={() => setTab('informacoesDeApoio')}
-                className={`${Outfit400.className} ${tab === 'informacoesDeApoio' && 'border-b-2 border-[#0F9B7F] bg-white'} h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
-              >
-                INFORMAÇÕES DE APOIO
-              </button>
+              {formik?.values?.tipoExame?.label === 'Laboratorial' &&
+                formik?.values?.destino?.id === 'externo' &&
+                Object.keys(formik?.values?.laboratorioDeApoio || {}).length >
+                  0 && (
+                  <button
+                    type="button"
+                    onClick={() => setTab('informacoesDeApoio')}
+                    className={`${Outfit400.className} ${
+                      tab === 'informacoesDeApoio' &&
+                      'border-b-2 border-[#0F9B7F] bg-white'
+                    } h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
+                  >
+                    INFORMAÇÕES DE APOIO
+                  </button>
+                )}
             </div>
             {steps[tab]}
           </div>
@@ -211,6 +378,7 @@ const RegisterExam = ({ onClose }) => {
           {alerts[step]}
         </ModalFramer>
       )}
+      <ToastContainer />
     </>
   )
 }
