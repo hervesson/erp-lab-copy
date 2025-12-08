@@ -50,7 +50,6 @@ const CustomSelect = ({
             {placeholder}
           </p>
         )}
-
         {mostrarBandeja ? (
           <ArrowUp2
             size="24"
