@@ -1,3 +1,4 @@
+export * from './acquirers'
 export * from './auth'
 export * from './banks'
 export * from './cummon'

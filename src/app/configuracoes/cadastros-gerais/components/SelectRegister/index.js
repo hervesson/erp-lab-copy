@@ -23,6 +23,7 @@ const SelectRegister = ({
   setModalRegisterKits,
   setModalRegisterCompanies,
   setModalRegisterBanks,
+  setModalRegisterAcquirers,
   setModalIntegrations,
   setModalFormFiels,
   setOpenModalRegister,
@@ -75,6 +76,9 @@ const SelectRegister = ({
       <Financeiro
         setModalRegisterBanks={() => {
           setModalRegisterBanks(true)
+        }}
+        setModalRegisterAcquirers={() => {
+          setModalRegisterAcquirers(true)
         }}
       />
     ),

@@ -4,9 +4,15 @@ import ModalLeft from '@/components/ModalLeft'
 import ModalUp from '@/components/ModalUp'
 import Pagination from '@/components/Pagination'
 import { Outfit300, Outfit400, Outfit700 } from '@/fonts'
-import { DeleteAccountBank, listBankAccount } from '@/helpers'
+import {
+  DeleteAcquirers,
+  ListAcquirers,
+  listAllUnits,
+  ToggleStatusAcquirers,
+} from '@/helpers'
 import useDebounce from '@/hooks/useDebounce'
-import { Book, Edit2, Profile2User, SearchStatus, Trash } from 'iconsax-reactjs'
+import { Dropdown, DropdownItem } from 'flowbite-react'
+import { Book, Edit2, More, Profile2User, SearchStatus } from 'iconsax-reactjs'
 import { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import { Status } from './components/status'
@@ -16,10 +22,13 @@ import EditBank from './modal-content/editBank'
 import ProfileBankAccount from './modal-content/profileBankAccount'
 import RegisterBank from './modal-content/registerBank'
 
-const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
+const Adquirentes = ({ modalRegisterAcquirers, setModalRegisterAcquirers }) => {
   const [selectedAccount, setSelectedAccount] = useState({})
 
-  const [banks, setBanks] = useState([])
+  const [units, setUnits] = useState([])
+
+  const [listAcquirers, setListAcquirers] = useState([])
+
   const [total, setTotal] = useState(0)
 
   // focus
@@ -29,7 +38,7 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
   const [status, setStatus] = useState({ id: '', label: 'Status: Todos' })
-  const [type, setType] = useState({ id: '', label: 'Tipos: Todas' })
+  const [unit, setUnit] = useState({ id: '', label: 'Unidade: Todas' })
 
   // modal
   const [modalEditBank, setModalEditBank] = useState(false)
@@ -37,22 +46,38 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
     useState(false)
 
   useEffect(() => {
-    // const fetchBanks = async () => {
-    //   try {
-    //     const response = await listBankAccount()
-    //     setBanks(response.data.data)
-    //     setTotal(response.data.meta.total)
-    //   } catch (error) {
-    //     console.error('Error fetching banks:', error)
-    //   }
-    // }
-    // fetchBanks()
+    const findData = async () => {
+      try {
+        const [unts, sls] = await Promise.all([
+          listAllUnits(1, '', 100000),
+          ListAcquirers('', 1, 10),
+        ])
+
+        const valuesUnits = unts.data.data.map((item) => {
+          return {
+            id: item.id,
+            label: item.nomeUnidade,
+          }
+        })
+
+        if (unts.success) {
+          setUnits(valuesUnits)
+        }
+        if (sls.success) {
+          setListAcquirers(sls.data.data)
+          setTotal(sls.data.meta.total)
+        }
+      } catch (error) {
+        console.log('erro', error)
+      }
+    }
+    findData()
   }, [])
 
-  const fetchBanks = async () => {
+  const fetchAcquirers = async (ter, unt, stt, pg, limit) => {
     try {
-      const response = await listBankAccount()
-      setBanks(response.data.data)
+      const response = await ListAcquirers(ter, unt, stt, pg, limit)
+      setListAcquirers(response.data.data)
       setTotal(response.data.meta.total)
     } catch (error) {
       console.error('Error fetching banks:', error)
@@ -64,14 +89,14 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
     setCurrentPage(props)
 
     try {
-      const response = await listBankAccount(
+      const response = await ListAcquirers(
         searchTerm,
-        type.id,
+        unit.id,
         status.id,
         props,
         10,
       )
-      setBanks(response.data.data)
+      setListAcquirers(response.data.data)
       setTotal(response.data.meta.total)
     } catch (error) {
       console.error('Error fetching banks:', error)
@@ -83,21 +108,21 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
     setCurrentPage(1)
     const sts = {
       Todos: { id: '', label: 'Status: Todos' },
-      Ativas: { id: 'ativa', label: 'Status: Ativas' },
-      Inativas: { id: 'inativa', label: 'Status: Inativas' },
+      Ativas: { id: 'ativo', label: 'Status: Ativas' },
+      Inativas: { id: 'inativo', label: 'Status: Inativas' },
     }
 
     setStatus(sts[props.label])
 
     try {
-      const response = await listBankAccount(
+      const response = await ListAcquirers(
         searchTerm,
-        type.id,
+        unit.id,
         props.id,
         currentPage,
         10,
       )
-      setBanks(response.data.data)
+      setListAcquirers(response.data.data)
       setTotal(response.data.meta.total)
     } catch (error) {
       console.error('Error fetching banks:', error)
@@ -105,26 +130,20 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
   }
 
   // filtrar por tipo
-  const findDataPerType = async (props) => {
+  const findDataPerUnit = async (props) => {
     setCurrentPage(1)
 
-    const typ = {
-      Todas: { id: '', label: 'Tipo: Todas' },
-      Corrente: { id: 'corrente', label: 'Tipo: Corrente' },
-      Poupança: { id: 'poupanca', label: 'Tipo: Poupança' },
-    }
-
-    setType(typ[props.label])
+    setUnit({ id: props.id, label: `Unidade: ${props.label}` })
 
     try {
-      const response = await listBankAccount(
+      const response = await ListAcquirers(
         searchTerm,
         props.id,
         status.id,
         currentPage,
         10,
       )
-      setBanks(response.data.data)
+      setListAcquirers(response.data.data)
       setTotal(response.data.meta.total)
     } catch (error) {
       console.error('Error fetching banks:', error)
@@ -143,24 +162,35 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
     setCurrentPage(1)
 
     try {
-      const response = await listBankAccount(
+      const response = await ListAcquirers(
         props,
-        type.id,
+        unit.id,
         status.id,
         currentPage,
         10,
       )
-      setBanks(response.data.data)
+      setListAcquirers(response.data.data)
       setTotal(response.data.meta.total)
     } catch (error) {
       console.error('Error fetching banks:', error)
     }
   }
 
-  const deleteAccountBank = async (bank) => {
-    const response = await DeleteAccountBank(bank.id)
+  const deleteAdquirente = async (bank) => {
+    const response = await DeleteAcquirers(bank.id)
     if (response.success) {
-      fetchBanks()
+      fetchAcquirers(searchTerm, unit, status, currentPage, 10)
+    } else {
+      toast.error('Erro ao tentar deletar unidade', {
+        position: 'top-right',
+      })
+    }
+  }
+
+  const handleChangeBox = async (id) => {
+    const resp = await ToggleStatusAcquirers(id)
+    if (resp.success) {
+      fetchAcquirers(searchTerm, unit, status, currentPage, 10)
     } else {
       toast.error('Erro ao tentar deletar unidade', {
         position: 'top-right',
@@ -169,11 +199,11 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-[32px]">
-      <div className="flex h-[84px] items-center justify-between rounded-[16px] bg-[#F9F9F9]">
-        <div className="mx-[10px] flex h-[64px] w-full items-center rounded-[8px] bg-white">
-          <div className="flex gap-3 rounded-[8px] px-[8px]">
-            <div className="flex h-[48px] w-[48px] items-center justify-center rounded-[8px] bg-[#F9F9F9]">
+    <div className="flex flex-1 flex-col gap-8">
+      <div className="flex h-[84px] items-center justify-between rounded-2xl bg-[#F9F9F9]">
+        <div className="mx-2.5 flex h-16 w-full items-center rounded-lg bg-white">
+          <div className="flex gap-3 rounded-lg px-2">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#F9F9F9]">
               <Profile2User size="28" color="#A1A1A1" />
             </div>
             <div className="flex flex-col justify-around">
@@ -196,34 +226,30 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
           setSelect={(e) => findDataPerStatus(e)}
           options={[
             { id: '', label: 'Todos' },
-            { id: 'ativa', label: 'Ativas' },
-            { id: 'inativa', label: 'Inativas' },
+            { id: 'ativo', label: 'Ativas' },
+            { id: 'inativo', label: 'Inativas' },
           ]}
           placeholder={'Status'}
           className={'bg-[#F9F9F9]'}
         />
         <CustomSelect
-          select={type}
-          setSelect={(e) => findDataPerType(e)}
-          options={[
-            { id: '', label: 'Todas' },
-            { id: 'corrente', label: 'Corrente' },
-            { id: 'poupanca', label: 'Poupança' },
-          ]}
-          placeholder={'Tipos de exames: todos'}
+          select={unit}
+          setSelect={(e) => findDataPerUnit(e)}
+          options={[{ id: '', label: 'Todos' }, ...units]}
+          placeholder={'Selecione a unidade'}
           className={'bg-[#F9F9F9]'}
         />
         <div
-          className={`flex h-[40px] flex-3 items-center rounded-[8px] px-2 ${
+          className={`flex h-10 flex-3 items-center rounded-lg px-2 ${
             isFocusedSearch
-              ? 'border-[1px] border-[#0F9B7F]'
+              ? 'border border-[#0F9B7F]'
               : 'border border-[#BBBBBB]'
           }`}
         >
           <input
             placeholder="Pesquisar"
             onChange={handleChangeUnit}
-            className={`h-full w-full rounded-[8px] ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
+            className={`h-full w-full rounded-lg ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
             onFocus={() => setIsFocusedSearch(true)}
             onBlur={() => setIsFocusedSearch(false)}
           />
@@ -233,7 +259,7 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
 
       <table className="w-full">
         <thead className="sticky top-0">
-          <tr className="h-[48px] bg-[#D4D4D4]">
+          <tr className="h-12 bg-[#D4D4D4]">
             <th
               className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
             >
@@ -262,7 +288,7 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
             <th
               className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
             >
-              ativo
+              Ativo
             </th>
             <th
               className={`text-[13px] ${Outfit400.className} text-center text-[#717171]`}
@@ -282,36 +308,43 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100 overflow-y-hidden">
-          {banks?.map((item, index) => {
+          {listAcquirers?.map((item, index) => {
             return (
               <tr
-                className="h-[64px] border-b border-[#D9D9D9] bg-white py-[5px]"
+                className="h-16 border-b border-[#D9D9D9] bg-white py-[5px]"
                 key={index.toString()}
               >
                 <td
                   className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                 >
-                  {item?.banco.codigo}
+                  {item?.codigo_interno}
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-start text-[#383838]`}
                 >
-                  {item?.banco?.nome}
+                  {item?.nome_adquirente}
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
-                  {item.observacoes}
+                  {item?.descricao}
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
-                  {item.unidades_vinculadas
+                  {item?.conta_bancaria.banco?.codigo} -{' '}
+                  {item?.conta_bancaria.banco?.nome}{' '}
+                  {item?.conta_bancaria.numero_conta}-
+                  {item?.conta_bancaria.digito_conta}
+                </td>
+                <td
+                  className={`text-[14px] ${Outfit300.className} text-[#383838]`}
+                >
+                  {item.unidades_associadas
                     ?.map((u) => u?.unidade_saude?.nomeUnidade)
                     .filter(Boolean)
                     .join(', ') || '—'}
                 </td>
-
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
@@ -322,13 +355,8 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
-                  <div
-                    className="flex h-full items-center justify-center"
-                    onClick={() => {
-                      deleteAccountBank(item)
-                    }}
-                  >
-                    <Trash size="28" color="#737373" />
+                  <div className="flex h-full items-center justify-center">
+                    <Edit2 size="28" color="#737373" />
                   </div>
                 </td>
                 <td
@@ -341,20 +369,33 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
                       setSelectedAccount(item)
                     }}
                   >
-                    <Edit2 size="28" color="#737373" />
+                    <Book size="28" color="#737373" />
                   </div>
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                 >
-                  <div
-                    className="flex h-full items-center justify-center"
-                    onClick={() => {
-                      setOpenModalProfileBankAccount(true)
-                      setSelectedAccount(item)
-                    }}
-                  >
-                    <Book size="28" color="#737373" />
+                  <div className="flex h-full items-center justify-center">
+                    <Dropdown
+                      label=""
+                      dismissOnClick={true}
+                      renderTrigger={() => <More size="28" color="#737373" />}
+                      placement="left-start"
+                      className="bg-white"
+                    >
+                      <DropdownItem
+                        className={`${Outfit300.className} text-[16px] text-[#8A8A8A]`}
+                        onClick={() => handleChangeBox(item.id)}
+                      >
+                        Ativar/Desativar
+                      </DropdownItem>
+                      <DropdownItem
+                        className={`${Outfit300.className} text-[16px] text-[#8A8A8A]`}
+                        onClick={() => deleteAdquirente(item)}
+                      >
+                        Excluir
+                      </DropdownItem>
+                    </Dropdown>
                   </div>
                 </td>
               </tr>
@@ -362,13 +403,13 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
           })}
         </tbody>
       </table>
-      <div className="flex h-[40px] items-center justify-between">
+      <div className="flex h-10 items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-[40px] w-[61px] items-center rounded-[8px] bg-[#F9F9F9]">
+          <div className="flex h-10 w-[61px] items-center rounded-lg bg-[#F9F9F9]">
             <span
               className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
             >
-              {banks.length > 10 ? 10 : banks.length}
+              {listAcquirers.length > 10 ? 10 : listAcquirers.length}
             </span>
           </div>
           <span className={`${Outfit300.className} text-[16px] text-[#222]`}>
@@ -384,19 +425,19 @@ const Adquirentes = ({ modalRegisterBanks, setModalRegisterBanks }) => {
         />
       </div>
       <ModalUp
-        isOpen={modalRegisterBanks}
-        onClose={() => setModalRegisterBanks(false)}
+        isOpen={modalRegisterAcquirers}
+        onClose={() => setModalRegisterAcquirers(false)}
       >
         <RegisterBank
-          onClose={() => setModalRegisterBanks(false)}
-          findData={() => fetchBanks()}
+          onClose={() => setModalRegisterAcquirers(false)}
+          // findData={() => fetchBanks()}
         />
       </ModalUp>
       <ModalUp isOpen={modalEditBank} onClose={() => setModalEditBank(false)}>
         <EditBank
           onClose={() => setModalEditBank(false)}
           account={selectedAccount}
-          findData={() => fetchBanks()}
+          // findData={() => fetchBanks()}
         />
       </ModalUp>
       <ModalLeft

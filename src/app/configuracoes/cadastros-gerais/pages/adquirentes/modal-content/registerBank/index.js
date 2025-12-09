@@ -206,7 +206,7 @@ const RegisterUser = ({ onClose, findData }) => {
             <span
               className={` ${Outfit500.className} text-[16px] text-[#222222]`}
             >
-              BANCOS
+              ADQUIRENTES
             </span>
           </div>
           <div className="flex gap-[16px]">

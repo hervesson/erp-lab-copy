@@ -63,6 +63,7 @@ const RootLayout = () => {
     useState(false)
 
   // Modal Financeiro
+  const [modalRegisterAcquirers, setModalRegisterAcquirers] = useState(false)
   const [modalRegisterBanks, setModalRegisterBanks] = useState(false)
 
   // Modal outros
@@ -138,13 +139,18 @@ const RootLayout = () => {
     etiquetasParaAmostras: <EtiquetaParaAmostra />,
     cabecalhoRodapes: <CabecalhoRodapes />,
     formulariosDeAtendimento: <FormularioDeAtendimento />,
+    adquirentes: (
+      <Adquirentes
+        modalRegisterAcquirers={modalRegisterAcquirers}
+        setModalRegisterAcquirers={(e) => setModalRegisterAcquirers(e)}
+      />
+    ),
     bancos: (
       <Banks
         modalRegisterBanks={modalRegisterBanks}
         setModalRegisterBanks={(e) => setModalRegisterBanks(e)}
       />
     ),
-    adquirentes: <Adquirentes />,
     hierarquiaCFO: <HierarquiaCFO />,
     importacaoDeTabelas: <ImportacaoDeTabelas />,
     integracoes: (
@@ -263,7 +269,6 @@ const RootLayout = () => {
               setPage((prev) =>
                 ALLOWED_PAGES.includes(prev) ? prev : 'convenios',
               )
-
               setOpenModalRegister(false)
               setModalRegisterCompanies(Boolean(open))
             }}
@@ -271,6 +276,11 @@ const RootLayout = () => {
               setPage('bancos')
               setOpenModalRegister(false)
               setModalRegisterBanks(true)
+            }}
+            setModalRegisterAcquirers={() => {
+              setPage('adquirentes')
+              setOpenModalRegister(false)
+              setModalRegisterAcquirers(true)
             }}
             setModalIntegrations={() => {
               setPage('integracoes')
