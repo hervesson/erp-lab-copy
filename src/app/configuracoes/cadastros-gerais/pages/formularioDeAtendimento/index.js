@@ -26,7 +26,7 @@ const FormularioDeAtendimento = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
-    const findData = async () => {
+    const loadInitialUnits = async () => {
       try {
         const [unts] = await Promise.all([listAllUnits(1, '', 100000)])
 
@@ -43,7 +43,7 @@ const FormularioDeAtendimento = () => {
         console.log('erro', error)
       }
     }
-    findData()
+    loadInitialUnits()
   }, [])
 
   const formik = useFormik({
