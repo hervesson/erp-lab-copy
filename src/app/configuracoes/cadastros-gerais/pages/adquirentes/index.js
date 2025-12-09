@@ -8,7 +8,7 @@ import {
   DeleteAcquirers,
   ListAcquirers,
   listAllUnits,
-  ToggleStatusAcquirers,
+  ToggleStatusAcquirers
 } from '@/helpers'
 import useDebounce from '@/hooks/useDebounce'
 import { Dropdown, DropdownItem } from 'flowbite-react'
@@ -20,7 +20,7 @@ import { Status } from './components/status'
 // Components
 import EditBank from './modal-content/editBank'
 import ProfileBankAccount from './modal-content/profileBankAccount'
-import RegisterBank from './modal-content/registerBank'
+import RegisterBank from './modal-content/registerAcquirers'
 
 const Adquirentes = ({ modalRegisterAcquirers, setModalRegisterAcquirers }) => {
   const [selectedAccount, setSelectedAccount] = useState({})
@@ -50,7 +50,7 @@ const Adquirentes = ({ modalRegisterAcquirers, setModalRegisterAcquirers }) => {
       try {
         const [unts, sls] = await Promise.all([
           listAllUnits(1, '', 100000),
-          ListAcquirers('', 1, 10),
+          ListAcquirers(),
         ])
 
         const valuesUnits = unts.data.data.map((item) => {
@@ -76,7 +76,7 @@ const Adquirentes = ({ modalRegisterAcquirers, setModalRegisterAcquirers }) => {
 
   const fetchAcquirers = async (ter, unt, stt, pg, limit) => {
     try {
-      const response = await ListAcquirers(ter, unt, stt, pg, limit)
+      const response = await ListAcquirers(ter, unt.id, stt.id, pg, limit)
       setListAcquirers(response.data.data)
       setTotal(response.data.meta.total)
     } catch (error) {

@@ -1,21 +1,32 @@
 import { Outfit400, Outfit500 } from '@/fonts'
-import { CreateBankAccount, listAllUnits } from '@/helpers'
+import {
+  CreateBankAccount,
+  listAllFields,
+  listAllUnits,
+  listBankAccount,
+} from '@/helpers'
 import { FormikProvider, useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { validationSchemaAccountBank } from './components/schema'
 
-import InformacoesGerais from './components/informacoesgerais'
+import InformacoesGerais from './components/informacoesGerais'
 import Integracao from './components/integracao'
 
 const RegisterUser = ({ onClose, findData }) => {
   const [tab, setTab] = useState('informacoesGerais')
   const [units, setUnits] = useState([])
+  const [banks, setBanks] = useState([])
+  const [fields, setFields] = useState([])
 
   useEffect(() => {
     const findUsersByFilters = async () => {
       try {
-        const [unts] = await Promise.all([listAllUnits()])
+        const [fields, unts, AllAccounts] = await Promise.all([
+          listAllFields(),
+          listAllUnits(),
+          listBankAccount(),
+        ])
 
         const unt = unts.data.data.map((item) => {
           return {
@@ -24,7 +35,18 @@ const RegisterUser = ({ onClose, findData }) => {
             item,
           }
         })
+        if (fields.success) {
+          setFields(fields?.data?.data)
+        }
+
+        const acc = AllAccounts.data.data.map((item) => {
+          return {
+            id: item.id,
+            label: `${item.banco.nome} - ${item.observacoes} - ${item.agencia}-${item.digito_agencia}/${item.numero_conta}-${item.digito_conta}`,
+          }
+        })
         setUnits(unt)
+        setBanks(acc)
       } catch (error) {
         console.error(error)
       }
@@ -38,18 +60,23 @@ const RegisterUser = ({ onClose, findData }) => {
     validateOnBlur: false,
     validateOnChange: true,
     initialValues: {
-      informations: [
+      codigoInterno: '',
+      nomeDoAdquirente: '',
+      descricao: '',
+      contaAssociada: {},
+      unidadeAssociada: {},
+      unidadeAssociadasSelecionadas: [],
+      cartaoSuportado: {},
+      cartoesSuportadosSelecionados: [],
+      opcaoDeParcelamento: {},
+      taxaPorTransacao: '',
+      taxaPorParcelamento: '',
+      porcentagemDeRepasse: '',
+      prazoDeRepasse: '',
+      restricoes: [
         {
-          banco_id: '',
-          description: '',
-          status: '',
-          agencia: '',
-          numero_conta: '',
-          digito_conta: '',
-          tipoConta: '',
-          pix_chave: '',
-          unidadeSelecionada: {},
-          unidades_associadas: [],
+          unidade: '',
+          restricao: '',
         },
       ],
     },
@@ -186,7 +213,14 @@ const RegisterUser = ({ onClose, findData }) => {
   }
 
   const steps = {
-    informacoesGerais: <InformacoesGerais formik={formik} units={units} />,
+    informacoesGerais: (
+      <InformacoesGerais
+        formik={formik}
+        units={units}
+        fields={fields}
+        banks={banks}
+      />
+    ),
     integracao: <Integracao />,
   }
 
@@ -196,7 +230,7 @@ const RegisterUser = ({ onClose, findData }) => {
         onSubmit={formik.handleSubmit}
         className="flex h-screen flex-1 flex-col bg-[#F9F9F9]"
       >
-        <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-[#fff] px-[48px]">
+        <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-white px-12">
           <div className="flex flex-col">
             <span
               className={` ${Outfit400.className} text-[16px] text-[#0F9B7F]`}
@@ -209,11 +243,11 @@ const RegisterUser = ({ onClose, findData }) => {
               ADQUIRENTES
             </span>
           </div>
-          <div className="flex gap-[16px]">
+          <div className="flex gap-4">
             <button
               type="button"
               onClick={() => onClose()}
-              className="flex h-[44px] w-[108px] items-center justify-evenly rounded-[8px] border border-[#F23434] hover:bg-[#FFE6E6]"
+              className="flex h-11 w-[108px] items-center justify-evenly rounded-lg border border-[#F23434] hover:bg-[#FFE6E6]"
             >
               <span
                 className={`${Outfit400.className} text-[#F23434] uppercase`}
@@ -224,7 +258,7 @@ const RegisterUser = ({ onClose, findData }) => {
             <button
               type="button"
               onClick={handleFinalize}
-              className={`flex h-[44px] w-[108px] items-center justify-evenly rounded-[8px] ${
+              className={`flex h-11 w-[108px] items-center justify-evenly rounded-lg ${
                 formik.isValid
                   ? 'bg-[#0F9B7F] text-white hover:from-[#3BC1E2] hover:to-[#1D6F87]'
                   : 'bg-[#A9A9A9] text-[#494949]'
@@ -237,19 +271,19 @@ const RegisterUser = ({ onClose, findData }) => {
         </div>
 
         <div className="flex h-full w-screen gap-x-3 overflow-x-auto">
-          <div className="mx-[48px] my-[28px] flex h-fit flex-1 flex-col rounded">
-            <div className="flex h-[56px] items-center gap-8 px-[48px]">
+          <div className="mx-12 my-7 flex h-fit flex-1 flex-col rounded">
+            <div className="flex h-14 items-center gap-8 px-12">
               <button
                 type="button"
                 onClick={() => setTab('informacoesGerais')}
-                className={`${Outfit400.className} ${tab === 'informacoesGerais' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
+                className={`${Outfit400.className} ${tab === 'informacoesGerais' && 'border-b-2 border-[#0F9B7F] bg-white'} h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
               >
                 INFORMAÇÕES GERAIS
               </button>
               <button
                 type="button"
                 onClick={() => setTab('integracao')}
-                className={`${Outfit400.className} ${tab === 'integracao' && 'border-b-2 border-[#0F9B7F] bg-white'} h-[56px] rounded-tl-[8px] rounded-tr-[8px] px-2 text-[16px] text-[#222]`}
+                className={`${Outfit400.className} ${tab === 'integracao' && 'border-b-2 border-[#0F9B7F] bg-white'} h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
               >
                 INTEGRAÇÃO
               </button>
