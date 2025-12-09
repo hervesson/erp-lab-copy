@@ -1,4 +1,5 @@
 import CustomSelect from '@/components/CustomSelect'
+import DecimalInputBR from '@/components/DecimalInputBR'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { CloseCircle, InfoCircle } from 'iconsax-reactjs'
 
@@ -36,7 +37,7 @@ const InformacoesGerais = ({ formik, units, fields, banks }) => {
                     <strong className="text-[#F23434]">*</strong>
                   </label>
                   <input
-                    value={'BAN001'}
+                    value={formik?.values?.codigoInterno}
                     className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-dashed border-[#A9A9A9] px-2 text-[#A9A9A9] outline-none`}
                     placeholder="Digite o código interno"
                     readOnly
@@ -75,7 +76,7 @@ const InformacoesGerais = ({ formik, units, fields, banks }) => {
                     placeholder="Digite uma descrição para o adquirente"
                   />
                 </div>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-1 flex-col gap-1">
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}
                   >
@@ -89,7 +90,7 @@ const InformacoesGerais = ({ formik, units, fields, banks }) => {
                       formik.setFieldTouched('contaAssociada', true, false)
                     }}
                     options={banks}
-                    placeholder="Selecione o status"
+                    placeholder="Selecione a conta"
                     className="border border-[#BBBBBB]"
                   />
                 </div>
@@ -117,7 +118,7 @@ const InformacoesGerais = ({ formik, units, fields, banks }) => {
                   formik.setFieldValue(`unidadeAssociada`, option)
                   formik.setFieldTouched(`unidadeAssociada`, true, false)
                 }}
-                options={units /* [{id, label}] */}
+                options={units}
                 placeholder="Selecione a unidade"
                 className="border border-[#BBBBBB]"
               />
@@ -156,7 +157,7 @@ const InformacoesGerais = ({ formik, units, fields, banks }) => {
                           key={index.toString()}
                           className={`h-10 bg-[#E0FFF9] ${Outfit400.className} flex items-center gap-3 rounded-[50px] px-3 text-[14px] text-[#0F9B7F]`}
                         >
-                          {item.codigo} {item.label}
+                          {item.label}
                           <CloseCircle
                             size="22"
                             color="#F23434"
@@ -203,13 +204,20 @@ const InformacoesGerais = ({ formik, units, fields, banks }) => {
                 <strong className="text-[#F23434]">*</strong>
               </label>
               <CustomSelect
-                select={null}
+                select={formik.values.cartaoSuportado}
                 setSelect={(option) => {
-                  formik.setFieldValue(``, option)
-                  formik.setFieldTouched(``, true, false)
+                  formik.setFieldValue(`cartaoSuportado`, option)
+                  formik.setFieldTouched(`cartaoSuportado`, true, false)
                 }}
-                options={units /* [{id, label}] */}
-                placeholder="Selecione a unidade"
+                options={fields
+                  ?.find((element) => element?.nomeCampo === 'tipo_cartao')
+                  ?.alternativas.map((i) => {
+                    return {
+                      id: i.id,
+                      label: i.textoAlternativa,
+                    }
+                  })}
+                placeholder="Selecione o cartão"
                 className="border border-[#BBBBBB]"
               />
             </div>
@@ -217,6 +225,30 @@ const InformacoesGerais = ({ formik, units, fields, banks }) => {
               <button
                 type="button"
                 className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F]`}
+                onClick={() => {
+                  const {
+                    cartoesSuportadosSelecionados = [],
+                    cartaoSuportado,
+                  } = formik.values
+
+                  // Se não tiver cartão selecionado ou sem id, não faz nada
+                  if (!cartaoSuportado?.id) return
+
+                  // Verifica se já existe um cartão com o mesmo id no array
+                  const jaSelecionado = cartoesSuportadosSelecionados.some(
+                    (cartao) => cartao.id === cartaoSuportado.id,
+                  )
+
+                  if (jaSelecionado) return
+
+                  formik.setFieldValue('cartoesSuportadosSelecionados', [
+                    ...cartoesSuportadosSelecionados,
+                    cartaoSuportado,
+                  ])
+
+                  // Reseta o select
+                  formik.setFieldValue('cartaoSuportado', null) // ou {} se for o padrão do seu form
+                }}
               >
                 ADICIONAR
               </button>
@@ -224,24 +256,24 @@ const InformacoesGerais = ({ formik, units, fields, banks }) => {
 
             {/* === CHIPS APENAS DO index ATUAL (mudança chave) === */}
             <div className="flex flex-1 flex-col justify-end gap-1">
-              {formik?.values?.cnaesSecundariosSelecionados?.length > 0 ? (
+              {formik?.values?.cartoesSuportadosSelecionados?.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
-                  {formik.values?.cnaesSecundariosSelecionados?.map(
+                  {formik.values?.cartoesSuportadosSelecionados?.map(
                     (item, index) => {
                       return (
                         <div
                           key={index.toString()}
                           className={`h-10 bg-[#E0FFF9] ${Outfit400.className} flex items-center gap-3 rounded-[50px] px-3 text-[14px] text-[#0F9B7F]`}
                         >
-                          {item.codigo} {item.label}
+                          {item.label}
                           <CloseCircle
                             size="22"
                             color="#F23434"
                             variant="Bold"
                             onClick={() =>
                               formik.setFieldValue(
-                                'cnaesSecundariosSelecionados',
-                                formik.values.cnaesSecundariosSelecionados.filter(
+                                'cartoesSuportadosSelecionados',
+                                formik.values.cartoesSuportadosSelecionados.filter(
                                   (code) => code !== item,
                                 ),
                               )
@@ -300,13 +332,15 @@ const InformacoesGerais = ({ formik, units, fields, banks }) => {
               >
                 Taxa por transação
               </label>
-              <input
-                {...formik.getFieldProps('taxaPorTransacao')}
-                name={`taxaPorTransacao`}
-                id={'taxaPorTransacao'}
-                type="text"
-                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
-                placeholder="Digite a taxa por transação"
+              <DecimalInputBR
+                name="taxaPorTransacao"
+                id="taxaPorTransacao"
+                value={formik.values.taxaPorTransacao}
+                onChange={(num) =>
+                  formik.setFieldValue('taxaPorTransacao', num)
+                }
+                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                placeholder="Digite a taxa de parcelamento"
               />
             </div>
             <div className="flex flex-col gap-1">
@@ -315,13 +349,15 @@ const InformacoesGerais = ({ formik, units, fields, banks }) => {
               >
                 Taxa por parcelamento
               </label>
-              <input
-                {...formik.getFieldProps('taxaPorParcelamento')}
-                name={`taxaPorParcelamento`}
-                id={'taxaPorParcelamento'}
-                type="text"
-                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
-                placeholder="Dígite a taxa por parcelamento"
+              <DecimalInputBR
+                name="taxaPorParcelamento"
+                id="taxaPorParcelamento"
+                value={formik.values.taxaPorParcelamento}
+                onChange={(num) =>
+                  formik.setFieldValue('taxaPorParcelamento', num)
+                }
+                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                placeholder="Digite a taxa de parcelamento"
               />
             </div>
             <div className="flex flex-1 flex-col gap-1">
@@ -331,13 +367,15 @@ const InformacoesGerais = ({ formik, units, fields, banks }) => {
                 Porcentagem de repasse
                 <strong className="text-red-700">*</strong>
               </label>
-              <input
-                {...formik.getFieldProps('porcentagemDeRepasse')}
-                name={`porcentagemDeRepasse`}
-                id={'porcentagemDeRepasse'}
-                type="text"
-                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
-                placeholder="Digite a porcentagem de repasse"
+              <DecimalInputBR
+                name="porcentagemDeRepasse"
+                id="porcentagemDeRepasse"
+                value={formik.values.porcentagemDeRepasse}
+                onChange={(num) =>
+                  formik.setFieldValue('porcentagemDeRepasse', num)
+                }
+                className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
+                placeholder="Digite percentual de repasse"
               />
             </div>
             <div className="flex flex-1 flex-col gap-1">
@@ -398,7 +436,7 @@ const InformacoesGerais = ({ formik, units, fields, banks }) => {
                     Restrições
                   </label>
                   <CustomSelect
-                    select={formik.restricao ?? null}
+                    select={item.restricao ?? null}
                     setSelect={(option) => {
                       formik.setFieldValue(
                         `restricoes[${index}].restricao`,

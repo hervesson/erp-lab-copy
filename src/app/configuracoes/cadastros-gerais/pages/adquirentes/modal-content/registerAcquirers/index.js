@@ -1,23 +1,33 @@
+import ModalFramer from '@/components/ModalFramer'
 import { Outfit400, Outfit500 } from '@/fonts'
 import {
-  CreateBankAccount,
+  CreateAcquire,
   listAllFields,
   listAllUnits,
   listBankAccount,
 } from '@/helpers'
-import { FormikProvider, useFormik } from 'formik'
+import { getFlatErrors } from '@/utils'
+import { useFormik } from 'formik'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { validationSchemaAccountBank } from './components/schema'
+import { validationSchemaAcquirers } from './components/schema'
 
 import InformacoesGerais from './components/informacoesGerais'
 import Integracao from './components/integracao'
 
-const RegisterUser = ({ onClose, findData }) => {
+// alerts
+import CancelRegister from '@/components/Alerts/CancelRegister'
+import SuccessRegister from '@/components/Alerts/SuccessRegister'
+
+const RegisterAcquirers = ({ onClose, findData }) => {
   const [tab, setTab] = useState('informacoesGerais')
   const [units, setUnits] = useState([])
   const [banks, setBanks] = useState([])
   const [fields, setFields] = useState([])
+  const [openModalAlerts, setOpenModalAlerts] = useState(false)
+  const [step, setStep] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [codigoInterno, setCodigoInterno] = useState(() => gerarCodigoInterno())
 
   useEffect(() => {
     const findUsersByFilters = async () => {
@@ -56,11 +66,11 @@ const RegisterUser = ({ onClose, findData }) => {
   }, [])
 
   const formik = useFormik({
-    validationSchema: validationSchemaAccountBank,
+    validationSchema: validationSchemaAcquirers,
     validateOnBlur: false,
     validateOnChange: true,
     initialValues: {
-      codigoInterno: '',
+      codigoInterno,
       nomeDoAdquirente: '',
       descricao: '',
       contaAssociada: {},
@@ -82,20 +92,60 @@ const RegisterUser = ({ onClose, findData }) => {
     },
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const items = values.informations.map(toApiItem)
+        const payload = {
+          codigo_interno: values.codigoInterno,
+          nome_adquirente: values.nomeDoAdquirente,
+          descricao: values.descricao,
+          conta_bancaria_id: values.contaAssociada.id,
+          tipos_cartao_ids: values.cartoesSuportadosSelecionados.map(
+            (item) => item.id,
+          ),
+          opcao_parcelamento_id: values.opcaoDeParcelamento.id,
+          taxa_transacao: values.taxaPorTransacao,
+          taxa_parcelamento: values.taxaPorParcelamento,
+          percentual_repasse: values.porcentagemDeRepasse,
+          prazo_repasse: values.prazoDeRepasse,
+          validade_configuracao_api: '2026-12-31',
+          chave_contingencia: '',
+          unidades_associadas: values.unidadeAssociadasSelecionadas.map(
+            (item) => {
+              return {
+                unidade_saude_id: item.id,
+                ativo: true,
+              }
+            },
+          ),
+          restricoes: values.restricoes.map((item) => {
+            return {
+              unidade_saude_id: item.unidade.id,
+              restricao_id: item.restricao.id,
+              valor_restricao: '',
+            }
+          }),
+        }
 
-        // dispara todas paralelamente (se o backend aguentar)
-        const results = await Promise.allSettled(
-          items.map((payload) => CreateBankAccount(payload)),
-        )
-
-        // caso tudo ok, você pode limpar/fechar/atualizar
-        const allOk = results.every((r) => r.status === 'fulfilled')
-        if (allOk) {
-          // resetar o form se quiser:
-          formik.resetForm()
-          findData()
-          onClose()
+        try {
+          const responseCreateUnity = await CreateAcquire(payload)
+          if (responseCreateUnity.success) {
+            setStep('sucess')
+            setOpenModalAlerts(true)
+            findData()
+            regenerarCodigoInterno()
+            formik.resetForm()
+          } else {
+            responseCreateUnity?.error?.erros?.forEach((element) => {
+              toast.error(element, {
+                position: 'top-right',
+              })
+            })
+            toast.error(responseCreateUnity.error.mensagem, {
+              position: 'top-right',
+            })
+          }
+        } catch (error) {
+          console.log('erro', error)
+        } finally {
+          setLoading(false)
         }
       } finally {
         setSubmitting(false)
@@ -103,113 +153,48 @@ const RegisterUser = ({ onClose, findData }) => {
     },
   })
 
-  const digits = (s) => (typeof s === 'string' ? s.replace(/\D+/g, '') : s)
+  const handleValidateAndSubmit = async (e) => {
+    e.preventDefault()
 
-  const toApiItem = (it) => ({
-    banco_id:
-      typeof it.banco_id === 'object' ? it.banco_id?.id : it.banco_id || null,
-    observacoes: it.description?.trim() || '',
-    status: typeof it.status === 'object' ? it.status?.id : it.status || null,
-    agencia: digits(it.agencia || ''),
-    numero_conta: digits(it.numero_conta || ''),
-    digito_conta: digits(it.digito_conta || ''),
-    tipo_conta:
-      typeof it.tipoConta === 'object'
-        ? it.tipoConta?.id
-        : it.tipoConta || null,
-    pix_chave: it.pix_chave?.trim() || null,
-    unidades_ids: (it.unidades_associadas || []).map((u) =>
-      typeof u === 'object' ? u.id : u,
-    ),
-  })
-
-  // mapeia chaves -> rótulos amigáveis
-  const labelMap = {
-    banco_id: 'Banco',
-    description: 'Descrição',
-    status: 'Status do banco',
-    agencia: 'Agência',
-    numero_conta: 'Número da conta',
-    digito_conta: 'Dígito da conta',
-    tipoConta: 'Tipo de conta',
-    pix_chave: 'Chave PIX',
-    unidadeSelecionada: 'Unidade selecionada',
-    unidades_associadas: 'Unidades associadas',
-  }
-
-  // touched recursivo com o mesmo shape de values
-  const makeTouched = (values) => {
-    if (Array.isArray(values)) return values.map(makeTouched)
-    if (values && typeof values === 'object') {
-      return Object.fromEntries(
-        Object.keys(values).map((k) => [k, makeTouched(values[k])]),
-      )
-    }
-    return true
-  }
-
-  const flattenErrorsForItem = (errObj, path = []) => {
-    if (!errObj) return []
-    if (typeof errObj === 'string') {
-      const field = path[path.length - 1]
-      const label = labelMap[field] || field
-      return [`${label}: ${errObj}`]
-    }
-    if (Array.isArray(errObj)) {
-      return errObj.flatMap((val, idx) =>
-        flattenErrorsForItem(val, [...path, idx]),
-      )
-    }
-    if (typeof errObj === 'object') {
-      return Object.keys(errObj).flatMap((k) =>
-        flattenErrorsForItem(errObj[k], [...path, k]),
-      )
-    }
-    return []
-  }
-
-  const handleFinalize = async () => {
     const errors = await formik.validateForm()
-    const hasErrors = Object.keys(errors || {}).length > 0
 
-    if (!hasErrors) {
-      await formik.submitForm()
-      return
-    }
-
-    // marca tudo como touched
-    formik.setTouched(makeTouched(formik.values), true)
-
-    // erros por conta (somente o array informations)
-    const infoErrors = errors?.informations || []
-    const MAX_LINES = 6
-
-    infoErrors.forEach((errItem, idx) => {
-      if (!errItem) return
-      const lines = flattenErrorsForItem(errItem)
-      if (lines.length === 0) return
-
-      const head = lines.slice(0, MAX_LINES)
-      const rest = lines.length - head.length
+    if (Object.keys(errors).length > 0) {
+      const messages = getFlatErrors(errors)
 
       toast.error(
         <div>
-          <div className="font-semibold">
-            Conta #{idx + 1}: {lines.length} erro(s)
-          </div>
+          <p className="font-semibold">Corrija os campos obrigatórios:</p>
           <ul className="mt-2 list-disc pl-5">
-            {head.map((m, i) => (
-              <li key={i} className="mb-1 text-[14px]">
-                {m}
-              </li>
+            {messages.map((msg, index) => (
+              <li key={index}>{msg}</li>
             ))}
           </ul>
-          {rest > 0 && (
-            <div className="mt-2 text-sm">…e mais {rest} erro(s)</div>
-          )}
         </div>,
+        {
+          autoClose: 6000,
+        },
       )
-    })
+
+      return
+    }
+
+    // se não tiver erro, segue o fluxo normal do formik
+    formik.handleSubmit()
+  }
+
+  function gerarCodigoInterno() {
+    const prefixo = 'ADQ'
+    const numero = Math.floor(Math.random() * 1000) // 0 até 999
+    const numeroFormatado = String(numero).padStart(3, '0') // sempre 3 dígitos
+
+    return `${prefixo}${numeroFormatado}`
+  }
+
+  const regenerarCodigoInterno = () => {
+    const novoCodigo = gerarCodigoInterno()
+    setCodigoInterno(novoCodigo)
+    // se tiver Formik, mantém sincronizado:
+    formik.setFieldValue('codigo', novoCodigo)
   }
 
   const steps = {
@@ -224,10 +209,27 @@ const RegisterUser = ({ onClose, findData }) => {
     integracao: <Integracao />,
   }
 
+  const alerts = {
+    cancel: (
+      <CancelRegister
+        onClose={() => setOpenModalAlerts(false)}
+        onCloseRegister={() => onClose()}
+      />
+    ),
+    sucess: (
+      <SuccessRegister
+        onClose={() => {
+          setOpenModalAlerts(false)
+        }}
+        onCloseRegister={() => onClose()}
+      />
+    ),
+  }
+
   return (
-    <FormikProvider value={formik}>
+    <>
       <form
-        onSubmit={formik.handleSubmit}
+        onSubmit={handleValidateAndSubmit}
         className="flex h-screen flex-1 flex-col bg-[#F9F9F9]"
       >
         <div className="flex h-[88px] items-center justify-between border-b border-[#E7E7E7] bg-white px-12">
@@ -246,7 +248,10 @@ const RegisterUser = ({ onClose, findData }) => {
           <div className="flex gap-4">
             <button
               type="button"
-              onClick={() => onClose()}
+              onClick={() => {
+                setStep('cancel')
+                setOpenModalAlerts(true)
+              }}
               className="flex h-11 w-[108px] items-center justify-evenly rounded-lg border border-[#F23434] hover:bg-[#FFE6E6]"
             >
               <span
@@ -256,14 +261,13 @@ const RegisterUser = ({ onClose, findData }) => {
               </span>
             </button>
             <button
-              type="button"
-              onClick={handleFinalize}
-              className={`flex h-11 w-[108px] items-center justify-evenly rounded-lg ${
+              type="submit"
+              className={`flex h-11 w-32 items-center justify-evenly rounded-lg ${
                 formik.isValid
                   ? 'bg-[#0F9B7F] text-white hover:from-[#3BC1E2] hover:to-[#1D6F87]'
                   : 'bg-[#A9A9A9] text-[#494949]'
               } ${Outfit400.className}`}
-              disabled={formik.isSubmitting}
+              disabled={loading}
             >
               {formik.isSubmitting ? 'FINALIZANDO' : 'FINALIZAR'}
             </button>
@@ -292,8 +296,16 @@ const RegisterUser = ({ onClose, findData }) => {
           </div>
         </div>
       </form>
-    </FormikProvider>
+      {openModalAlerts && (
+        <ModalFramer
+          open={openModalAlerts}
+          setOpen={() => setOpenModalAlerts(false)}
+        >
+          {alerts[step]}
+        </ModalFramer>
+      )}
+    </>
   )
 }
 
-export default RegisterUser
+export default RegisterAcquirers

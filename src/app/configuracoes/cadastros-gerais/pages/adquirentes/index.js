@@ -20,7 +20,7 @@ import { Status } from './components/status'
 // Components
 import EditBank from './modal-content/editBank'
 import ProfileBankAccount from './modal-content/profileBankAccount'
-import RegisterBank from './modal-content/registerAcquirers'
+import RegisterAcquirers from './modal-content/registerAcquirers'
 
 const Adquirentes = ({ modalRegisterAcquirers, setModalRegisterAcquirers }) => {
   const [selectedAccount, setSelectedAccount] = useState({})
@@ -428,9 +428,11 @@ const Adquirentes = ({ modalRegisterAcquirers, setModalRegisterAcquirers }) => {
         isOpen={modalRegisterAcquirers}
         onClose={() => setModalRegisterAcquirers(false)}
       >
-        <RegisterBank
+        <RegisterAcquirers
           onClose={() => setModalRegisterAcquirers(false)}
-          // findData={() => fetchBanks()}
+          findData={() =>
+            fetchAcquirers(searchTerm, unit, status, currentPage, 10)
+          }
         />
       </ModalUp>
       <ModalUp isOpen={modalEditBank} onClose={() => setModalEditBank(false)}>
