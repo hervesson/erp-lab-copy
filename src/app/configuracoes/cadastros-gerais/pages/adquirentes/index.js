@@ -8,7 +8,7 @@ import {
   DeleteAcquirers,
   ListAcquirers,
   listAllUnits,
-  ToggleStatusAcquirers
+  ToggleStatusAcquirers,
 } from '@/helpers'
 import useDebounce from '@/hooks/useDebounce'
 import { Dropdown, DropdownItem } from 'flowbite-react'
