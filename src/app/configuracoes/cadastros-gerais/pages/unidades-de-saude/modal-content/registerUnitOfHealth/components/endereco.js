@@ -33,7 +33,7 @@ const Endereco = ({ formik }) => {
     }
 
     findData()
-  }, [formik.values.estado])
+  }, [formik.values.estado?.label])
 
   useEffect(() => {
     const findData = async () => {

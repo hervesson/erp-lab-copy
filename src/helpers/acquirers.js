@@ -39,6 +39,40 @@ export async function CreateAcquire(payload) {
   }
 }
 
+export async function UpdateAcquire(payload, id) {
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const response = await api.patch('/financeiro/adquirentes/' + id, payload, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token.value,
+      },
+    })
+
+    return {
+      success: true,
+      data: response.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: 'Erro desconhecido ao tentar criar unidade',
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    const errData = error?.response?.data || fallback
+
+    console.log(error?.response)
+
+    return {
+      success: false,
+      error: errData,
+    }
+  }
+}
+
 export async function ListAcquirers(
   term = '',
   unit = '',

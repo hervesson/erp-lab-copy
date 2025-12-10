@@ -63,7 +63,7 @@ const RegisterMethod = ({ onClose, findData }) => {
     initialValues: {
       nomeAmostra: '',
       descricao: '',
-      status: '',
+      status: { id: 'ativo', label: 'ATIVO' },
       laboratoriosAssociados: [
         {
           laboratorio: null, // objeto vindo do CustomSelect

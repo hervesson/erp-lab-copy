@@ -18,12 +18,12 @@ import { toast, ToastContainer } from 'react-toastify'
 import { Status } from './components/status'
 
 // Components
-import EditBank from './modal-content/editBank'
+import EditAcquirers from './modal-content/editAcquirers'
 import ProfileBankAccount from './modal-content/profileBankAccount'
 import RegisterAcquirers from './modal-content/registerAcquirers'
 
 const Adquirentes = ({ modalRegisterAcquirers, setModalRegisterAcquirers }) => {
-  const [selectedAccount, setSelectedAccount] = useState({})
+  const [selectedAcquirers, setSelectedAcquirers] = useState({})
 
   const [units, setUnits] = useState([])
 
@@ -355,20 +355,20 @@ const Adquirentes = ({ modalRegisterAcquirers, setModalRegisterAcquirers }) => {
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
-                  <div className="flex h-full items-center justify-center">
+                  <div
+                    className="flex h-full items-center justify-center"
+                    onClick={() => {
+                      setModalEditBank(true)
+                      setSelectedAcquirers(item)
+                    }}
+                  >
                     <Edit2 size="28" color="#737373" />
                   </div>
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                 >
-                  <div
-                    className="flex h-full items-center justify-center"
-                    onClick={() => {
-                      setModalEditBank(true)
-                      setSelectedAccount(item)
-                    }}
-                  >
+                  <div className="flex h-full items-center justify-center">
                     <Book size="28" color="#737373" />
                   </div>
                 </td>
@@ -436,17 +436,19 @@ const Adquirentes = ({ modalRegisterAcquirers, setModalRegisterAcquirers }) => {
         />
       </ModalUp>
       <ModalUp isOpen={modalEditBank} onClose={() => setModalEditBank(false)}>
-        <EditBank
+        <EditAcquirers
           onClose={() => setModalEditBank(false)}
-          account={selectedAccount}
-          // findData={() => fetchBanks()}
+          acquirers={selectedAcquirers}
+          findData={() =>
+            fetchAcquirers(searchTerm, unit, status, currentPage, 10)
+          }
         />
       </ModalUp>
       <ModalLeft
         isOpen={openModalProfileBankAccount}
         onClose={() => setOpenModalProfileBankAccount(false)}
       >
-        <ProfileBankAccount account={selectedAccount} />
+        <ProfileBankAccount account={selectedAcquirers} />
       </ModalLeft>
       <ToastContainer />
     </div>
