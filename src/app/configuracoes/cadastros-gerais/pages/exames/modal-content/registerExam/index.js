@@ -87,9 +87,14 @@ const RegisterExam = ({ onClose, findData }) => {
       grupo: '',
       subGrupo: '',
       setor: '',
-      unidade: {},
-      unidadesSelecionadas: [],
-      destino: {},
+      unidades: [
+        {
+          unidade_id: null,
+          destino: '',
+          telemedicina_id: null,
+          laboratorio_apoio_id: null,
+        },
+      ],
       laboratorioDeApoio: {},
       termoConsentimento: false,
       requisitos_anvisa: {},
@@ -124,8 +129,11 @@ const RegisterExam = ({ onClose, findData }) => {
       try {
         const isExternoLaboratorial =
           values?.tipoExame?.label === 'Laboratorial' &&
-          values?.destino?.id === 'externo' &&
-          values?.laboratorioDeApoio?.id
+          values?.destino?.id === 'externo'
+
+        const isExternoImagem =
+          values?.tipoExame?.label === 'Imagem' &&
+          values?.destino?.id === 'externo'
 
         const payload = {
           codigo_interno: values.codigoInterno,
@@ -140,6 +148,18 @@ const RegisterExam = ({ onClose, findData }) => {
           especialidade_id: values.especialidadeExame.id,
           subgrupo_id: values.subGrupo.id,
           setor_id: values.setor.id,
+          unidades: values.unidades.map((item) => {
+            return {
+              unidade_id: item.unidade_id.id,
+              destino: isExternoLaboratorial ? 'apoio' : 'telemedicina',
+              ...(isExternoLaboratorial && {
+                laboratorio_apoio_id: values.laboratorioDeApoio.id,
+              }),
+              ...(isExternoImagem && {
+                telemedicina_id: values.telemedicina_id.id,
+              }),
+            }
+          }),
           metodologia_id: values.metodologiaUtilizada.id,
           grupo_id: values.grupo.id,
           requer_peso: values.peso,
@@ -156,11 +176,6 @@ const RegisterExam = ({ onClose, findData }) => {
           formatos_laudo: values.formatoLaudo.map((item) => item.id),
           requisitos_anvisa_id: values.requisitos_anvisa.id,
           tipo_realizacao: values.destino.id,
-          ...(isExternoLaboratorial && {
-            laboratorio_apoio_id: values.laboratorioDeApoio.id,
-          }),
-          // telemedicina_id: '{{telemedicinaId}}',
-          // unidade_destino_id: '{{unidadeDestinoId}}',
           prazo_entrega_dias: Number(values.prazoDeEntrega),
           tecnica_coleta: values.tecnicaDeColeta,
           distribuicao: values.lembretesDistribuicao,
@@ -175,7 +190,6 @@ const RegisterExam = ({ onClose, findData }) => {
             values.lembretesRecepcionistaAgendamentos,
           lembrete_recepcionista_os:
             values.lembretesRecepcionistaOrdemDeServico,
-          unidades_ids: values.unidadesSelecionadas.map((item) => item.id),
           status: 'ativo',
         }
 
@@ -206,6 +220,8 @@ const RegisterExam = ({ onClose, findData }) => {
       }
     },
   })
+
+  console.log(formik.errors)
 
   const steps = {
     informacoesGerais: (
@@ -319,11 +335,10 @@ const RegisterExam = ({ onClose, findData }) => {
             <button
               type="button"
               onClick={handleValidateAndSubmit}
-              className={`flex h-11 w-32 items-center justify-evenly rounded-lg ${
-                formik.isValid
+              className={`flex h-11 w-32 items-center justify-evenly rounded-lg ${formik.isValid
                   ? 'bg-[#0F9B7F] text-white hover:from-[#3BC1E2] hover:to-[#1D6F87]'
                   : 'bg-[#A9A9A9] text-[#494949]'
-              } ${Outfit400.className}`}
+                } ${Outfit400.className}`}
               disabled={loading}
             >
               <span className={`${Outfit400.className} uppercase`}>
@@ -350,21 +365,16 @@ const RegisterExam = ({ onClose, findData }) => {
               >
                 INFORMAÇÕES INTERNAS
               </button>
-              {formik?.values?.tipoExame?.label === 'Laboratorial' &&
-                formik?.values?.destino?.id === 'externo' &&
-                Object.keys(formik?.values?.laboratorioDeApoio || {}).length >
-                  0 && (
-                  <button
-                    type="button"
-                    onClick={() => setTab('informacoesDeApoio')}
-                    className={`${Outfit400.className} ${
-                      tab === 'informacoesDeApoio' &&
-                      'border-b-2 border-[#0F9B7F] bg-white'
-                    } h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
-                  >
-                    INFORMAÇÕES DE APOIO
-                  </button>
-                )}
+
+              <button
+                type="button"
+                onClick={() => setTab('informacoesDeApoio')}
+                className={`${Outfit400.className} ${tab === 'informacoesDeApoio' &&
+                  'border-b-2 border-[#0F9B7F] bg-white'
+                  } h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
+              >
+                INFORMAÇÕES DE APOIO
+              </button>
             </div>
             {steps[tab]}
           </div>
