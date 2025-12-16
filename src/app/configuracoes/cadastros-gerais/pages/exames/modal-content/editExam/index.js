@@ -27,7 +27,7 @@ import CancelRegister from '@/components/Alerts/CancelRegister'
 import SuccessRegister from '@/components/Alerts/SuccessRegister'
 
 // colocar o findData
-const RegisterExam = ({ onClose, findData }) => {
+const EditExam = ({ onClose, findData }) => {
   const [tab, setTab] = useState('informacoesGerais')
   const [fields, setFields] = useState([])
   const [units, setUnits] = useState([])
@@ -363,10 +363,11 @@ const RegisterExam = ({ onClose, findData }) => {
             <button
               type="button"
               onClick={handleValidateAndSubmit}
-              className={`flex h-11 w-32 items-center justify-evenly rounded-lg ${formik.isValid
+              className={`flex h-11 w-32 items-center justify-evenly rounded-lg ${
+                formik.isValid
                   ? 'bg-[#0F9B7F] text-white hover:from-[#3BC1E2] hover:to-[#1D6F87]'
                   : 'bg-[#A9A9A9] text-[#494949]'
-                } ${Outfit400.className}`}
+              } ${Outfit400.className}`}
               disabled={loading}
             >
               <span className={`${Outfit400.className} uppercase`}>
@@ -397,9 +398,10 @@ const RegisterExam = ({ onClose, findData }) => {
               <button
                 type="button"
                 onClick={() => setTab('informacoesDeApoio')}
-                className={`${Outfit400.className} ${tab === 'informacoesDeApoio' &&
+                className={`${Outfit400.className} ${
+                  tab === 'informacoesDeApoio' &&
                   'border-b-2 border-[#0F9B7F] bg-white'
-                  } h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
+                } h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
               >
                 INFORMAÇÕES DE APOIO
               </button>
@@ -421,4 +423,4 @@ const RegisterExam = ({ onClose, findData }) => {
   )
 }
 
-export default RegisterExam
+export default EditExam

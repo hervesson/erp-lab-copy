@@ -2,6 +2,9 @@
 import CustomSelect from '@/components/CustomSelect'
 import ModalUp from '@/components/ModalUp'
 import { Outfit300, Outfit400, Outfit700 } from '@/fonts'
+import { listAllExams, listAllFields, UpdateStatusExam } from '@/helpers'
+import useDebounce from '@/hooks/useDebounce'
+import { Dropdown, DropdownItem } from 'flowbite-react'
 import {
   ArrowLeft2,
   ArrowRight2,
@@ -10,20 +13,118 @@ import {
   Heart,
   More,
   SearchStatus,
-  TickCircle,
 } from 'iconsax-reactjs'
-import { useState } from 'react'
-import { IsActive } from '../../../../../components/IsActive'
+import { useEffect, useState } from 'react'
+import { toast, ToastContainer } from 'react-toastify'
+import { Status } from '../bancos/components/status'
 
 // Components
+import EditExam from './modal-content/editExam'
 import RegisterExams from './modal-content/registerExam'
 
 const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
-  const [exams] = useState([])
-  const [setSelectedUnit] = useState({})
+  const [exams, setExams] = useState([])
+  const [total, setTotal] = useState()
+  const [selectedExam, setSelectedExam] = useState({})
+  const [fields, setFields] = useState([])
 
-  const findData = () => {
-    alert('Chegou aqui')
+  const [openModalEditExam, setOpenModalEditExam] = useState(false)
+
+  // filters
+  const [currentPage, setCurrentPage] = useState(1)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [status, setStatus] = useState({ id: '', label: 'Status: Todos' })
+  // const [type, setType] = useState({ id: '', label: 'Tipos: Todas' })
+
+  // focus
+  const [isFocusedSearch, setIsFocusedSearch] = useState(false)
+
+  useEffect(() => {
+    const findFields = async () => {
+      try {
+        const [fields, exm] = await Promise.all([
+          listAllFields(),
+          listAllExams('', '', 1, 100000),
+        ])
+
+        setFields(fields?.data?.data)
+        setExams(exm?.data?.data)
+        setTotal(exm?.data?.total)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    findFields()
+  }, [])
+
+  const findData = async (src = '', stt = '', pg, lim) => {
+    try {
+      const exm = await listAllExams(src, stt.id, pg, lim)
+
+      setExams(exm?.data?.data)
+      setTotal(exm?.data?.total)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  // Filtrar por status
+  const findDataPerStatus = async (props) => {
+    setCurrentPage(1)
+    const sts = {
+      Todos: { id: '', label: 'Status: Todos' },
+      Ativos: { id: 'ativa', label: 'Status: Ativos' },
+      Inativos: { id: 'inativa', label: 'Status: Inativos' },
+      'Em validação': { id: 'em_validacao', label: 'Status: Em validação' },
+    }
+
+    setStatus(sts[props.label])
+
+    try {
+      const exm = await listAllExams(searchTerm, props.id, 1, 10)
+
+      setExams(exm?.data?.data)
+      setTotal(exm?.data?.total)
+    } catch (error) {
+      console.error('Error fetching banks:', error)
+    }
+  }
+
+  // Pesquisar por termo
+  const handleChangeMethod = (e) => {
+    setSearchTerm(e.target.value)
+    debounceChange(e.target.value)
+  }
+
+  const debounceChange = useDebounce(handler, 800)
+
+  async function handler(props) {
+    setCurrentPage(1)
+
+    try {
+      const exm = await listAllExams(props, '', 1, 10)
+
+      setExams(exm?.data?.data)
+      setTotal(exm?.data?.total)
+    } catch (error) {
+      console.error('Error fetching banks:', error)
+    }
+  }
+
+  const toggleActiveExam = async (exam) => {
+    const payload = {
+      status: exam?.status === 'ativo' ? 'inativo' : 'ativo',
+    }
+
+    const result = await UpdateStatusExam(exam.id, payload)
+    if (result.success) {
+      findData(searchTerm, status, currentPage, 10)
+    } else {
+      toast.error('Erro ao mudar status do exame', {
+        position: 'top-right',
+      })
+    }
   }
 
   return (
@@ -38,7 +139,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
               <span
                 className={`${Outfit700.className} text-[16px] text-[#0F9B7F]`}
               >
-                160
+                {total}
               </span>
               <span className={`${Outfit300.className} text-[#737373]`}>
                 Exames
@@ -51,38 +152,56 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
       <div className="flex gap-2">
         <CustomSelect
           select={{ id: 1, label: 'Status: Todos' }}
-          setSelect={() => null}
+          setSelect={(e) => findDataPerStatus(e)}
           options={[
-            { id: 1, label: 'Status: Todos' },
-            { id: 2, label: '2' },
+            { id: '', label: 'Todos' },
+            { id: 'ativo', label: 'Ativo' },
+            { id: 'inativo', label: 'Inativo' },
           ]}
           placeholder={'Status'}
           className={'bg-[#F9F9F9]'}
         />
         <CustomSelect
-          select={{ id: 1, label: 'Tipos: todos' }}
+          select={{ id: 1, label: 'Tipo de exame: todos' }}
           setSelect={() => null}
-          options={[
-            { id: 1, label: 'Tipos de exames: todos' },
-            { id: 2, label: '2' },
-          ]}
+          options={fields
+            ?.find((element) => element?.nomeCampo === 'tipo_exames')
+            ?.alternativas.map((i) => {
+              return {
+                id: i.id,
+                label: i.textoAlternativa,
+              }
+            })}
           placeholder={'Tipos de exames: todos'}
           className={'bg-[#F9F9F9]'}
         />
         <CustomSelect
           select={{ id: 1, label: 'Especialidade: todos' }}
           setSelect={() => null}
-          options={[
-            { id: 1, label: 'Especialidade: todos' },
-            { id: 2, label: '2' },
-          ]}
+          options={fields
+            ?.find((element) => element?.nomeCampo === 'especialidade')
+            ?.alternativas.map((i) => {
+              return {
+                id: i.id,
+                label: i.textoAlternativa,
+              }
+            })}
           placeholder={'Tipos de exames: todos'}
           className={'bg-[#F9F9F9]'}
         />
-        <div className="flex h-10 flex-2 items-center rounded-lg border border-[#BBBBBB] px-2">
+        <div
+          className={`flex h-10 flex-2 items-center rounded-lg px-2 ${
+            isFocusedSearch
+              ? 'border border-[#0F9B7F]'
+              : 'border border-[#BBBBBB]'
+          }`}
+        >
           <input
             placeholder="Pesquisar"
+            onChange={handleChangeMethod}
             className={`h-full w-full rounded-lg ${Outfit400.className} bg-[#FFFFFF] text-[16px] text-[#222] outline-0`}
+            onFocus={() => setIsFocusedSearch(true)}
+            onBlur={() => setIsFocusedSearch(false)}
           />
           <SearchStatus size="24" color="#A1A1A1" variant="Bulk" />
         </div>
@@ -110,11 +229,6 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
               className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
             >
               Setor
-            </th>
-            <th
-              className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
-            >
-              Destino do exame
             </th>
             <th
               className={`text-[13px] ${Outfit400.className} text-start text-[#717171]`}
@@ -153,44 +267,53 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
                 <td
                   className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                 >
-                  {item.codigoInterno}
+                  {item.codigo_interno}
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-start text-[#383838]`}
                 >
-                  {item.nomeUnidade}
+                  {item.nome}
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
-                  {item.cnpj}
+                  {
+                    fields
+                      ?.find(
+                        (element) => element?.nomeCampo === 'especialidade',
+                      )
+                      ?.alternativas?.find(
+                        (ele) => ele?.id === item?.especialidade_id,
+                      )?.textoAlternativa
+                  }
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
-                  {item.nomeResponsavel}
+                  {item?.setorAlternativa?.textoAlternativa}
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
-                  {item.cidade}
+                  {item.prazo_entrega_dias} dias úteis
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-[#383838]`}
                 >
                   <div className="flex h-full items-center justify-center">
-                    <IsActive active={item.ativo} />
-                  </div>
-                </td>
-                <td>
-                  <div className="flex h-full items-center justify-center">
-                    <TickCircle size="28" color="#2CB04B" variant="Bulk" />
+                    <Status active={item.status} />
                   </div>
                 </td>
                 <td
                   className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                 >
-                  <div className="flex h-full items-center justify-center">
+                  <div
+                    className="flex h-full items-center justify-center"
+                    onClick={() => {
+                      setOpenModalEditExam(true)
+                      setSelectedExam(item)
+                    }}
+                  >
                     <Edit2 size="28" color="#737373" />
                   </div>
                 </td>
@@ -201,7 +324,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
                     className="flex h-full items-center justify-center"
                     onClick={() => {
                       // setOpenModalProfileuUnit(true)
-                      setSelectedUnit(item)
+                      setSelectedExam(item)
                     }}
                   >
                     <Book size="28" color="#737373" />
@@ -211,7 +334,26 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
                   className={`text-[14px] ${Outfit300.className} text-center text-[#383838]`}
                 >
                   <div className="flex h-full items-center justify-center">
-                    <More size="28" color="#737373" />
+                    <Dropdown
+                      label=""
+                      dismissOnClick={true}
+                      renderTrigger={() => <More size="28" color="#737373" />}
+                      placement="left-start"
+                      className="bg-white"
+                    >
+                      <DropdownItem
+                        className={`${Outfit300.className} text-[16px] text-[#8A8A8A]`}
+                        onClick={() => toggleActiveExam(item)}
+                      >
+                        Ativar/Desativar
+                      </DropdownItem>
+                      <DropdownItem
+                        className={`${Outfit300.className} text-[16px] text-[#8A8A8A]`}
+                        // onClick={() => deleteUnit(item)}
+                      >
+                        Excluir
+                      </DropdownItem>
+                    </Dropdown>
                   </div>
                 </td>
               </tr>
@@ -249,7 +391,17 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
       >
         <RegisterExams
           onClose={() => setModalRegisterExams(false)}
-          findData={() => findData()}
+          findData={() => findData('', '', 1, 10)}
+        />
+      </ModalUp>
+      <ModalUp
+        isOpen={openModalEditExam}
+        onClose={() => setOpenModalEditExam(false)}
+      >
+        <EditExam
+          onClose={() => setModalRegisterExams(false)}
+          selectedExam={selectedExam}
+          findData={() => findData('', '', 1, 10)}
         />
       </ModalUp>
       {/* <ModalLeft
@@ -258,6 +410,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
       >
         <ProfileUnitHealth unit={selectedUnit} />
       </ModalLeft> */}
+      <ToastContainer />
     </div>
   )
 }
