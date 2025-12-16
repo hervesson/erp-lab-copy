@@ -468,11 +468,12 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                 </div>
 
                 <div
-                  className={`flex flex-1 flex-col gap-1 ${item?.destino?.id === 'externo' &&
-                      formik.values.tipoExame.label === 'Laboratorial'
+                  className={`flex flex-1 flex-col gap-1 ${
+                    item?.destino?.id === 'externo' &&
+                    formik.values.tipoExame.label === 'Laboratorial'
                       ? ''
                       : 'opacity-45'
-                    }`}
+                  }`}
                 >
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}
@@ -533,11 +534,12 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                 </div>
 
                 <div
-                  className={`flex flex-1 flex-col gap-1 ${item?.destino?.id === 'externo' &&
-                      formik.values.tipoExame.label === 'Imagem'
+                  className={`flex flex-1 flex-col gap-1 ${
+                    item?.destino?.id === 'externo' &&
+                    formik.values.tipoExame.label === 'Imagem'
                       ? ''
                       : 'opacity-45'
-                    }`}
+                  }`}
                 >
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}
