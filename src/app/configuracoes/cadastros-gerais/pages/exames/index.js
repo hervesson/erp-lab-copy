@@ -305,10 +305,11 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
           className={'bg-[#F9F9F9]'}
         />
         <div
-          className={`flex h-10 flex-2 items-center rounded-lg px-2 ${isFocusedSearch
+          className={`flex h-10 flex-2 items-center rounded-lg px-2 ${
+            isFocusedSearch
               ? 'border border-[#0F9B7F]'
               : 'border border-[#BBBBBB]'
-            }`}
+          }`}
         >
           <input
             placeholder="Pesquisar"

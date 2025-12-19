@@ -9,7 +9,7 @@ export const validationSchema = Yup.object().shape({
   codigoCBHPM: Yup.string().required('Informe o código CBHPM'),
   codigoTuss: Yup.mixed().required('Informe o código TUSS'),
   codigoLoinc: Yup.string().nullable(),
-  codigoSUS: Yup.string().nullable(), 
+  codigoSUS: Yup.string().nullable(),
   codigoAMB: Yup.string().nullable(),
 
   // Se no form for um select (objeto), o ideal é mudar initialValues.tipoExame de '' para {} ou null
