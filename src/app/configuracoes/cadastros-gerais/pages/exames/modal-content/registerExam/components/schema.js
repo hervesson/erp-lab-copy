@@ -7,7 +7,7 @@ export const validationSchema = Yup.object().shape({
   codigoInterno: Yup.string().trim().required('Informe o código interno'),
 
   codigoCBHPM: Yup.string().required('Informe o código CBHPM'),
-  codigoTuss: Yup.string().required('Informe o código TUSS'),
+  codigoTuss: Yup.mixed().required('Informe o código TUSS'),
   codigoLoinc: Yup.string().nullable(),
   codigoSUS: Yup.string().nullable(),
   codigoAMB: Yup.string().nullable(),
@@ -127,8 +127,6 @@ export function validarInformacoesDeApoioEToast(values, toastFn) {
 
     if (!hasId(item?.laboratorio_apoio_id))
       itens.push('Selecione o laboratório de apoio')
-    if (!hasText(item?.codigo_exame_apoio))
-      itens.push('Informe o código do exame no laboratório de apoio')
     if (!hasId(item?.metodologia_id)) itens.push('Selecione a metodologia')
     if (!hasId(item?.unidade_medida_id))
       itens.push('Selecione a unidade de medida')
@@ -149,10 +147,14 @@ export function validarInformacoesDeApoioEToast(values, toastFn) {
     if (!hasId(item?.volume_minimo_id)) itens.push('Informe o volume mínimo')
     if (!hasId(item?.estabilidade_id)) itens.push('Informe a estabilidade')
 
-    if (!hasId(item?.preparoPublicoGeral))
+    if (!hasText(item?.preparo_geral))
       itens.push('Informe o preparo público geral')
-    if (!hasId(item?.preparoFeminino)) itens.push('Informe o preparo feminino')
-    if (!hasId(item?.preparoInfantil)) itens.push('Informe o preparo infantil')
+
+    if (!hasText(item?.coleta_geral))
+      itens.push('Informe a coleta público geral')
+
+    if (!hasText(item?.tecnica_coleta))
+      itens.push('Informe a técnica de coleta')
 
     // prazo_entrega_dias (se preenchido, valida)
     const prazo = item?.prazo_entrega_dias
@@ -166,11 +168,15 @@ export function validarInformacoesDeApoioEToast(values, toastFn) {
       }
     }
 
-    if (!Array.isArray(item?.formatoLaudo) || item.formatoLaudo.length < 1) {
+    if (
+      !Array.isArray(item?.formatos_laudo) ||
+      item.formatos_laudo.length < 1
+    ) {
       itens.push('Selecione pelo menos um formato de laudo')
     }
 
     if (itens.length) {
+      console.log(itens)
       temErro = true
       const titulo = `Informação de apoio ${i + 1}`
       const lista = itens.map((t) => `• ${t}`).join('\n')

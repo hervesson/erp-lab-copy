@@ -1,4 +1,5 @@
 import CustomSelect from '@/components/CustomSelect'
+import CustomSearchTuss from '@/components/CutomSearchTuss'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { CloseCircle, InfoCircle } from 'iconsax-reactjs'
 
@@ -152,13 +153,9 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                   </label>
                   <InfoCircle size="20" color="#A1A1A1" />
                 </div>
-                <input
-                  {...formik.getFieldProps('codigoTuss')}
-                  type="text"
-                  id="codigoTuss"
-                  name="codigoTuss"
-                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
-                  placeholder="Digite o código TUSS"
+                <CustomSearchTuss
+                  value={formik.values.codigoTuss.label}
+                  setValue={(e) => formik.setFieldValue('codigoTuss', e)}
                 />
               </div>
               <div className="flex flex-1 flex-col gap-1">
@@ -468,12 +465,11 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                 </div>
 
                 <div
-                  className={`flex flex-1 flex-col gap-1 ${
-                    item?.destino?.id === 'externo' &&
-                    formik.values.tipoExame.label === 'Laboratorial'
+                  className={`flex flex-1 flex-col gap-1 ${item?.destino?.id === 'externo' &&
+                      formik.values.tipoExame.label === 'Laboratorial'
                       ? ''
                       : 'opacity-45'
-                  }`}
+                    }`}
                 >
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}
@@ -534,12 +530,11 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                 </div>
 
                 <div
-                  className={`flex flex-1 flex-col gap-1 ${
-                    item?.destino?.id === 'externo' &&
-                    formik.values.tipoExame.label === 'Imagem'
+                  className={`flex flex-1 flex-col gap-1 ${item?.destino?.id === 'externo' &&
+                      formik.values.tipoExame.label === 'Imagem'
                       ? ''
                       : 'opacity-45'
-                  }`}
+                    }`}
                 >
                   <label
                     className={`${Outfit400.className} text-[14px] text-[#222222]`}

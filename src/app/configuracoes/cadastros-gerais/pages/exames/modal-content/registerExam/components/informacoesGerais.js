@@ -1,4 +1,5 @@
 import CustomSelect from '@/components/CustomSelect'
+import CustomSearchTuss from '@/components/CutomSearchTuss'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { CloseCircle, InfoCircle } from 'iconsax-reactjs'
 
@@ -152,13 +153,9 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                   </label>
                   <InfoCircle size="20" color="#A1A1A1" />
                 </div>
-                <input
-                  {...formik.getFieldProps('codigoTuss')}
-                  type="text"
-                  id="codigoTuss"
-                  name="codigoTuss"
-                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
-                  placeholder="Digite o código TUSS"
+                <CustomSearchTuss
+                  value={formik.values.codigoTuss.label}
+                  setValue={(e) => formik.setFieldValue('codigoTuss', e)}
                 />
               </div>
               <div className="flex flex-1 flex-col gap-1">
@@ -429,9 +426,8 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                     select={item?.unidade_id}
                     setSelect={(e) => {
                       formik.setFieldValue(`unidades[${index}].unidade_id`, e)
-                      console.log(item?.unidade_id)
                     }}
-                    options={units}
+                    options={units ?? []}
                     placeholder={'Selecione uma unidade'}
                     className={
                       'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
@@ -502,6 +498,7 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                           amostra_id: '',
                           amostra_enviar_id: '',
                           tipo_recipiente_id: '',
+                          regiaoDeColeta: '',
                           regioes_coleta_ids: [],
                           volume_minimo_id: '',
                           estabilidade_id: '',

@@ -39,7 +39,52 @@ export async function CreateExam(payload) {
   }
 }
 
-export async function listAllExams(term = '', status, page = '', limit = '') {
+export async function CreateVinculoExam(payload) {
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const response = await api.post(
+      '/exames/exames-laboratorios-apoio/batch',
+      payload,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token.value,
+        },
+      },
+    )
+
+    return {
+      success: true,
+      data: response.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: 'Erro desconhecido ao tentar criar unidade',
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    const errData = error?.response?.data || fallback
+
+    console.log(error?.response)
+
+    return {
+      success: false,
+      error: errData,
+    }
+  }
+}
+
+export async function listAllExams(
+  term = '',
+  status,
+  tipoExameId,
+  especialidadeId = '',
+  page = '',
+  limit = '',
+) {
   try {
     const cookie = await cookies()
     const token = cookie.get(TOKEN_KEY)
@@ -47,16 +92,24 @@ export async function listAllExams(term = '', status, page = '', limit = '') {
     // 1. Crie uma nova instância de URLSearchParams
     const params = new URLSearchParams()
 
-    if (page !== '') {
-      params.append('page', page)
+    if (term !== '') {
+      params.append('search', term)
     }
 
     if (status !== '') {
       params.append('status', status)
     }
 
-    if (term !== '') {
-      params.append('search', term)
+    if (tipoExameId !== '') {
+      params.append('tipo_exame_id', tipoExameId)
+    }
+
+    if (especialidadeId !== '') {
+      params.append('especialidade_id', especialidadeId)
+    }
+
+    if (page !== '') {
+      params.append('page', page)
     }
 
     if (limit !== '') {
@@ -117,6 +170,109 @@ export async function UpdateStatusExam(enterpriseId, payload) {
   } catch (error) {
     const fallback = {
       message: 'Erro desconhecido ao tentar criar unidade',
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    const errData = error?.response?.data || fallback
+
+    return {
+      success: false,
+      error: errData,
+    }
+  }
+}
+
+export async function UpdateExam(enterpriseId, payload) {
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const response = await api.patch(
+      '/exames/exames/' + enterpriseId,
+      payload,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token.value,
+        },
+      },
+    )
+
+    return {
+      success: true,
+      data: response.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: 'Erro desconhecido ao tentar criar unidade',
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    const errData = error?.response?.data || fallback
+
+    return {
+      success: false,
+      error: errData,
+    }
+  }
+}
+
+export async function DeleteExam(examId) {
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const response = await api.delete('/exames/exames/' + examId, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token.value,
+      },
+    })
+
+    return {
+      success: true,
+      data: response.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: 'Erro desconhecido ao tentar deletar unidade',
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    const errData = error?.response?.data || fallback
+
+    return {
+      success: false,
+      error: errData,
+    }
+  }
+}
+
+export async function GetHelpInformations(examId) {
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const response = await api.get(
+      `/exames/exames-laboratorios-apoio?exameId=${examId}&page=1&limit=10000`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? 'Bearer ' + token.value : undefined,
+        },
+      },
+    )
+
+    return {
+      success: true,
+      data: response.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: 'Erro desconhecido ao tentar buscar unidades.',
       statusCode: 500,
       error: 'UnknownError',
     }

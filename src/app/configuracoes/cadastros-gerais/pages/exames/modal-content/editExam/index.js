@@ -1,11 +1,11 @@
-import ModalFramer from '@/components/ModalFramer'
 import { Outfit300, Outfit400, Outfit500 } from '@/fonts'
 import {
-  CreateExam,
+  GetHelpInformations,
   ListAllEnterprisesPerType,
   listAllFields,
   listAllUnits,
   ListSamples,
+  UpdateExam,
 } from '@/helpers'
 import { getFlatErrors } from '@/utils'
 import { useFormik } from 'formik'
@@ -22,12 +22,9 @@ import InformacoesDeApoio from './components/informacoesDeApoio'
 import InformacoesGerais from './components/informacoesGerais'
 import InformacoesInternas from './components/informacoesInternas'
 
-// alerts
-import CancelRegister from '@/components/Alerts/CancelRegister'
-import SuccessRegister from '@/components/Alerts/SuccessRegister'
-
 // colocar o findData
-const EditExam = ({ onClose, findData }) => {
+const EditExam = ({ onClose, findData, selectedExam }) => {
+  console.log(selectedExam)
   const [tab, setTab] = useState('informacoesGerais')
   const [fields, setFields] = useState([])
   const [units, setUnits] = useState([])
@@ -35,18 +32,18 @@ const EditExam = ({ onClose, findData }) => {
   const [labs, setLabs] = useState([])
   const [loading, setLoading] = useState(false)
 
-  const [step, setStep] = useState('')
-  const [openModalAlerts, setOpenModalAlerts] = useState(false)
-
   useEffect(() => {
     const findFields = async () => {
       try {
-        const [fields, unts, lbs, spls] = await Promise.all([
-          listAllFields(),
-          listAllUnits(1, '', 100000),
-          ListAllEnterprisesPerType('LABORATORIO_APOIO'),
-          ListSamples('', '', 1, 10000),
-        ])
+        const [fields, unts, lbs, spls, informacoesDeApoio] = await Promise.all(
+          [
+            listAllFields(),
+            listAllUnits(1, '', 100000),
+            ListAllEnterprisesPerType('LABORATORIO_APOIO'),
+            ListSamples('', '', 1, 10000),
+            GetHelpInformations(selectedExam?.id),
+          ],
+        )
 
         const valuesUnits = unts.data.data.map((item) => {
           return {
@@ -69,7 +66,236 @@ const EditExam = ({ onClose, findData }) => {
           }
         })
 
-        console.log()
+        formik.setFieldValue(
+          'especialidadeExame',
+          fields.data.data
+            ?.find((element) => element?.nomeCampo === 'especialidade')
+            ?.alternativas.map((i) => {
+              return {
+                id: i.id,
+                label: i.textoAlternativa,
+              }
+            })
+            .find((ele) => ele.id === selectedExam?.especialidade_id),
+        )
+
+        formik.setFieldValue(
+          'grupo',
+          fields.data.data
+            ?.find((element) => element?.nomeCampo === 'grupo')
+            ?.alternativas.map((i) => {
+              return {
+                id: i.id,
+                label: i.textoAlternativa,
+              }
+            })
+            .find((ele) => ele.id === selectedExam?.grupo_id),
+        )
+
+        formik.setFieldValue(
+          'metodologiaUtilizada',
+          fields.data.data
+            ?.find((element) => element?.nomeCampo === 'metodologia')
+            ?.alternativas.map((i) => {
+              return {
+                id: i.id,
+                label: i.textoAlternativa,
+              }
+            })
+            .find((ele) => ele.id === selectedExam?.metodologia_id),
+        )
+
+        formik.setFieldValue(
+          'unidadeDeMedida',
+          fields.data.data
+            ?.find((element) => element?.nomeCampo === 'unidade_medida')
+            ?.alternativas.map((i) => {
+              return {
+                id: i.id,
+                label: i.textoAlternativa,
+              }
+            })
+            .find((ele) => ele.id === selectedExam?.unidade_medida_id),
+        )
+
+        formik.setFieldValue(
+          'amostraBiologicaNecessaria',
+          samples.find((ele) => ele.id === selectedExam?.amostra_id),
+        )
+
+        formik.setFieldValue(
+          'amostraAEnviar',
+          fields.data.data
+            ?.find((element) => element?.nomeCampo === 'amostra')
+            ?.alternativas.map((i) => {
+              return {
+                id: i.id,
+                label: i.textoAlternativa,
+              }
+            })
+            .find((ele) => ele.id === selectedExam?.amostra_enviar_id),
+        )
+
+        formik.setFieldValue(
+          'tipoDeRecipiente',
+          fields.data.data
+            ?.find((element) => element?.nomeCampo === 'tipo_recipiente')
+            ?.alternativas.map((i) => {
+              return {
+                id: i.id,
+                label: i.textoAlternativa,
+              }
+            })
+            .find((ele) => ele.id === selectedExam?.tipo_recipiente_id),
+        )
+
+        const opts = fields.data.data
+          ?.find((element) => element?.nomeCampo === 'regiao_coleta')
+          ?.alternativas.map((i) => {
+            return {
+              id: i.id,
+              label: i.textoAlternativa,
+            }
+          })
+
+        formik.setFieldValue(
+          'regiao_coleta_ids',
+          opts.filter((o) => selectedExam?.regiao_coleta_ids?.includes(o.id)),
+        )
+
+        formik.setFieldValue(
+          'valorMinimoRequerido',
+          fields.data.data
+            ?.find((element) => element?.nomeCampo === 'volume_minimo')
+            ?.alternativas.map((i) => {
+              return {
+                id: i.id,
+                label: i.textoAlternativa,
+              }
+            })
+            .find((ele) => ele.id === selectedExam?.volume_minimo_id),
+        )
+
+        formik.setFieldValue(
+          'estabilidade',
+          fields.data.data
+            ?.find((element) => element?.nomeCampo === 'estabilidade')
+            ?.alternativas.map((i) => {
+              return {
+                id: i.id,
+                label: i.textoAlternativa,
+              }
+            })
+            .find((ele) => ele.id === selectedExam?.estabilidade_id),
+        )
+
+        formik.setFieldValue(
+          'unidades',
+          selectedExam?.unidades.map((item) => {
+            return {
+              unidade_id: valuesUnits.find((ele) => ele.id === item.unidade_id),
+              destino:
+                item.destino === 'interno'
+                  ? { id: 'interno', label: 'INTERNO' }
+                  : { id: 'externo', label: 'EXTERNO' },
+              telemedicina_id: null,
+              laboratorio_apoio_id: labs.find(
+                (ele) => ele.id === item.laboratorio_apoio_id,
+              ),
+            }
+          }),
+        )
+
+        formik.setFieldValue(
+          'informacoesDeApoio',
+          informacoesDeApoio.data.data.map((item) => ({
+            exame_id: item.exame_id,
+            laboratorio_apoio_id: labs.find(
+              (ele) => ele.id === item.laboratorioApoioId,
+            ),
+            codigo_exame_apoio: item.codigo_exame_apoio,
+            metodologia_id: fields.data.data
+              ?.find((element) => element?.nomeCampo === 'metodologia')
+              ?.alternativas.map((i) => {
+                return {
+                  id: i.id,
+                  label: i.textoAlternativa,
+                }
+              })
+              .find((ele) => ele.id === item?.metodologia_id),
+            unidade_medida_id: fields.data.data
+              ?.find((element) => element?.nomeCampo === 'unidade_medida')
+              ?.alternativas.map((i) => {
+                return {
+                  id: i.id,
+                  label: i.textoAlternativa,
+                }
+              })
+              .find((ele) => ele.id === item?.unidade_medida_id),
+            requer_peso: item.peso,
+            requer_altura: item.altura,
+            requer_volume: item.volume,
+            amostra_id: samples.find((ele) => ele.id === item?.amostra_id),
+            amostra_enviar_id: fields.data.data
+              ?.find((element) => element?.nomeCampo === 'amostra')
+              ?.alternativas.map((i) => {
+                return {
+                  id: i.id,
+                  label: i.textoAlternativa,
+                }
+              })
+              .find((ele) => ele.id === item?.amostra_enviar_id),
+            tipo_recipiente_id: fields.data.data
+              ?.find((element) => element?.nomeCampo === 'tipo_recipiente')
+              ?.alternativas.map((i) => {
+                return {
+                  id: i.id,
+                  label: i.textoAlternativa,
+                }
+              })
+              .find((ele) => ele.id === item?.tipo_recipiente_id),
+            regioes_coleta_ids: opts.filter((o) =>
+              item?.regioes_coleta_ids?.includes(o.id),
+            ),
+            volume_minimo_id: fields.data.data
+              ?.find((element) => element?.nomeCampo === 'volume_minimo')
+              ?.alternativas.map((i) => {
+                return {
+                  id: i.id,
+                  label: i.textoAlternativa,
+                }
+              })
+              .find((ele) => ele.id === item?.volume_minimo_id),
+            estabilidade_id: fields.data.data
+              ?.find((element) => element?.nomeCampo === 'estabilidade')
+              ?.alternativas.map((i) => {
+                return {
+                  id: i.id,
+                  label: i.textoAlternativa,
+                }
+              })
+              .find((ele) => ele.id === item?.estabilidade_id),
+            formularios_atendimento: [],
+            preparo_geral: item.preparo_geral,
+            preparo_feminino: item.preparo_feminino,
+            preparo_infantil: item.preparo_infantil,
+            coleta_geral: item.coleta_geral,
+            coleta_feminino: item.coleta_feminino,
+            coleta_infantil: item.coleta_infantil,
+            tecnica_coleta: item?.tecnica_coleta,
+            lembrete_coletora: item?.lembrete_coletora,
+            lembrete_recepcionista_agendamento:
+              item?.lembrete_recepcionista_agendamento,
+            lembrete_recepcionista_os: item?.lembrete_recepcionista_os,
+            distribuicao: item?.distribuicao,
+            prazo_entrega_dias: item?.prazo_entrega_dias,
+            formatos_laudo: item?.formatos_laudo.map((item) => ({
+              id: item,
+              label: item,
+            })),
+            ativo: true,
+          })),
+        )
 
         setFields(fields.data.data)
         setUnits(valuesUnits)
@@ -81,27 +307,40 @@ const EditExam = ({ onClose, findData }) => {
     }
 
     findFields()
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedExam])
 
   const formik = useFormik({
     validationSchema,
     validateOnBlur: false,
     validateOnChange: true,
     initialValues: {
-      nomeExame: '',
-      codigoInterno: '',
+      nomeExame: selectedExam?.nome,
+      codigoInterno: selectedExam?.codigo_interno,
       sinonimo: '',
-      sinonimos: [],
-      codigoCBHPM: '',
-      codigoTuss: '',
-      codigoLoinc: '',
-      codigoSUS: '',
-      codigoAMB: '',
-      tipoExame: {},
+      sinonimos: selectedExam?.sinonimos,
+      codigoCBHPM: selectedExam?.codigo_cbhpm,
+      codigoTuss: {
+        id: selectedExam?.tuss.id,
+        label: selectedExam?.tuss.termo,
+      },
+      codigoLoinc: selectedExam?.codigo_loinc,
+      codigoSUS: selectedExam?.codigo_sus,
+      codigoAMB: selectedExam?.codigo_amb,
+      tipoExame: {
+        id: selectedExam?.tipoExameAlternativa.id,
+        label: selectedExam?.tipoExameAlternativa.textoAlternativa,
+      },
       especialidadeExame: '',
       grupo: '',
-      subGrupo: '',
-      setor: '',
+      subGrupo: {
+        id: selectedExam?.subgrupoAlternativa.id,
+        label: selectedExam?.subgrupoAlternativa.textoAlternativa,
+      },
+      setor: {
+        id: selectedExam?.setorAlternativa.id,
+        label: selectedExam?.setorAlternativa.textoAlternativa,
+      },
       unidades: [
         {
           unidade_id: null,
@@ -110,10 +349,9 @@ const EditExam = ({ onClose, findData }) => {
           laboratorio_apoio_id: null,
         },
       ],
-      laboratorioDeApoio: {},
-      termoConsentimento: false,
+      termoConsentimento: selectedExam?.termo_consentimento,
       requisitos_anvisa: {},
-      metodologiaUtilizada: '',
+      metodologiaUtilizada: {},
       unidadeDeMedida: '',
       peso: false,
       altura: false,
@@ -125,18 +363,20 @@ const EditExam = ({ onClose, findData }) => {
       regiao_coleta_ids: [],
       valorMinimoRequerido: '',
       estabilidade: '',
-      preparoPublicoGeral: '',
-      preparoFeminino: '',
-      preparoInfantil: '',
-      coletaPublicoGeral: '',
-      coletaFeminino: '',
-      coletaInfantil: '',
-      tecnicaDeColeta: '',
-      lembretesColetora: '',
-      lembretesRecepcionistaAgendamentos: '',
-      lembretesRecepcionistaOrdemDeServico: '',
-      lembretesDistribuicao: '',
-      prazoDeEntrega: '',
+      preparoPublicoGeral: selectedExam?.preparo_geral,
+      preparoFeminino: selectedExam?.preparo_feminino,
+      preparoInfantil: selectedExam?.preparo_infantil,
+      coletaPublicoGeral: selectedExam?.coleta_geral,
+      coletaFeminino: selectedExam?.coleta_feminino,
+      coletaInfantil: selectedExam?.coleta_infantil,
+      tecnicaDeColeta: selectedExam?.tecnica_coleta,
+      lembretesColetora: selectedExam?.lembrete_coletora,
+      lembretesRecepcionistaAgendamentos:
+        selectedExam?.lembrete_recepcionista_agendamento,
+      lembretesRecepcionistaOrdemDeServico:
+        selectedExam?.lembrete_recepcionista_os,
+      lembretesDistribuicao: selectedExam?.distribuicao,
+      prazoDeEntrega: selectedExam?.prazo_entrega_dias,
       formatoLaudo: [],
       informacoesDeApoio: [],
     },
@@ -144,19 +384,16 @@ const EditExam = ({ onClose, findData }) => {
       setLoading(true)
       try {
         const isExternoLaboratorial =
-          values?.tipoExame?.label === 'Laboratorial' &&
-          values?.destino?.id === 'externo'
+          values?.tipoExame?.label === 'Laboratorial'
 
-        const isExternoImagem =
-          values?.tipoExame?.label === 'Imagem' &&
-          values?.destino?.id === 'externo'
+        const isExternoImagem = values?.tipoExame?.label === 'Imagem'
 
         const payload = {
           codigo_interno: values.codigoInterno,
           nome: values.nomeExame,
           sinonimos: values.sinonimos,
           codigo_cbhpm: values.codigoCBHPM,
-          codigo_tuss: values.codigoTuss,
+          tuss_id: values.codigoTuss.id,
           codigo_amb: values.codigoAMB,
           codigo_loinc: values.codigoLoinc,
           codigo_sus: values.codigoSUS,
@@ -167,20 +404,25 @@ const EditExam = ({ onClose, findData }) => {
           unidades: values.unidades.map((item) => {
             return {
               unidade_id: item.unidade_id.id,
-              destino: isExternoLaboratorial ? 'apoio' : 'telemedicina',
+              destino:
+                item.destino.id === 'interno'
+                  ? 'interno'
+                  : isExternoLaboratorial
+                    ? 'apoio'
+                    : 'telemedicina',
               ...(isExternoLaboratorial && {
-                laboratorio_apoio_id: values.laboratorioDeApoio.id,
+                laboratorio_apoio_id: item?.laboratorio_apoio_id?.id,
               }),
               ...(isExternoImagem && {
-                telemedicina_id: values.telemedicina_id.id,
+                telemedicina_id: item?.telemedicina_id?.id,
               }),
             }
           }),
           metodologia_id: values.metodologiaUtilizada.id,
           grupo_id: values.grupo.id,
-          requer_peso: values.peso,
-          requer_altura: values.altura,
-          requer_volume: values.volume,
+          peso: values.peso,
+          altura: values.altura,
+          volume: values.volume,
           termo_consentimento: values.termoConsentimento,
           unidade_medida_id: values.unidadeDeMedida.id,
           amostra_id: values.amostraBiologicaNecessaria.id,
@@ -209,12 +451,14 @@ const EditExam = ({ onClose, findData }) => {
         }
 
         try {
-          const responseCreateUnity = await CreateExam(payload)
+          const responseCreateUnity = await UpdateExam(
+            selectedExam?.id,
+            payload,
+          )
           if (responseCreateUnity.success) {
-            setStep('sucess')
-            setOpenModalAlerts(true)
             findData()
             formik.resetForm()
+            onClose()
           } else {
             responseCreateUnity?.error?.erros?.forEach((element) => {
               toast.error(element, {
@@ -235,8 +479,6 @@ const EditExam = ({ onClose, findData }) => {
       }
     },
   })
-
-  // console.log(formik.errors)
 
   const steps = {
     informacoesGerais: (
@@ -297,23 +539,6 @@ const EditExam = ({ onClose, findData }) => {
     formik.handleSubmit()
   }
 
-  const alerts = {
-    cancel: (
-      <CancelRegister
-        onClose={() => setOpenModalAlerts(false)}
-        onCloseRegister={() => onClose()}
-      />
-    ),
-    sucess: (
-      <SuccessRegister
-        onClose={() => {
-          setOpenModalAlerts(false)
-        }}
-        onCloseRegister={() => onClose()}
-      />
-    ),
-  }
-
   return (
     <>
       <form
@@ -325,12 +550,12 @@ const EditExam = ({ onClose, findData }) => {
             <span
               className={` ${Outfit400.className} text-[16px] text-[#0F9B7F]`}
             >
-              Cadastrar
+              Editar
             </span>
             <span
               className={` ${Outfit500.className} text-[16px] text-[#222222]`}
             >
-              Exames
+              Exame
             </span>
           </div>
           <div className="flex gap-4">
@@ -348,10 +573,7 @@ const EditExam = ({ onClose, findData }) => {
             <div className="border border-[#BBBBBB]" />
             <button
               type="button"
-              onClick={() => {
-                setStep('cancel')
-                setOpenModalAlerts(true)
-              }}
+              onClick={() => onClose()}
               className="flex h-11 w-[108px] items-center justify-evenly rounded-lg border border-[#F23434] hover:bg-[#FFE6E6]"
             >
               <span
@@ -363,11 +585,10 @@ const EditExam = ({ onClose, findData }) => {
             <button
               type="button"
               onClick={handleValidateAndSubmit}
-              className={`flex h-11 w-32 items-center justify-evenly rounded-lg ${
-                formik.isValid
+              className={`flex h-11 w-32 items-center justify-evenly rounded-lg ${formik.isValid
                   ? 'bg-[#0F9B7F] text-white hover:from-[#3BC1E2] hover:to-[#1D6F87]'
                   : 'bg-[#A9A9A9] text-[#494949]'
-              } ${Outfit400.className}`}
+                } ${Outfit400.className}`}
               disabled={loading}
             >
               <span className={`${Outfit400.className} uppercase`}>
@@ -398,10 +619,9 @@ const EditExam = ({ onClose, findData }) => {
               <button
                 type="button"
                 onClick={() => setTab('informacoesDeApoio')}
-                className={`${Outfit400.className} ${
-                  tab === 'informacoesDeApoio' &&
+                className={`${Outfit400.className} ${tab === 'informacoesDeApoio' &&
                   'border-b-2 border-[#0F9B7F] bg-white'
-                } h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
+                  } h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
               >
                 INFORMAÇÕES DE APOIO
               </button>
@@ -410,14 +630,6 @@ const EditExam = ({ onClose, findData }) => {
           </div>
         </div>
       </form>
-      {openModalAlerts && (
-        <ModalFramer
-          open={openModalAlerts}
-          setOpen={() => setOpenModalAlerts(false)}
-        >
-          {alerts[step]}
-        </ModalFramer>
-      )}
       <ToastContainer />
     </>
   )

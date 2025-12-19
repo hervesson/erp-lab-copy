@@ -281,3 +281,33 @@ export async function SearchTiss() {
     }
   }
 }
+
+export async function SearchTuss(term) {
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const auth = await api.get('/exames/tuss/search?q=' + term, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token.value,
+      },
+    })
+
+    return {
+      success: true,
+      data: auth.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: error.response.data,
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    return {
+      success: false,
+      error: fallback,
+    }
+  }
+}

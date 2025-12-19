@@ -1,19 +1,17 @@
 'use client'
 import CustomSelect from '@/components/CustomSelect'
 import ModalUp from '@/components/ModalUp'
+import Pagination from '@/components/Pagination'
 import { Outfit300, Outfit400, Outfit700 } from '@/fonts'
-import { listAllExams, listAllFields, UpdateStatusExam } from '@/helpers'
+import {
+  DeleteExam,
+  listAllExams,
+  listAllFields,
+  UpdateStatusExam,
+} from '@/helpers'
 import useDebounce from '@/hooks/useDebounce'
 import { Dropdown, DropdownItem } from 'flowbite-react'
-import {
-  ArrowLeft2,
-  ArrowRight2,
-  Book,
-  Edit2,
-  Heart,
-  More,
-  SearchStatus,
-} from 'iconsax-reactjs'
+import { Book, Edit2, Heart, More, SearchStatus } from 'iconsax-reactjs'
 import { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import { Status } from '../bancos/components/status'
@@ -34,7 +32,14 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const [searchTerm, setSearchTerm] = useState('')
   const [status, setStatus] = useState({ id: '', label: 'Status: Todos' })
-  // const [type, setType] = useState({ id: '', label: 'Tipos: Todas' })
+  const [typeExam, setTypeExam] = useState({
+    id: '',
+    label: 'Tipo de exame: Todos',
+  })
+  const [typeEspecialty, setTypeEspecialty] = useState({
+    id: '',
+    label: 'Tipo de especialidade: Todos',
+  })
 
   // focus
   const [isFocusedSearch, setIsFocusedSearch] = useState(false)
@@ -44,12 +49,12 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
       try {
         const [fields, exm] = await Promise.all([
           listAllFields(),
-          listAllExams('', '', 1, 100000),
+          listAllExams('', '', '', '', 1, 10),
         ])
 
         setFields(fields?.data?.data)
         setExams(exm?.data?.data)
-        setTotal(exm?.data?.total)
+        setTotal(exm?.data?.meta.total)
       } catch (error) {
         console.error(error)
       }
@@ -58,12 +63,12 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
     findFields()
   }, [])
 
-  const findData = async (src = '', stt = '', pg, lim) => {
+  const findData = async (src = '', stt = '', typ = '', esp = '', pg, lim) => {
     try {
-      const exm = await listAllExams(src, stt.id, pg, lim)
+      const exm = await listAllExams(src, stt, typ, esp, pg, lim)
 
       setExams(exm?.data?.data)
-      setTotal(exm?.data?.total)
+      setTotal(exm?.data?.meta.total)
     } catch (error) {
       console.error(error)
     }
@@ -82,10 +87,68 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
     setStatus(sts[props.label])
 
     try {
-      const exm = await listAllExams(searchTerm, props.id, 1, 10)
+      const exm = await listAllExams(
+        searchTerm,
+        props.id,
+        typeExam.id,
+        typeEspecialty.id,
+        1,
+        10,
+      )
 
       setExams(exm?.data?.data)
-      setTotal(exm?.data?.total)
+      setTotal(exm?.data?.meta.total)
+    } catch (error) {
+      console.error('Error fetching banks:', error)
+    }
+  }
+
+  // Filtrar por tipo de exame
+  const findDataPerTypeExam = async (props) => {
+    setCurrentPage(1)
+
+    setTypeExam({
+      id: props.id,
+      label: `Tipo de exame: ${props.label}`,
+    })
+
+    try {
+      const exm = await listAllExams(
+        searchTerm,
+        status.id,
+        props.id,
+        typeEspecialty.id,
+        1,
+        10,
+      )
+
+      setExams(exm?.data?.data)
+      setTotal(exm?.data?.meta.total)
+    } catch (error) {
+      console.error('Error fetching banks:', error)
+    }
+  }
+
+  const findDataPerTypeEspecialty = async (props) => {
+    setCurrentPage(1)
+
+    setTypeEspecialty({
+      id: props.id,
+      label: `Tipo de especialidade: ${props.label}`,
+    })
+
+    try {
+      const exm = await listAllExams(
+        searchTerm,
+        status.id,
+        typeExam.id,
+        props.id,
+        1,
+        10,
+      )
+
+      setExams(exm?.data?.data)
+      setTotal(exm?.data?.meta.total)
     } catch (error) {
       console.error('Error fetching banks:', error)
     }
@@ -103,12 +166,35 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
     setCurrentPage(1)
 
     try {
-      const exm = await listAllExams(props, '', 1, 10)
+      const exm = await listAllExams(props, '', '', '', 1, 10)
 
       setExams(exm?.data?.data)
-      setTotal(exm?.data?.total)
+      setTotal(exm?.data?.meta.total)
     } catch (error) {
       console.error('Error fetching banks:', error)
+    }
+  }
+
+  // Filtrar por paginação
+  const findDataPerPage = async (props) => {
+    setCurrentPage(props)
+
+    try {
+      const exm = await listAllExams(
+        searchTerm,
+        status.id,
+        typeExam.id,
+        typeEspecialty.id,
+        props,
+        10,
+      )
+
+      if (exm.success) {
+        setExams(exm?.data?.data)
+        setTotal(exm?.data?.meta.total)
+      }
+    } catch (error) {
+      console.log('erro', error)
     }
   }
 
@@ -119,7 +205,32 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
 
     const result = await UpdateStatusExam(exam.id, payload)
     if (result.success) {
-      findData(searchTerm, status, currentPage, 10)
+      findData(
+        searchTerm,
+        status.id,
+        typeExam.id,
+        typeEspecialty.id,
+        currentPage,
+        10,
+      )
+    } else {
+      toast.error('Erro ao mudar status do exame', {
+        position: 'top-right',
+      })
+    }
+  }
+
+  const deleteExam = async (exam) => {
+    const result = await DeleteExam(exam.id)
+    if (result.success) {
+      findData(
+        searchTerm,
+        status.id,
+        typeExam.id,
+        typeEspecialty.id,
+        currentPage,
+        10,
+      )
     } else {
       toast.error('Erro ao mudar status do exame', {
         position: 'top-right',
@@ -162,39 +273,42 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
           className={'bg-[#F9F9F9]'}
         />
         <CustomSelect
-          select={{ id: 1, label: 'Tipo de exame: todos' }}
-          setSelect={() => null}
-          options={fields
-            ?.find((element) => element?.nomeCampo === 'tipo_exames')
-            ?.alternativas.map((i) => {
-              return {
-                id: i.id,
-                label: i.textoAlternativa,
-              }
-            })}
+          select={typeExam}
+          setSelect={(e) => findDataPerTypeExam(e)}
+          options={[
+            { id: '', label: 'Todos' },
+            ...(
+              fields?.find((element) => element?.nomeCampo === 'tipo_exames')
+                ?.alternativas ?? []
+            ).map((i) => ({
+              id: i.id,
+              label: i.textoAlternativa,
+            })),
+          ]}
           placeholder={'Tipos de exames: todos'}
           className={'bg-[#F9F9F9]'}
         />
         <CustomSelect
-          select={{ id: 1, label: 'Especialidade: todos' }}
-          setSelect={() => null}
-          options={fields
-            ?.find((element) => element?.nomeCampo === 'especialidade')
-            ?.alternativas.map((i) => {
-              return {
-                id: i.id,
-                label: i.textoAlternativa,
-              }
-            })}
+          select={typeEspecialty}
+          setSelect={(e) => findDataPerTypeEspecialty(e)}
+          options={[
+            { id: '', label: 'Todos' },
+            ...(
+              fields?.find((el) => el?.nomeCampo === 'especialidade')
+                ?.alternativas ?? []
+            ).map((i) => ({
+              id: i.id,
+              label: i.textoAlternativa,
+            })),
+          ]}
           placeholder={'Tipos de exames: todos'}
           className={'bg-[#F9F9F9]'}
         />
         <div
-          className={`flex h-10 flex-2 items-center rounded-lg px-2 ${
-            isFocusedSearch
+          className={`flex h-10 flex-2 items-center rounded-lg px-2 ${isFocusedSearch
               ? 'border border-[#0F9B7F]'
               : 'border border-[#BBBBBB]'
-          }`}
+            }`}
         >
           <input
             placeholder="Pesquisar"
@@ -349,7 +463,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
                       </DropdownItem>
                       <DropdownItem
                         className={`${Outfit300.className} text-[16px] text-[#8A8A8A]`}
-                        // onClick={() => deleteUnit(item)}
+                        onClick={() => deleteExam(item)}
                       >
                         Excluir
                       </DropdownItem>
@@ -367,23 +481,20 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
             <span
               className={`${Outfit400.className} pl-2 text-[16px] text-[#222]`}
             >
-              01
+              {exams.length > 10 ? 10 : exams.length}
             </span>
           </div>
           <span className={`${Outfit300.className} text-[16px] text-[#222]`}>
-            de 01 registros
+            de {total} registros
           </span>
         </div>
 
-        <div className="flex items-center">
-          <ArrowLeft2 size="28" color="#D9D9D9" />
-          <div className="flex h-10 items-center justify-center rounded-lg bg-[#E0FFF9]">
-            <span className={`${Outfit400.className} flex px-4 text-[#0F9B7F]`}>
-              01
-            </span>
-          </div>
-          <ArrowRight2 size="28" color="#D9D9D9" />
-        </div>
+        <Pagination
+          totalRecords={total}
+          recordsPerPage={10}
+          onPageChange={(value) => findDataPerPage(value)}
+          currentPage={currentPage} // Pass the current page state
+        />
       </div>
       <ModalUp
         isOpen={openModalRegisterExams}
@@ -391,7 +502,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
       >
         <RegisterExams
           onClose={() => setModalRegisterExams(false)}
-          findData={() => findData('', '', 1, 10)}
+          findData={() => findData('', '', '', '', 1, 10)}
         />
       </ModalUp>
       <ModalUp
@@ -399,9 +510,9 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
         onClose={() => setOpenModalEditExam(false)}
       >
         <EditExam
-          onClose={() => setModalRegisterExams(false)}
+          onClose={() => setOpenModalEditExam(false)}
+          findData={() => findData('', '', '', '', 1, 10)}
           selectedExam={selectedExam}
-          findData={() => findData('', '', 1, 10)}
         />
       </ModalUp>
       {/* <ModalLeft

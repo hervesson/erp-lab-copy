@@ -50,7 +50,7 @@ const CustomSearch = ({
     <div style={{ position: 'relative', flex: 1 }}>
       <input
         placeholder={placeholder}
-        className={`${Outfit400.className} ring-none flex h-[40px] w-full items-center justify-center rounded-[8px] border-1 border-[#A9A9A9] px-2 text-[#494949] outline-none`}
+        className={`${Outfit400.className} ring-none flex h-10 w-full items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none`}
         ref={inputRef}
         type="text"
         value={inputValue}
@@ -106,7 +106,7 @@ const CustomSearch = ({
               </div>
             ))
           ) : (
-            <div className="flex flex-col items-center p-[8px]">
+            <div className="flex flex-col items-center p-2">
               <p className={`${Outfit500.className} text-[16px]`}>
                 Nenhum resultado encontrato
               </p>

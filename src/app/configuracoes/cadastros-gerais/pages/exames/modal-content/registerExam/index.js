@@ -2,6 +2,7 @@ import ModalFramer from '@/components/ModalFramer'
 import { Outfit300, Outfit400, Outfit500 } from '@/fonts'
 import {
   CreateExam,
+  CreateVinculoExam,
   ListAllEnterprisesPerType,
   listAllFields,
   listAllUnits,
@@ -69,8 +70,6 @@ const RegisterExam = ({ onClose, findData }) => {
           }
         })
 
-        console.log()
-
         setFields(fields.data.data)
         setUnits(valuesUnits)
         setSamples(samples)
@@ -110,7 +109,6 @@ const RegisterExam = ({ onClose, findData }) => {
           laboratorio_apoio_id: null,
         },
       ],
-      laboratorioDeApoio: {},
       termoConsentimento: false,
       requisitos_anvisa: {},
       metodologiaUtilizada: '',
@@ -144,19 +142,16 @@ const RegisterExam = ({ onClose, findData }) => {
       setLoading(true)
       try {
         const isExternoLaboratorial =
-          values?.tipoExame?.label === 'Laboratorial' &&
-          values?.destino?.id === 'externo'
+          values?.tipoExame?.label === 'Laboratorial'
 
-        const isExternoImagem =
-          values?.tipoExame?.label === 'Imagem' &&
-          values?.destino?.id === 'externo'
+        const isExternoImagem = values?.tipoExame?.label === 'Imagem'
 
         const payload = {
           codigo_interno: values.codigoInterno,
           nome: values.nomeExame,
           sinonimos: values.sinonimos,
           codigo_cbhpm: values.codigoCBHPM,
-          codigo_tuss: values.codigoTuss,
+          tuss_id: values.codigoTuss.id,
           codigo_amb: values.codigoAMB,
           codigo_loinc: values.codigoLoinc,
           codigo_sus: values.codigoSUS,
@@ -167,20 +162,25 @@ const RegisterExam = ({ onClose, findData }) => {
           unidades: values.unidades.map((item) => {
             return {
               unidade_id: item.unidade_id.id,
-              destino: isExternoLaboratorial ? 'apoio' : 'telemedicina',
+              destino:
+                item.destino.id === 'interno'
+                  ? 'interno'
+                  : isExternoLaboratorial
+                    ? 'apoio'
+                    : 'telemedicina',
               ...(isExternoLaboratorial && {
-                laboratorio_apoio_id: values.laboratorioDeApoio.id,
+                laboratorio_apoio_id: item.laboratorio_apoio_id?.id,
               }),
               ...(isExternoImagem && {
-                telemedicina_id: values.telemedicina_id.id,
+                telemedicina_id: item.telemedicina_id?.id,
               }),
             }
           }),
           metodologia_id: values.metodologiaUtilizada.id,
           grupo_id: values.grupo.id,
-          requer_peso: values.peso,
-          requer_altura: values.altura,
-          requer_volume: values.volume,
+          peso: values.peso,
+          altura: values.altura,
+          volume: values.volume,
           termo_consentimento: values.termoConsentimento,
           unidade_medida_id: values.unidadeDeMedida.id,
           amostra_id: values.amostraBiologicaNecessaria.id,
@@ -211,6 +211,52 @@ const RegisterExam = ({ onClose, findData }) => {
         try {
           const responseCreateUnity = await CreateExam(payload)
           if (responseCreateUnity.success) {
+            const apoioExame = values.informacoesDeApoio?.map((item) => ({
+              exame_id: responseCreateUnity.data.data.id,
+              laboratorio_apoio_id: item.laboratorio_apoio_id.id,
+              codigo_exame_apoio: responseCreateUnity.data.data.codigo_interno,
+              metodologia_id: item.metodologia_id.id,
+              unidade_medida_id: item.unidade_medida_id.id,
+              peso: item.requer_peso,
+              altura: item.requer_altura,
+              volume: item.requer_volume,
+              amostra_id: item.amostra_id.id,
+              amostra_enviar_id: item.amostra_enviar_id.id,
+              tipo_recipiente_id: item.tipo_recipiente_id.id,
+              regioes_coleta_ids: item.regioes_coleta_ids.map(
+                (item) => item.id,
+              ),
+              volume_minimo_id: item.volume_minimo_id.id,
+              estabilidade_id: item.estabilidade_id.id,
+              formularios_atendimento: ['termo_envio_laboratorio'],
+              preparo_geral: item.preparo_geral,
+              preparo_feminino: item.preparo_feminino,
+              preparo_infantil: item.preparo_infantil,
+              coleta_geral: item.coleta_geral,
+              coleta_feminino: item.coleta_feminino,
+              coleta_infantil: item.coleta_infantil,
+              tecnica_coleta: item.tecnica_coleta,
+              lembrete_coletora: item.lembrete_coletora,
+              lembrete_recepcionista_agendamento:
+                item.lembrete_recepcionista_agendamento,
+              lembrete_recepcionista_os: item.lembrete_recepcionista_os,
+              distribuicao: item.distribuicao,
+              prazo_entrega_dias: Number(item.prazo_entrega_dias),
+              formatos_laudo: item.formatos_laudo.map((item) => item.id),
+              ativo: true,
+            }))
+
+            if (values.informacoesDeApoio?.length > 0) {
+              const resp = await CreateVinculoExam({ items: apoioExame })
+              if (!resp.success) {
+                resp?.error?.erros?.forEach((element) => {
+                  toast.error(element, {
+                    position: 'top-right',
+                  })
+                })
+              }
+            }
+
             setStep('sucess')
             setOpenModalAlerts(true)
             findData()
@@ -220,9 +266,6 @@ const RegisterExam = ({ onClose, findData }) => {
               toast.error(element, {
                 position: 'top-right',
               })
-            })
-            toast.error(responseCreateUnity.error.mensagem, {
-              position: 'top-right',
             })
           }
         } catch (error) {
@@ -235,8 +278,6 @@ const RegisterExam = ({ onClose, findData }) => {
       }
     },
   })
-
-  // console.log(formik.errors)
 
   const steps = {
     informacoesGerais: (
@@ -330,7 +371,7 @@ const RegisterExam = ({ onClose, findData }) => {
             <span
               className={` ${Outfit500.className} text-[16px] text-[#222222]`}
             >
-              Exames
+              Exame
             </span>
           </div>
           <div className="flex gap-4">
@@ -363,11 +404,10 @@ const RegisterExam = ({ onClose, findData }) => {
             <button
               type="button"
               onClick={handleValidateAndSubmit}
-              className={`flex h-11 w-32 items-center justify-evenly rounded-lg ${
-                formik.isValid
+              className={`flex h-11 w-32 items-center justify-evenly rounded-lg ${formik.isValid
                   ? 'bg-[#0F9B7F] text-white hover:from-[#3BC1E2] hover:to-[#1D6F87]'
                   : 'bg-[#A9A9A9] text-[#494949]'
-              } ${Outfit400.className}`}
+                } ${Outfit400.className}`}
               disabled={loading}
             >
               <span className={`${Outfit400.className} uppercase`}>
@@ -398,10 +438,9 @@ const RegisterExam = ({ onClose, findData }) => {
               <button
                 type="button"
                 onClick={() => setTab('informacoesDeApoio')}
-                className={`${Outfit400.className} ${
-                  tab === 'informacoesDeApoio' &&
+                className={`${Outfit400.className} ${tab === 'informacoesDeApoio' &&
                   'border-b-2 border-[#0F9B7F] bg-white'
-                } h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
+                  } h-14 rounded-tl-lg rounded-tr-lg px-2 text-[16px] text-[#222]`}
               >
                 INFORMAÇÕES DE APOIO
               </button>
