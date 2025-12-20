@@ -201,8 +201,6 @@ const RegisterExam = ({ onClose, findData }) => {
         status: 'ativo',
       }
 
-      console.log(payload)
-
       try {
         const responseCreateUnity = await CreateExam(payload)
         if (responseCreateUnity.success) {

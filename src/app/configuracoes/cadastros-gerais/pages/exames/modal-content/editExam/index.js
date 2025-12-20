@@ -191,19 +191,7 @@ const EditExam = ({ onClose, findData, selectedExam }) => {
 
         formik.setFieldValue(
           'unidades',
-          selectedExam?.unidades.map((item) => {
-            return {
-              unidade_id: valuesUnits.find((ele) => ele.id === item.unidade_id),
-              destino:
-                item.destino === 'interno'
-                  ? { id: 'interno', label: 'INTERNO' }
-                  : { id: 'externo', label: 'EXTERNO' },
-              telemedicina_id: null,
-              laboratorio_apoio_id: labs.find(
-                (ele) => ele.id === item.laboratorio_apoio_id,
-              ),
-            }
-          }),
+          mapApiUnidadesToFormik(selectedExam?.unidades),
         )
 
         formik.setFieldValue(
@@ -310,6 +298,67 @@ const EditExam = ({ onClose, findData, selectedExam }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedExam])
 
+  function mapApiUnidadesToFormik(apiUnidades = []) {
+    // sempre devolve pelo menos 1 item (se vier vazio da API)
+    const list =
+      Array.isArray(apiUnidades) && apiUnidades.length ? apiUnidades : [null]
+
+    return list.map((u) => {
+      // quando for o item "vazio" (fallback)
+      if (!u) {
+        return {
+          unidade_id: null,
+          unidadesSelecionadas: [],
+          destino: '',
+          telemedicina_id: null,
+          laboratorio_apoio_id: null,
+        }
+      }
+
+      const unidadeObj = u?.unidadeSaude
+        ? { id: u.unidadeSaude.id, label: u.unidadeSaude.nomeUnidade }
+        : u?.unidade_id
+          ? { id: u.unidade_id, label: '' } // fallback se não vier unidadeSaude
+          : null
+
+      return {
+        // ✅ seu form espera objeto (ou null)
+        unidade_id: unidadeObj,
+
+        // ✅ no form você quer um array: a API retorna 1 unidade por linha,
+        // então vira um array com 1 item (ou vazio se não tiver)
+        unidadesSelecionadas: unidadeObj ? [unidadeObj] : [],
+
+        // ✅ API: "interno" | "apoio" | "telemedicina"
+        // seu form: string (você usa '' no default)
+        destino:
+          u?.destino === 'interno'
+            ? { id: 'interno', label: 'INTERNO' }
+            : { id: 'externo', label: 'EXTERNO' },
+
+        // ✅ se seu select também é {id,label}, monta objeto; se preferir string, troca.
+        telemedicina_id: u?.telemedicina
+          ? {
+              id: u.telemedicina.id,
+              label: u.telemedicina.nome ?? u.telemedicina.descricao ?? '',
+            }
+          : u?.telemedicina_id
+            ? { id: u.telemedicina_id, label: '' }
+            : null,
+
+        laboratorio_apoio_id: u?.laboratorioApoio
+          ? {
+              id: u.laboratorioApoio.id,
+              label:
+                u.laboratorioApoio.nome ?? u.laboratorioApoio.descricao ?? '',
+            }
+          : u?.laboratorio_apoio_id
+            ? { id: u.laboratorio_apoio_id, label: '' }
+            : null,
+      }
+    })
+  }
+
   const formik = useFormik({
     validationSchema,
     validateOnBlur: false,
@@ -321,22 +370,20 @@ const EditExam = ({ onClose, findData, selectedExam }) => {
       sinonimos: selectedExam?.sinonimos,
       codigoCBHPM: selectedExam?.codigo_cbhpm,
       codigoTuss: {
-        id: selectedExam?.tuss.id,
-        label: selectedExam?.tuss.termo,
+        id: selectedExam?.tuss?.id,
+        label: selectedExam?.tuss?.termo,
       },
       codigoLoinc: selectedExam?.codigo_loinc,
       codigoSUS: selectedExam?.codigo_sus,
-      codigoAMB: selectedExam?.codigo_amb,
+      codigoAMB: {
+        id: selectedExam?.amb.id,
+        label: selectedExam?.amb.descricao,
+      },
       tipoExame: {
         id: selectedExam?.tipoExameAlternativa.id,
         label: selectedExam?.tipoExameAlternativa.textoAlternativa,
       },
       especialidadeExame: '',
-      grupo: '',
-      subGrupo: {
-        id: selectedExam?.subgrupoAlternativa.id,
-        label: selectedExam?.subgrupoAlternativa.textoAlternativa,
-      },
       setor: {
         id: selectedExam?.setorAlternativa.id,
         label: selectedExam?.setorAlternativa.textoAlternativa,
@@ -350,7 +397,6 @@ const EditExam = ({ onClose, findData, selectedExam }) => {
         },
       ],
       termoConsentimento: selectedExam?.termo_consentimento,
-      requisitos_anvisa: {},
       metodologiaUtilizada: {},
       unidadeDeMedida: '',
       peso: false,
@@ -377,7 +423,10 @@ const EditExam = ({ onClose, findData, selectedExam }) => {
         selectedExam?.lembrete_recepcionista_os,
       lembretesDistribuicao: selectedExam?.distribuicao,
       prazoDeEntrega: selectedExam?.prazo_entrega_dias,
-      formatoLaudo: [],
+      formatoLaudo: selectedExam?.formatos_laudo.map((item) => ({
+        id: item,
+        label: item,
+      })),
       informacoesDeApoio: [],
     },
     onSubmit: async (values, { setSubmitting }) => {
@@ -394,32 +443,30 @@ const EditExam = ({ onClose, findData, selectedExam }) => {
           sinonimos: values.sinonimos,
           codigo_cbhpm: values.codigoCBHPM,
           tuss_id: values.codigoTuss.id,
-          codigo_amb: values.codigoAMB,
+          amb_id: values.codigoAMB.id,
           codigo_loinc: values.codigoLoinc,
           codigo_sus: values.codigoSUS,
           tipo_exame_id: values.tipoExame.id,
           especialidade_id: values.especialidadeExame.id,
-          subgrupo_id: values.subGrupo.id,
           setor_id: values.setor.id,
-          unidades: values.unidades.map((item) => {
-            return {
-              unidade_id: item.unidade_id.id,
+          unidades: values.unidades.flatMap((externo) =>
+            (externo?.unidadesSelecionadas ?? []).map((item) => ({
+              unidade_id: item?.id,
               destino:
-                item.destino.id === 'interno'
+                externo?.destino?.id === 'interno'
                   ? 'interno'
                   : isExternoLaboratorial
                     ? 'apoio'
                     : 'telemedicina',
               ...(isExternoLaboratorial && {
-                laboratorio_apoio_id: item?.laboratorio_apoio_id?.id,
+                laboratorio_apoio_id: externo?.laboratorio_apoio_id?.id,
               }),
               ...(isExternoImagem && {
-                telemedicina_id: item?.telemedicina_id?.id,
+                telemedicina_id: externo?.telemedicina_id?.id,
               }),
-            }
-          }),
+            })),
+          ),
           metodologia_id: values.metodologiaUtilizada.id,
-          grupo_id: values.grupo.id,
           peso: values.peso,
           altura: values.altura,
           volume: values.volume,
@@ -432,7 +479,6 @@ const EditExam = ({ onClose, findData, selectedExam }) => {
           estabilidade_id: values.estabilidade.id,
           volume_minimo_id: values.valorMinimoRequerido.id,
           formatos_laudo: values.formatoLaudo.map((item) => item.id),
-          requisitos_anvisa_id: values.requisitos_anvisa.id,
           prazo_entrega_dias: Number(values.prazoDeEntrega),
           tecnica_coleta: values.tecnicaDeColeta,
           distribuicao: values.lembretesDistribuicao,

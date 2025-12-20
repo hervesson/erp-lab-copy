@@ -460,7 +460,6 @@ const InformacoesInternas = ({ formik, fields, samples }) => {
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
               Técnica de coleta
-              <strong className="text-[#F23434]">*</strong>
             </label>
             <textarea
               {...formik.getFieldProps('tecnicaDeColeta')}
