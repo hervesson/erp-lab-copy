@@ -43,7 +43,9 @@ const CustomSearchTuss = ({ value = '', setValue }) => {
       options={tuss}
       inputValue={selectedTuss}
       setSelect={(e) => setValue(e)}
-      className={'border border-[#BBBBBB]'}
+      className={
+        'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+      }
     />
   )
 }

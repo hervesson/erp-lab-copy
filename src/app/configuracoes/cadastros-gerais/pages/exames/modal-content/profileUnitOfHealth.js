@@ -4,7 +4,7 @@ import { InfoCircle } from 'iconsax-reactjs'
 
 const ProfileUnitHealth = ({ unit }) => {
   return (
-    <div className="flex flex-col gap-[24px] p-[24px]">
+    <div className="flex flex-col gap-6 p-[24px]">
       <div className="flex h-[62px] items-center justify-between rounded-[12px] bg-[#F9F9F9] px-[16px]">
         <p
           className={`${Outfit500.className} text-[20px] text-[#057B64] uppercase`}

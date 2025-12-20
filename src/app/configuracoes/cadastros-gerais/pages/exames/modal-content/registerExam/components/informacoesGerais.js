@@ -1,4 +1,5 @@
 import CustomSelect from '@/components/CustomSelect'
+import CustomSearchAMB from '@/components/CutomSearchAMB'
 import CustomSearchTuss from '@/components/CutomSearchTuss'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { CloseCircle, InfoCircle } from 'iconsax-reactjs'
@@ -131,7 +132,6 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                     className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
                   >
                     Código CBHPM
-                    <strong className="text-[#F23434]">*</strong>
                   </label>
                   <InfoCircle size="20" color="#A1A1A1" />
                 </div>
@@ -149,7 +149,7 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                   <label
                     className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
                   >
-                    Código TUSS<strong className="text-[#F23434]">*</strong>
+                    Código TUSS
                   </label>
                   <InfoCircle size="20" color="#A1A1A1" />
                 </div>
@@ -205,13 +205,9 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                   </label>
                   <InfoCircle size="20" color="#A1A1A1" />
                 </div>
-                <input
-                  {...formik.getFieldProps('codigoAMB')}
-                  type="text"
-                  id="codigoAMB"
-                  name="codigoAMB"
-                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
-                  placeholder="Digite o código AMB"
+                <CustomSearchAMB
+                  value={formik.values.codigoAMB.label}
+                  setValue={(e) => formik.setFieldValue('codigoAMB', e)}
                 />
               </div>
               <div className="flex flex-1 flex-col gap-1">
@@ -263,56 +259,8 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                   }
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-1">
-                <label
-                  className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                >
-                  Grupo
-                  <strong className="text-[#F23434]">*</strong>
-                </label>
-                <CustomSelect
-                  select={formik.values.grupo}
-                  setSelect={(e) => formik.setFieldValue('grupo', e)}
-                  options={fields
-                    ?.find((element) => element?.nomeCampo === 'grupo')
-                    ?.alternativas.map((i) => {
-                      return {
-                        id: i.id,
-                        label: i.textoAlternativa,
-                      }
-                    })}
-                  placeholder={'Selecione um grupo'}
-                  className={
-                    'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                  }
-                />
-              </div>
             </div>
             <div className="flex gap-4">
-              <div className="flex flex-1 flex-col gap-1">
-                <label
-                  className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
-                >
-                  SubGrupo<strong className="text-[#F23434]">*</strong>
-                </label>
-
-                <CustomSelect
-                  select={formik.values.subGrupo}
-                  setSelect={(e) => formik.setFieldValue('subGrupo', e)}
-                  options={fields
-                    ?.find((element) => element?.nomeCampo === 'subgrupo')
-                    ?.alternativas.map((i) => {
-                      return {
-                        id: i.id,
-                        label: i.textoAlternativa,
-                      }
-                    })}
-                  placeholder={'Selecione um SubGrupo'}
-                  className={
-                    'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                  }
-                />
-              </div>
               <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
@@ -346,36 +294,6 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
           </span>
 
           <div className="flex gap-4">
-            <div className="flex flex-1 flex-col gap-1">
-              <div className="flex justify-between">
-                <label
-                  className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
-                >
-                  Requisitos da ANVISA/Normas Técnicas
-                  <strong className="text-[#F23434]">*</strong>
-                </label>
-
-                <InfoCircle size="20" color="#A1A1A1" />
-              </div>
-              <CustomSelect
-                select={formik.values.requisitos_anvisa}
-                setSelect={(e) => formik.setFieldValue('requisitos_anvisa', e)}
-                options={fields
-                  ?.find(
-                    (element) => element?.nomeCampo === 'requisitos_anvisa',
-                  )
-                  ?.alternativas.map((i) => {
-                    return {
-                      id: i.id,
-                      label: i.textoAlternativa,
-                    }
-                  })}
-                placeholder={'Selecione os requisitos'}
-                className={
-                  'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                }
-              />
-            </div>
             <div className="flex flex-col gap-1">
               <div className="flex justify-between">
                 <label
@@ -412,150 +330,285 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
           <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
             Integração e Regulação
           </span>
-          {formik?.values?.unidades?.map((item, index) => {
+          {formik?.values?.unidades?.map((row, rowIndex) => {
+            // ✅ normaliza id (evita bug de "12" vs 12)
+            const normId = (v) =>
+              v === null || v === undefined ? null : String(v)
+
+            // ✅ TODOS os ids já usados no formulário inteiro
+            const usedUnitIds = new Set(
+              (formik.values.unidades ?? [])
+                .flatMap((u) => [
+                  normId(u?.unidade_id?.id), // seleção atual (select)
+                  ...(u?.unidadesSelecionadas ?? []).map((x) => normId(x?.id)), // tags
+                ])
+                .filter(Boolean),
+            )
+
+            // ✅ libera ids da LINHA ATUAL (pra não "sumir" o que já é dela)
+            const allowedCurrentIds = new Set(
+              [
+                normId(row?.unidade_id?.id),
+                ...(row?.unidadesSelecionadas ?? []).map((x) => normId(x?.id)),
+              ].filter(Boolean),
+            )
+
             return (
-              <div className="flex gap-4" key={index.toString()}>
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Unidade que realiza o exame
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <CustomSelect
-                    select={item?.unidade_id}
-                    setSelect={(e) => {
-                      formik.setFieldValue(`unidades[${index}].unidade_id`, e)
-                    }}
-                    options={units ?? []}
-                    placeholder={'Selecione uma unidade'}
-                    className={
-                      'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                    }
-                  />
-                </div>
-                <div className="flex flex-1 flex-col gap-1">
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Destino do exame
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <CustomSelect
-                    select={item?.destino}
-                    setSelect={(e) =>
-                      formik.setFieldValue(`unidades[${index}].destino`, e)
-                    }
-                    options={[
-                      {
-                        id: 'interno',
-                        label: 'INTERNO',
-                      },
-                      {
-                        id: 'externo',
-                        label: 'EXTERNO',
-                      },
-                    ]}
-                    placeholder={'Selecione o destino'}
-                    className={
-                      'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                    }
-                  />
+              <div key={rowIndex.toString()} className="flex flex-col gap-4">
+                <div className="flex gap-4">
+                  <div className="flex flex-1 flex-col gap-1">
+                    <label
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                    >
+                      Unidade que realiza o exame{' '}
+                      <strong className="text-[#F23434]">*</strong>
+                    </label>
+
+                    <CustomSelect
+                      select={row?.unidade_id}
+                      setSelect={(e) => {
+                        const selectedId = normId(e?.id)
+                        if (!selectedId) return
+
+                        // ✅ se já estiver usada em OUTRA linha, bloqueia
+                        const alreadyUsedSomewhereElse =
+                          usedUnitIds.has(selectedId) &&
+                          !allowedCurrentIds.has(selectedId)
+
+                        if (alreadyUsedSomewhereElse) return
+
+                        formik.setFieldValue(
+                          `unidades[${rowIndex}].unidade_id`,
+                          e,
+                        )
+                      }}
+                      options={(units ?? []).filter((unit) => {
+                        const id = normId(unit?.id)
+                        if (!id) return false
+
+                        // ✅ se já foi usada em alguma linha, só mostra se for da linha atual
+                        if (usedUnitIds.has(id) && !allowedCurrentIds.has(id))
+                          return false
+
+                        return true
+                      })}
+                      placeholder="Selecione uma unidade"
+                      className="border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]"
+                    />
+                  </div>
+
+                  <div className="flex flex-col justify-end gap-1">
+                    <button
+                      type="button"
+                      disabled={!row?.unidade_id?.id}
+                      className={`${Outfit400.className} flex h-10 w-28 items-center justify-center rounded-lg border border-[#0F9B7F] text-[16px] text-[#0F9B7F] disabled:opacity-40`}
+                      onClick={() => {
+                        const selected = row?.unidade_id
+                        const selectedId = normId(selected?.id)
+                        if (!selectedId) return
+
+                        // ✅ trava global: se já estiver usada fora da linha atual, não adiciona
+                        const alreadyUsedSomewhereElse =
+                          usedUnitIds.has(selectedId) &&
+                          !allowedCurrentIds.has(selectedId)
+                        if (alreadyUsedSomewhereElse) return
+
+                        const currentList = row?.unidadesSelecionadas || []
+
+                        // ✅ evita duplicar dentro da própria lista
+                        if (
+                          currentList.some((x) => normId(x?.id) === selectedId)
+                        )
+                          return
+
+                        formik.setFieldValue(
+                          `unidades[${rowIndex}].unidadesSelecionadas`,
+                          [...currentList, selected],
+                        )
+                        formik.setFieldValue(
+                          `unidades[${rowIndex}].unidade_id`,
+                          {},
+                        )
+                      }}
+                    >
+                      ADICIONAR
+                    </button>
+                  </div>
+
+                  {row?.unidadesSelecionadas?.length > 0 ? (
+                    <div className="flex flex-2 flex-wrap gap-2">
+                      {row.unidadesSelecionadas.map((tag, tagIndex) => (
+                        <div
+                          key={`${tagIndex}-${normId(tag?.id)}`}
+                          className={`h-10 self-end bg-[#E0FFF9] ${Outfit400.className} flex items-center gap-3 rounded-[50px] px-3 text-[14px] text-[#0F9B7F]`}
+                        >
+                          {tag?.label}
+
+                          <CloseCircle
+                            size="22"
+                            color="#F23434"
+                            variant="Bold"
+                            onClick={() => {
+                              const currentList =
+                                row?.unidadesSelecionadas || []
+
+                              // ✅ remoção com id normalizado (faz voltar a ficar disponível)
+                              formik.setFieldValue(
+                                `unidades[${rowIndex}].unidadesSelecionadas`,
+                                currentList.filter(
+                                  (u) => normId(u?.id) !== normId(tag?.id),
+                                ),
+                              )
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex flex-2 flex-col justify-end gap-1">
+                      <div className="flex h-10 items-center gap-2 rounded-[50px] bg-[#E7E7E7] px-3">
+                        <InfoCircle size="20" color="#737373" variant="Bulk" />
+                        <label
+                          className={`${Outfit300.className} text-[14px] text-[#737373]`}
+                        >
+                          Nenhuma opção adicionada
+                        </label>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                <div
-                  className={`flex flex-1 flex-col gap-1 ${
-                    item?.destino?.id === 'externo' &&
-                    formik.values.tipoExame.label === 'Laboratorial'
-                      ? ''
-                      : 'opacity-45'
-                  }`}
-                >
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                  >
-                    Laboratório de apoio
-                    <strong className="text-[#F23434]">*</strong>
-                  </label>
-                  <CustomSelect
-                    select={item?.laboratorio_apoio_id}
-                    setSelect={(e) => {
-                      formik.setFieldValue(
-                        `unidades[${index}].laboratorio_apoio_id`,
-                        e,
-                      )
-                      formik.setFieldValue('informacoesDeApoio', [
-                        ...formik.values.informacoesDeApoio,
+                <div className="flex gap-4">
+                  <div className="flex flex-1 flex-col gap-1">
+                    <label
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                    >
+                      Destino do exame
+                      <strong className="text-[#F23434]">*</strong>
+                    </label>
+                    <CustomSelect
+                      select={row?.destino}
+                      setSelect={(e) =>
+                        formik.setFieldValue(`unidades[${rowIndex}].destino`, e)
+                      }
+                      options={[
                         {
-                          exame_id: '',
-                          laboratorio_apoio_id: e,
-                          codigo_exame_apoio: '',
-                          metodologia_id: '',
-                          unidade_medida_id: '',
-                          requer_peso: false,
-                          requer_altura: false,
-                          requer_volume: true,
-                          amostra_id: '',
-                          amostra_enviar_id: '',
-                          tipo_recipiente_id: '',
-                          regiaoDeColeta: '',
-                          regioes_coleta_ids: [],
-                          volume_minimo_id: '',
-                          estabilidade_id: '',
-                          formularios_atendimento: [],
-                          preparo_geral: '',
-                          preparo_feminino: '',
-                          preparo_infantil: '',
-                          coleta_geral: '',
-                          coleta_feminino: '',
-                          coleta_infantil: '',
-                          tecnica_coleta: '',
-                          lembrete_coletora: '',
-                          lembrete_recepcionista_agendamento: '',
-                          lembrete_recepcionista_os: '',
-                          distribuicao: '',
-                          prazo_entrega_dias: 0,
-                          formatos_laudo: [],
-                          ativo: true,
+                          id: 'interno',
+                          label: 'INTERNO',
                         },
-                      ])
-                    }}
-                    options={labs}
-                    placeholder={'Selecione um laboratório de apoio'}
-                    className={`${item.destino.id === 'externo' && formik.values.tipoExame.label === 'Laboratorial' ? 'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]' : 'border border-dashed border-[#BBB]'} `}
-                    readOnly={
-                      item.destino.id === 'interno' ||
-                      formik.values.tipoExame.label !== 'Laboratorial'
-                    }
-                  />
-                </div>
+                        {
+                          id: 'externo',
+                          label: 'EXTERNO',
+                        },
+                      ]}
+                      placeholder={'Selecione o destino'}
+                      className={
+                        'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
+                      }
+                    />
+                  </div>
 
-                <div
-                  className={`flex flex-1 flex-col gap-1 ${
-                    item?.destino?.id === 'externo' &&
-                    formik.values.tipoExame.label === 'Imagem'
-                      ? ''
-                      : 'opacity-45'
-                  }`}
-                >
-                  <label
-                    className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                  <div
+                    className={`flex flex-1 flex-col gap-1 ${
+                      row?.destino?.id === 'externo' &&
+                      formik.values.tipoExame.label === 'Laboratorial'
+                        ? ''
+                        : 'opacity-45'
+                    }`}
                   >
-                    Telemedicina
-                  </label>
-                  <CustomSelect
-                    select={formik.values.telemedicina_id}
-                    setSelect={(e) =>
-                      formik.setFieldValue('telemedicina_id', e)
-                    }
-                    options={[]}
-                    placeholder={'Selecione uma opção'}
-                    className={`${item.destino.id === 'externo' && formik.values.tipoExame.label === 'Imagem' ? 'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]' : 'border border-dashed border-[#BBB]'} `}
-                    readOnly={
-                      item.destino.id === 'interno' ||
-                      formik.values.tipoExame.label !== 'Imagem'
-                    }
-                  />
+                    <label
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                    >
+                      Laboratório de apoio
+                      <strong className="text-[#F23434]">*</strong>
+                    </label>
+                    <CustomSelect
+                      select={row?.laboratorio_apoio_id}
+                      setSelect={(e) => {
+                        formik.setFieldValue(
+                          `unidades[${rowIndex}].laboratorio_apoio_id`,
+                          e,
+                        )
+                        if (
+                          formik.values.unidades
+                            .map((u) => u.laboratorio_apoio_id?.id)
+                            .includes(e.id)
+                        ) {
+                          return
+                        }
+                        formik.setFieldValue('informacoesDeApoio', [
+                          ...formik.values.informacoesDeApoio,
+                          {
+                            exame_id: '',
+                            laboratorio_apoio_id: e,
+                            codigo_exame_apoio: '',
+                            metodologia_id: '',
+                            unidade_medida_id: '',
+                            requer_peso: false,
+                            requer_altura: false,
+                            requer_volume: true,
+                            amostra_id: '',
+                            amostra_enviar_id: '',
+                            tipo_recipiente_id: '',
+                            regiaoDeColeta: '',
+                            regioes_coleta_ids: [],
+                            volume_minimo_id: '',
+                            estabilidade_id: '',
+                            formularios_atendimento: [],
+                            preparo_geral: '',
+                            preparo_feminino: '',
+                            preparo_infantil: '',
+                            coleta_geral: '',
+                            coleta_feminino: '',
+                            coleta_infantil: '',
+                            tecnica_coleta: '',
+                            lembrete_coletora: '',
+                            lembrete_recepcionista_agendamento: '',
+                            lembrete_recepcionista_os: '',
+                            distribuicao: '',
+                            prazo_entrega_dias: '',
+                            formatos_laudo: [],
+                            ativo: true,
+                          },
+                        ])
+                      }}
+                      options={labs}
+                      placeholder={'Selecione um laboratório de apoio'}
+                      className={`${row.destino.id === 'externo' && formik.values.tipoExame.label === 'Laboratorial' ? 'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]' : 'border border-dashed border-[#BBB]'} `}
+                      readOnly={
+                        row.destino.id === 'interno' ||
+                        formik.values.tipoExame.label !== 'Laboratorial'
+                      }
+                    />
+                  </div>
+
+                  <div
+                    className={`flex flex-1 flex-col gap-1 ${
+                      row?.destino?.id === 'externo' &&
+                      formik.values.tipoExame.label === 'Imagem'
+                        ? ''
+                        : 'opacity-45'
+                    }`}
+                  >
+                    <label
+                      className={`${Outfit400.className} text-[14px] text-[#222222]`}
+                    >
+                      Telemedicina
+                    </label>
+                    <CustomSelect
+                      select={formik.values.telemedicina_id}
+                      setSelect={(e) =>
+                        formik.setFieldValue('telemedicina_id', e)
+                      }
+                      options={[]}
+                      placeholder={'Selecione uma opção'}
+                      className={`${row.destino.id === 'externo' && formik.values.tipoExame.label === 'Imagem' ? 'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]' : 'border border-dashed border-[#BBB]'} `}
+                      readOnly={
+                        row.destino.id === 'interno' ||
+                        formik.values.tipoExame.label !== 'Imagem'
+                      }
+                    />
+                  </div>
                 </div>
               </div>
             )

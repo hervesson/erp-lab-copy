@@ -311,3 +311,33 @@ export async function SearchTuss(term) {
     }
   }
 }
+
+export async function SearchAMB(term) {
+  try {
+    const cookie = await cookies()
+    const token = cookie.get(TOKEN_KEY)
+
+    const auth = await api.get('/exames/amb/search?q=' + term, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token.value,
+      },
+    })
+
+    return {
+      success: true,
+      data: auth.data,
+    }
+  } catch (error) {
+    const fallback = {
+      message: error.response.data,
+      statusCode: 500,
+      error: 'UnknownError',
+    }
+
+    return {
+      success: false,
+      error: fallback,
+    }
+  }
+}

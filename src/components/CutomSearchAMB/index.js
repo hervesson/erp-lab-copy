@@ -1,24 +1,26 @@
-import { SearchAccount } from '@/helpers'
+import { SearchAMB } from '@/helpers'
 import useDebounce from '@/hooks/useDebounce'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import OptiSelect from '../OptiSelect'
 
-const CustomSearchBanks = ({ value, setValue }) => {
-  const [banks, setBanks] = useState([])
-  const [selectedBank, setSelectedBank] = useState(value || '')
+const CustomSearchAMB = ({ value = '', setValue }) => {
+  const [amb, setAmb] = useState([])
+  const [selectedAmb, setSelectedAmb] = useState('')
+
+  useEffect(() => {
+    setSelectedAmb(value)
+  }, [value])
 
   const handler = async (props = '') => {
     try {
-      const result = await SearchAccount(props)
+      const result = await SearchAMB(props)
 
       if (result.success) {
-        const banks = result.data.map((item) => {
-          return {
-            id: item.id,
-            label: `${item.codigo} - ${item.nome}`,
-          }
-        })
-        setBanks(banks)
+        const cns = result?.data?.data?.map((item) => ({
+          id: item.id,
+          label: item.descricao,
+        }))
+        setAmb(cns)
       } else {
         console.log('Deu erro')
       }
@@ -30,16 +32,16 @@ const CustomSearchBanks = ({ value, setValue }) => {
   const debounceChangeUnits = useDebounce(handler, 800)
 
   const handleChangeSearchTerm = (e) => {
-    setSelectedBank(e)
+    setSelectedAmb(e)
     debounceChangeUnits(e)
   }
 
   return (
     <OptiSelect
       onChange={handleChangeSearchTerm}
-      placeholder={'Digite o nome do banco'}
-      options={banks}
-      inputValue={selectedBank}
+      placeholder={'Digite o código AMB'}
+      options={amb}
+      inputValue={selectedAmb}
       setSelect={(e) => setValue(e)}
       className={
         'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
@@ -48,4 +50,4 @@ const CustomSearchBanks = ({ value, setValue }) => {
   )
 }
 
-export default CustomSearchBanks
+export default CustomSearchAMB

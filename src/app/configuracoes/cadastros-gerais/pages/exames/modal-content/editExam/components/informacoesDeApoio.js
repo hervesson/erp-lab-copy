@@ -775,6 +775,13 @@ const InformacoesDeApoio = ({ formik, fields, labs, samples }) => {
                           name={`informacoesDeApoio.${index}.prazo_entrega_dias`}
                           className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                           placeholder="Digite um prazo pra entrega dos resultados"
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, '') // Remove tudo que não for dígito
+                            formik.setFieldValue(
+                              `informacoesDeApoio.${index}.prazo_entrega_dias`,
+                              value,
+                            )
+                          }}
                         />
                       </div>
                       <div className="flex flex-1 flex-col gap-1">

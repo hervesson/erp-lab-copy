@@ -1,4 +1,5 @@
 import CustomSelect from '@/components/CustomSelect'
+import CustomSearchAMB from '@/components/CutomSearchAMB'
 import CustomSearchTuss from '@/components/CutomSearchTuss'
 import { Outfit300, Outfit400 } from '@/fonts'
 import { CloseCircle, InfoCircle } from 'iconsax-reactjs'
@@ -131,7 +132,6 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                     className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
                   >
                     Código CBHPM
-                    <strong className="text-[#F23434]">*</strong>
                   </label>
                   <InfoCircle size="20" color="#A1A1A1" />
                 </div>
@@ -149,7 +149,7 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                   <label
                     className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
                   >
-                    Código TUSS<strong className="text-[#F23434]">*</strong>
+                    Código TUSS
                   </label>
                   <InfoCircle size="20" color="#A1A1A1" />
                 </div>
@@ -205,13 +205,9 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                   </label>
                   <InfoCircle size="20" color="#A1A1A1" />
                 </div>
-                <input
-                  {...formik.getFieldProps('codigoAMB')}
-                  type="text"
-                  id="codigoAMB"
-                  name="codigoAMB"
-                  className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
-                  placeholder="Digite o código AMB"
+                <CustomSearchAMB
+                  value={formik.values.codigoAMB.label}
+                  setValue={(e) => formik.setFieldValue('codigoAMB', e)}
                 />
               </div>
               <div className="flex flex-1 flex-col gap-1">
@@ -263,56 +259,8 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
                   }
                 />
               </div>
-              <div className="flex flex-1 flex-col gap-1">
-                <label
-                  className={`${Outfit400.className} text-[14px] text-[#222222]`}
-                >
-                  Grupo
-                  <strong className="text-[#F23434]">*</strong>
-                </label>
-                <CustomSelect
-                  select={formik.values.grupo}
-                  setSelect={(e) => formik.setFieldValue('grupo', e)}
-                  options={fields
-                    ?.find((element) => element?.nomeCampo === 'grupo')
-                    ?.alternativas.map((i) => {
-                      return {
-                        id: i.id,
-                        label: i.textoAlternativa,
-                      }
-                    })}
-                  placeholder={'Selecione um grupo'}
-                  className={
-                    'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                  }
-                />
-              </div>
             </div>
             <div className="flex gap-4">
-              <div className="flex flex-1 flex-col gap-1">
-                <label
-                  className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
-                >
-                  SubGrupo<strong className="text-[#F23434]">*</strong>
-                </label>
-
-                <CustomSelect
-                  select={formik.values.subGrupo}
-                  setSelect={(e) => formik.setFieldValue('subGrupo', e)}
-                  options={fields
-                    ?.find((element) => element?.nomeCampo === 'subgrupo')
-                    ?.alternativas.map((i) => {
-                      return {
-                        id: i.id,
-                        label: i.textoAlternativa,
-                      }
-                    })}
-                  placeholder={'Selecione um SubGrupo'}
-                  className={
-                    'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                  }
-                />
-              </div>
               <div className="flex flex-1 flex-col gap-1">
                 <label
                   className={`${Outfit400.className} text-[14px] text-[#222222]`}
@@ -344,38 +292,7 @@ const InformacoesGerais = ({ formik, fields, units, labs }) => {
           <span className={`${Outfit400.className} text-[16px] text-[#0F9B7F]`}>
             Regulação
           </span>
-
           <div className="flex gap-4">
-            <div className="flex flex-1 flex-col gap-1">
-              <div className="flex justify-between">
-                <label
-                  className={`${Outfit400.className} flex text-[14px] text-[#222222]`}
-                >
-                  Requisitos da ANVISA/Normas Técnicas
-                  <strong className="text-[#F23434]">*</strong>
-                </label>
-
-                <InfoCircle size="20" color="#A1A1A1" />
-              </div>
-              <CustomSelect
-                select={formik.values.requisitos_anvisa}
-                setSelect={(e) => formik.setFieldValue('requisitos_anvisa', e)}
-                options={fields
-                  ?.find(
-                    (element) => element?.nomeCampo === 'requisitos_anvisa',
-                  )
-                  ?.alternativas.map((i) => {
-                    return {
-                      id: i.id,
-                      label: i.textoAlternativa,
-                    }
-                  })}
-                placeholder={'Selecione os requisitos'}
-                className={
-                  'border border-[#BBBBBB] hover:border-[#0F9B7F] focus:border-[#0F9B7F]'
-                }
-              />
-            </div>
             <div className="flex flex-col gap-1">
               <div className="flex justify-between">
                 <label

@@ -6,8 +6,6 @@ export const validationSchema = Yup.object().shape({
 
   codigoInterno: Yup.string().trim().required('Informe o código interno'),
 
-  codigoCBHPM: Yup.string().required('Informe o código CBHPM'),
-  codigoTuss: Yup.mixed().required('Informe o código TUSS'),
   codigoLoinc: Yup.string().nullable(),
   codigoSUS: Yup.string().nullable(),
   codigoAMB: Yup.string().nullable(),
@@ -18,15 +16,12 @@ export const validationSchema = Yup.object().shape({
   especialidadeExame: Yup.mixed().required(
     'Selecione a especialidade do exame',
   ),
-  grupo: Yup.mixed().required('Selecione o grupo'),
-  subGrupo: Yup.mixed().required('Selecione o subgrupo'),
+
   setor: Yup.mixed().required('Selecione o setor'),
 
   unidades: Yup.array().min(1, 'Adicione ao menos uma unidade'),
 
   termoConsentimento: Yup.boolean(),
-
-  requisitos_anvisa: Yup.mixed().required('Selecione o requisitos da anvisa'),
 
   metodologiaUtilizada: Yup.mixed().required(
     'Selecione a metodologia utilizada',
@@ -55,12 +50,6 @@ export const validationSchema = Yup.object().shape({
   preparoPublicoGeral: Yup.string().required(
     'Informe o preparo do pubico geral',
   ),
-  preparoFeminino: Yup.string().nullable(),
-  preparoInfantil: Yup.string().nullable(),
-
-  coletaPublicoGeral: Yup.string().required('Informe a coleta do pubico geral'),
-  coletaFeminino: Yup.string().nullable(),
-  coletaInfantil: Yup.string().nullable(),
 
   tecnicaDeColeta: Yup.string().required(
     'Informe a técnica de coleta do pubico geral',

@@ -98,19 +98,17 @@ const RegisterExam = ({ onClose, findData }) => {
       codigoAMB: '',
       tipoExame: {},
       especialidadeExame: '',
-      grupo: '',
-      subGrupo: '',
       setor: '',
       unidades: [
         {
           unidade_id: null,
+          unidadesSelecionadas: [],
           destino: '',
           telemedicina_id: null,
           laboratorio_apoio_id: null,
         },
       ],
       termoConsentimento: false,
-      requisitos_anvisa: {},
       metodologiaUtilizada: '',
       unidadeDeMedida: '',
       peso: false,
@@ -138,143 +136,135 @@ const RegisterExam = ({ onClose, findData }) => {
       formatoLaudo: [],
       informacoesDeApoio: [],
     },
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: async (values) => {
       setLoading(true)
+
+      const isExternoLaboratorial = values?.tipoExame?.label === 'Laboratorial'
+
+      const isExternoImagem = values?.tipoExame?.label === 'Imagem'
+
+      const payload = {
+        codigo_interno: values.codigoInterno,
+        nome: values.nomeExame,
+        sinonimos: values.sinonimos,
+        codigo_cbhpm: values.codigoCBHPM,
+        tuss_id: values.codigoTuss.id,
+        amb_id: values.codigoAMB.id,
+        codigo_loinc: values.codigoLoinc,
+        codigo_sus: values.codigoSUS,
+        tipo_exame_id: values.tipoExame.id,
+        especialidade_id: values.especialidadeExame.id,
+        setor_id: values.setor.id,
+        unidades: values.unidades.flatMap((externo) =>
+          (externo?.unidadesSelecionadas ?? []).map((item) => ({
+            unidade_id: item?.id,
+            destino:
+              externo?.destino?.id === 'interno'
+                ? 'interno'
+                : isExternoLaboratorial
+                  ? 'apoio'
+                  : 'telemedicina',
+            ...(isExternoLaboratorial && {
+              laboratorio_apoio_id: externo?.laboratorio_apoio_id?.id,
+            }),
+            ...(isExternoImagem && {
+              telemedicina_id: externo?.telemedicina_id?.id,
+            }),
+          })),
+        ),
+        metodologia_id: values.metodologiaUtilizada.id,
+        peso: values.peso,
+        altura: values.altura,
+        volume: values.volume,
+        termo_consentimento: values.termoConsentimento,
+        unidade_medida_id: values.unidadeDeMedida.id,
+        amostra_id: values.amostraBiologicaNecessaria.id,
+        amostra_enviar_id: values.amostraAEnviar.id,
+        tipo_recipiente_id: values.tipoDeRecipiente.id,
+        regiao_coleta_ids: values.regiao_coleta_ids.map((item) => item.id),
+        estabilidade_id: values.estabilidade.id,
+        volume_minimo_id: values.valorMinimoRequerido.id,
+        formatos_laudo: values.formatoLaudo.map((item) => item.id),
+        prazo_entrega_dias: Number(values.prazoDeEntrega),
+        tecnica_coleta: values.tecnicaDeColeta,
+        distribuicao: values.lembretesDistribuicao,
+        preparo_geral: values.preparoPublicoGeral,
+        preparo_feminino: values.preparoFeminino,
+        preparo_infantil: values.preparoInfantil,
+        coleta_geral: values.coletaPublicoGeral,
+        coleta_feminino: values.coletaFeminino,
+        coleta_infantil: values.coletaInfantil,
+        lembrete_coletora: values.lembretesColetora,
+        lembrete_recepcionista_agendamento:
+          values.lembretesRecepcionistaAgendamentos,
+        lembrete_recepcionista_os: values.lembretesRecepcionistaOrdemDeServico,
+        status: 'ativo',
+      }
+
+      console.log(payload)
+
       try {
-        const isExternoLaboratorial =
-          values?.tipoExame?.label === 'Laboratorial'
+        const responseCreateUnity = await CreateExam(payload)
+        if (responseCreateUnity.success) {
+          const apoioExame = values.informacoesDeApoio?.map((item) => ({
+            exame_id: responseCreateUnity.data.data.id,
+            laboratorio_apoio_id: item.laboratorio_apoio_id.id,
+            codigo_exame_apoio: responseCreateUnity.data.data.codigo_interno,
+            metodologia_id: item.metodologia_id.id,
+            unidade_medida_id: item.unidade_medida_id.id,
+            peso: item.requer_peso,
+            altura: item.requer_altura,
+            volume: item.requer_volume,
+            amostra_id: item.amostra_id.id,
+            amostra_enviar_id: item.amostra_enviar_id.id,
+            tipo_recipiente_id: item.tipo_recipiente_id.id,
+            regioes_coleta_ids: item.regioes_coleta_ids.map((item) => item.id),
+            volume_minimo_id: item.volume_minimo_id.id,
+            estabilidade_id: item.estabilidade_id.id,
+            formularios_atendimento: ['termo_envio_laboratorio'],
+            preparo_geral: item.preparo_geral,
+            preparo_feminino: item.preparo_feminino,
+            preparo_infantil: item.preparo_infantil,
+            coleta_geral: item.coleta_geral,
+            coleta_feminino: item.coleta_feminino,
+            coleta_infantil: item.coleta_infantil,
+            tecnica_coleta: item.tecnica_coleta,
+            lembrete_coletora: item.lembrete_coletora,
+            lembrete_recepcionista_agendamento:
+              item.lembrete_recepcionista_agendamento,
+            lembrete_recepcionista_os: item.lembrete_recepcionista_os,
+            distribuicao: item.distribuicao,
+            prazo_entrega_dias: Number(item.prazo_entrega_dias),
+            formatos_laudo: item.formatos_laudo.map((item) => item.id),
+            ativo: true,
+          }))
 
-        const isExternoImagem = values?.tipoExame?.label === 'Imagem'
-
-        const payload = {
-          codigo_interno: values.codigoInterno,
-          nome: values.nomeExame,
-          sinonimos: values.sinonimos,
-          codigo_cbhpm: values.codigoCBHPM,
-          tuss_id: values.codigoTuss.id,
-          codigo_amb: values.codigoAMB,
-          codigo_loinc: values.codigoLoinc,
-          codigo_sus: values.codigoSUS,
-          tipo_exame_id: values.tipoExame.id,
-          especialidade_id: values.especialidadeExame.id,
-          subgrupo_id: values.subGrupo.id,
-          setor_id: values.setor.id,
-          unidades: values.unidades.map((item) => {
-            return {
-              unidade_id: item.unidade_id.id,
-              destino:
-                item.destino.id === 'interno'
-                  ? 'interno'
-                  : isExternoLaboratorial
-                    ? 'apoio'
-                    : 'telemedicina',
-              ...(isExternoLaboratorial && {
-                laboratorio_apoio_id: item.laboratorio_apoio_id?.id,
-              }),
-              ...(isExternoImagem && {
-                telemedicina_id: item.telemedicina_id?.id,
-              }),
-            }
-          }),
-          metodologia_id: values.metodologiaUtilizada.id,
-          grupo_id: values.grupo.id,
-          peso: values.peso,
-          altura: values.altura,
-          volume: values.volume,
-          termo_consentimento: values.termoConsentimento,
-          unidade_medida_id: values.unidadeDeMedida.id,
-          amostra_id: values.amostraBiologicaNecessaria.id,
-          amostra_enviar_id: values.amostraAEnviar.id,
-          tipo_recipiente_id: values.tipoDeRecipiente.id,
-          regiao_coleta_ids: values.regiao_coleta_ids.map((item) => item.id),
-          estabilidade_id: values.estabilidade.id,
-          volume_minimo_id: values.valorMinimoRequerido.id,
-          formatos_laudo: values.formatoLaudo.map((item) => item.id),
-          requisitos_anvisa_id: values.requisitos_anvisa.id,
-          prazo_entrega_dias: Number(values.prazoDeEntrega),
-          tecnica_coleta: values.tecnicaDeColeta,
-          distribuicao: values.lembretesDistribuicao,
-          preparo_geral: values.preparoPublicoGeral,
-          preparo_feminino: values.preparoFeminino,
-          preparo_infantil: values.preparoInfantil,
-          coleta_geral: values.coletaPublicoGeral,
-          coleta_feminino: values.coletaFeminino,
-          coleta_infantil: values.coletaInfantil,
-          lembrete_coletora: values.lembretesColetora,
-          lembrete_recepcionista_agendamento:
-            values.lembretesRecepcionistaAgendamentos,
-          lembrete_recepcionista_os:
-            values.lembretesRecepcionistaOrdemDeServico,
-          status: 'ativo',
-        }
-
-        try {
-          const responseCreateUnity = await CreateExam(payload)
-          if (responseCreateUnity.success) {
-            const apoioExame = values.informacoesDeApoio?.map((item) => ({
-              exame_id: responseCreateUnity.data.data.id,
-              laboratorio_apoio_id: item.laboratorio_apoio_id.id,
-              codigo_exame_apoio: responseCreateUnity.data.data.codigo_interno,
-              metodologia_id: item.metodologia_id.id,
-              unidade_medida_id: item.unidade_medida_id.id,
-              peso: item.requer_peso,
-              altura: item.requer_altura,
-              volume: item.requer_volume,
-              amostra_id: item.amostra_id.id,
-              amostra_enviar_id: item.amostra_enviar_id.id,
-              tipo_recipiente_id: item.tipo_recipiente_id.id,
-              regioes_coleta_ids: item.regioes_coleta_ids.map(
-                (item) => item.id,
-              ),
-              volume_minimo_id: item.volume_minimo_id.id,
-              estabilidade_id: item.estabilidade_id.id,
-              formularios_atendimento: ['termo_envio_laboratorio'],
-              preparo_geral: item.preparo_geral,
-              preparo_feminino: item.preparo_feminino,
-              preparo_infantil: item.preparo_infantil,
-              coleta_geral: item.coleta_geral,
-              coleta_feminino: item.coleta_feminino,
-              coleta_infantil: item.coleta_infantil,
-              tecnica_coleta: item.tecnica_coleta,
-              lembrete_coletora: item.lembrete_coletora,
-              lembrete_recepcionista_agendamento:
-                item.lembrete_recepcionista_agendamento,
-              lembrete_recepcionista_os: item.lembrete_recepcionista_os,
-              distribuicao: item.distribuicao,
-              prazo_entrega_dias: Number(item.prazo_entrega_dias),
-              formatos_laudo: item.formatos_laudo.map((item) => item.id),
-              ativo: true,
-            }))
-
-            if (values.informacoesDeApoio?.length > 0) {
-              const resp = await CreateVinculoExam({ items: apoioExame })
-              if (!resp.success) {
-                resp?.error?.erros?.forEach((element) => {
-                  toast.error(element, {
-                    position: 'top-right',
-                  })
+          if (values.informacoesDeApoio?.length > 0) {
+            const resp = await CreateVinculoExam({ items: apoioExame })
+            if (!resp.success) {
+              resp?.error?.erros?.forEach((element) => {
+                toast.error(element, {
+                  position: 'top-right',
                 })
-              }
-            }
-
-            setStep('sucess')
-            setOpenModalAlerts(true)
-            findData()
-            formik.resetForm()
-          } else {
-            responseCreateUnity?.error?.erros?.forEach((element) => {
-              toast.error(element, {
-                position: 'top-right',
               })
-            })
+            }
           }
-        } catch (error) {
-          console.log('erro', error)
-        } finally {
-          setLoading(false)
+
+          setStep('sucess')
+          setOpenModalAlerts(true)
+          findData()
+          formik.resetForm()
+        } else {
+          responseCreateUnity?.error?.erros?.forEach((element) => {
+            toast.error(element, {
+              position: 'top-right',
+            })
+          })
         }
+      } catch (error) {
+        console.log('erro', error)
       } finally {
-        setSubmitting(false)
+        setLoading(false)
       }
     },
   })
@@ -402,8 +392,7 @@ const RegisterExam = ({ onClose, findData }) => {
               </span>
             </button>
             <button
-              type="button"
-              onClick={handleValidateAndSubmit}
+              type="submit"
               className={`flex h-11 w-32 items-center justify-evenly rounded-lg ${
                 formik.isValid
                   ? 'bg-[#0F9B7F] text-white hover:from-[#3BC1E2] hover:to-[#1D6F87]'

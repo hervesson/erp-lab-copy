@@ -412,7 +412,6 @@ const InformacoesInternas = ({ formik, fields, samples }) => {
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
               Coleta - Público geral
-              <strong className="text-[#F23434]">*</strong>
             </label>
             <textarea
               {...formik.getFieldProps('coletaPublicoGeral')}
@@ -460,7 +459,6 @@ const InformacoesInternas = ({ formik, fields, samples }) => {
               className={`${Outfit400.className} text-[14px] text-[#222222]`}
             >
               Técnica de coleta
-              <strong className="text-[#F23434]">*</strong>
             </label>
             <textarea
               {...formik.getFieldProps('tecnicaDeColeta')}
@@ -566,6 +564,10 @@ const InformacoesInternas = ({ formik, fields, samples }) => {
                 name="prazoDeEntrega"
                 className={`${Outfit400.className} ring-none flex h-10 items-center justify-center rounded-lg border border-[#A9A9A9] px-2 text-[#494949] outline-none hover:border-[#0F9B7F] focus:border-[#0F9B7F]`}
                 placeholder="Digite um prazo pra entrega dos resultados"
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, '') // Remove tudo que não for dígito
+                  formik.setFieldValue(`prazoDeEntrega`, value)
+                }}
               />
             </div>
             <div className="flex flex-1 flex-col gap-1">
