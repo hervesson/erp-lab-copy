@@ -1,5 +1,6 @@
 'use client'
 import CustomSelect from '@/components/CustomSelect'
+import ModalLeft from '@/components/ModalLeft'
 import ModalUp from '@/components/ModalUp'
 import Pagination from '@/components/Pagination'
 import { Outfit300, Outfit400, Outfit700 } from '@/fonts'
@@ -15,6 +16,7 @@ import { Book, Edit2, Heart, More, SearchStatus } from 'iconsax-reactjs'
 import { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import { Status } from '../bancos/components/status'
+import ProfileExam from './modal-content/profileExam'
 
 // Components
 import EditExam from './modal-content/editExam'
@@ -27,6 +29,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
   const [fields, setFields] = useState([])
 
   const [openModalEditExam, setOpenModalEditExam] = useState(false)
+  const [openModalProfileExam, setOpenModalProfileExam] = useState(false)
 
   // filters
   const [currentPage, setCurrentPage] = useState(1)
@@ -438,7 +441,7 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
                   <div
                     className="flex h-full items-center justify-center"
                     onClick={() => {
-                      // setOpenModalProfileuUnit(true)
+                      setOpenModalProfileExam(true)
                       setSelectedExam(item)
                     }}
                   >
@@ -512,16 +515,25 @@ const UnitOfHealth = ({ openModalRegisterExams, setModalRegisterExams }) => {
       >
         <EditExam
           onClose={() => setOpenModalEditExam(false)}
-          findData={() => findData('', '', '', '', 1, 10)}
+          findData={() =>
+            findData(
+              searchTerm,
+              status.id,
+              typeExam.id,
+              typeEspecialty.id,
+              currentPage,
+              10,
+            )
+          }
           selectedExam={selectedExam}
         />
       </ModalUp>
-      {/* <ModalLeft
-        isOpen={openModalProfileuUnit}
-        onClose={() => setOpenModalProfileuUnit(false)}
+      <ModalLeft
+        isOpen={openModalProfileExam}
+        onClose={() => setOpenModalProfileExam(false)}
       >
-        <ProfileUnitHealth unit={selectedUnit} />
-      </ModalLeft> */}
+        <ProfileExam selectedExam={selectedExam} />
+      </ModalLeft>
       <ToastContainer />
     </div>
   )

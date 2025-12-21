@@ -24,7 +24,6 @@ import InformacoesInternas from './components/informacoesInternas'
 
 // colocar o findData
 const EditExam = ({ onClose, findData, selectedExam }) => {
-  console.log(selectedExam)
   const [tab, setTab] = useState('informacoesGerais')
   const [fields, setFields] = useState([])
   const [units, setUnits] = useState([])
@@ -191,7 +190,7 @@ const EditExam = ({ onClose, findData, selectedExam }) => {
 
         formik.setFieldValue(
           'unidades',
-          mapApiUnidadesToFormik(selectedExam?.unidades),
+          mapApiUnidadesToFormik(selectedExam?.unidades, labs),
         )
 
         formik.setFieldValue(
@@ -298,7 +297,7 @@ const EditExam = ({ onClose, findData, selectedExam }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedExam])
 
-  function mapApiUnidadesToFormik(apiUnidades = []) {
+  function mapApiUnidadesToFormik(apiUnidades = [], labs) {
     // sempre devolve pelo menos 1 item (se vier vazio da API)
     const list =
       Array.isArray(apiUnidades) && apiUnidades.length ? apiUnidades : [null]
@@ -347,14 +346,8 @@ const EditExam = ({ onClose, findData, selectedExam }) => {
             : null,
 
         laboratorio_apoio_id: u?.laboratorioApoio
-          ? {
-              id: u.laboratorioApoio.id,
-              label:
-                u.laboratorioApoio.nome ?? u.laboratorioApoio.descricao ?? '',
-            }
-          : u?.laboratorio_apoio_id
-            ? { id: u.laboratorio_apoio_id, label: '' }
-            : null,
+          ? labs.find((lab) => lab.id === u.laboratorioApoio.id) || {}
+          : {},
       }
     })
   }
@@ -376,17 +369,17 @@ const EditExam = ({ onClose, findData, selectedExam }) => {
       codigoLoinc: selectedExam?.codigo_loinc,
       codigoSUS: selectedExam?.codigo_sus,
       codigoAMB: {
-        id: selectedExam?.amb.id,
-        label: selectedExam?.amb.descricao,
+        id: selectedExam?.amb?.id,
+        label: selectedExam?.amb?.descricao,
       },
       tipoExame: {
-        id: selectedExam?.tipoExameAlternativa.id,
-        label: selectedExam?.tipoExameAlternativa.textoAlternativa,
+        id: selectedExam?.tipoExameAlternativa?.id,
+        label: selectedExam?.tipoExameAlternativa?.textoAlternativa,
       },
       especialidadeExame: '',
       setor: {
-        id: selectedExam?.setorAlternativa.id,
-        label: selectedExam?.setorAlternativa.textoAlternativa,
+        id: selectedExam?.setorAlternativa?.id,
+        label: selectedExam?.setorAlternativa?.textoAlternativa,
       },
       unidades: [
         {
